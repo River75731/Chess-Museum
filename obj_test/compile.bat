@@ -1,0 +1,1 @@
+g++ *.cpp -o main -lglut64 -lopengl32 -lglu32
