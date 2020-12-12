@@ -115,6 +115,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Common.h" />
+    <ClInclude Include="Common\Position.h" />
+    <ClInclude Include="Common\Vector.h" />
+    <ClInclude Include="Model\ClassicChess.h" />
+    <ClInclude Include="Model\Model.h" />
+    <ClInclude Include="ViewModel\ViewGroup.h" />
+    <ClInclude Include="ViewModel\ViewModel.h" />
+    <ClInclude Include="ViewModel\ViewObject.h" />
+    <ClInclude Include="ViewModel\ViewScene.h" />
+    <ClInclude Include="View\View.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Common\Position.cpp" />
+    <ClCompile Include="Common\Vector.cpp" />
+    <ClCompile Include="Model\ClassicChess.cpp" />
+    <ClCompile Include="ViewModel\ViewGroup.cpp" />
+    <ClCompile Include="ViewModel\ViewObject.cpp" />
+    <ClCompile Include="ViewModel\ViewScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
