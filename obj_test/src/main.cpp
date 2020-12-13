@@ -260,7 +260,7 @@ void keyboard(unsigned char key, int x, int y)
 
 int main(int argc, char *argv[])
 {
-    string filename("deer.obj");
+    string filename("./obj/deer.obj");
     tm = new TriangleMesh(filename);
     cout << "TriangleMesh establish success" << endl;
 
