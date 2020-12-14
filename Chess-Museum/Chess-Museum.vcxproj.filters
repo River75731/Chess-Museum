@@ -66,8 +66,11 @@
     <ClInclude Include="Model\Model.h">
       <Filter>头文件\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Model\ClassicChess.h">
-      <Filter>头文件\Model</Filter>
+    <ClInclude Include="Common\ClassicChess.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Chess.h">
+      <Filter>头文件\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,8 +89,11 @@
     <ClCompile Include="Common\Vector.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Model\ClassicChess.cpp">
-      <Filter>源文件\Model</Filter>
+    <ClCompile Include="Common\ClassicChess.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Chess.cpp">
+      <Filter>源文件\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

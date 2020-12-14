@@ -1,13 +1,13 @@
 #pragma once
 
 class Position2d {
-private:
+protected:
 	int x;
 	int y;
 };
 
 class Position3d {
-private:
+protected:
 	int x;
 	int y;
 	int z;

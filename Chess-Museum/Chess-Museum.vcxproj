@@ -115,10 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Chess.h" />
+    <ClInclude Include="Common\ClassicChess.h" />
     <ClInclude Include="Common\Common.h" />
     <ClInclude Include="Common\Position.h" />
     <ClInclude Include="Common\Vector.h" />
-    <ClInclude Include="Model\ClassicChess.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="ViewModel\ViewGroup.h" />
     <ClInclude Include="ViewModel\ViewModel.h" />
@@ -127,9 +128,10 @@
     <ClInclude Include="View\View.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Common\Chess.cpp" />
+    <ClCompile Include="Common\ClassicChess.cpp" />
     <ClCompile Include="Common\Position.cpp" />
     <ClCompile Include="Common\Vector.cpp" />
-    <ClCompile Include="Model\ClassicChess.cpp" />
     <ClCompile Include="ViewModel\ViewGroup.cpp" />
     <ClCompile Include="ViewModel\ViewObject.cpp" />
     <ClCompile Include="ViewModel\ViewScene.cpp" />

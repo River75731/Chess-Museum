@@ -138,9 +138,14 @@ Layers :
 
 
 
+### Common Layer
+
 #### Chess
 
 1. 对于每一种棋类，需要单独定义棋类的移动方式Move
 2. 对于每一种棋类，需要单独定义棋盘从创建到现在的所有棋谱（用于回放），history可以是一个Move类型的vector
 3. 每一种棋需要一种对应的ViewModel中的类，例如ViewClassicChess需要提供以ClassicChess类的实例为参数的构造函数，且这个ViewClassicChess应当是由ViewGroup继承而来
+4. 对于每一种棋类，需要单独定义棋子类型（可有可无），棋盘状态
+5. 对于每一种棋类，需从Chess继承，并实现 isValidMove 和 execMove 函数
+6. 对于每一种棋类，可以使用static_cast实现Move
 
