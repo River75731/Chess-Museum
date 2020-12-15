@@ -48,17 +48,19 @@ UpperCamelCase : 类名、命名空间名
 
 lowerCamelCase : 变量名、函数名、方法名
 
+全大写，下划线分隔：枚举类型变量名
+
 尽量使用都看得懂的缩写：例如init
 
 尽量不要 `using namespace std`
 
 XX的数目 ： xxxCount
 
-XX的编号 ： xxxNum
+XX的编号 ： xxxIdx (index)
 
-二维变量（坐标等）：xx2d
+二维变量（坐标等）：xx2d, xx2i (double / int)
 
-三维变量（坐标等）：xx3d
+三维变量（坐标等）：xx3d, xx2d
 
 
 

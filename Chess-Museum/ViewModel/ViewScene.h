@@ -9,7 +9,7 @@ class ViewScene {
 protected:
 	static int sceneCount;
 
-	int sceneNum;
+	int sceneIdx;
 	std::string sceneName;
 public:
 	virtual void init() = 0;

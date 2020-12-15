@@ -2,13 +2,25 @@
 
 class Position2d {
 protected:
-	int x;
-	int y;
+	double x;
+	double y;
 };
 
 class Position3d {
 protected:
+	double x;
+	double y;
+	double z;
+};
+
+class Position2i {
+protected:
 	int x;
 	int y;
-	int z;
+};
+
+class Position3i {
+protected:
+	int x;
+	int y;
 };

@@ -8,7 +8,7 @@ class ViewObject {
 protected:
 	static int objectCount;		// the number of static object
 
-	const int objectListNum;		// the index in gl list (return value of glGenList)
+	const int objectListIdx;		// the index in gl list (return value of glGenList)
 	const std::string objectName;	// name of the object (must be unique)
 
 public:

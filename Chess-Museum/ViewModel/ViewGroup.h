@@ -8,7 +8,7 @@
 class ViewGroup {
 protected:
 	static int groupCount;
-	int groupNum;
+	int groupIdx;
 	std::string groupName;
 public:
 	virtual void init() = 0;
