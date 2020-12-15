@@ -1,6 +1,8 @@
 #pragma once
 #include"Common.h"
 
+#include <memory>
+
 class ChessPosition {
 public:
 	virtual bool isValid() const = 0; // whether a position is valid (regardless of other objects)
