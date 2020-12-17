@@ -46,7 +46,8 @@ Vector2f& Vector2f::setY(const float & y)
 
 const float Vector2f::getAngle() const
 {
-	float angle = acos(x / this->getLength());
+	if (floatEqual(x, 0) && floatEqual(y, 0)) return 0;
+	float angle = toDegree(acos(x / this->getLength()));
 	return y >= 0 ? angle : 360 - angle;
 }
 
@@ -157,5 +158,11 @@ Vector2f & Vector2f::rotate(const float & angle)
 const float Vector2f::angle(const Vector2f & that) const
 {
 	return that.getAngle() - this->getAngle();
+}
+
+void Vector2f::output(const std::string &name) const
+{
+	std::cout << "Vector2f : " << name << "\t = ( " << this->x << " , " << this->y << " ),\t Length = " << this->getLength() << ",\t Angle = " << this->getAngle() << " degree.\n";
+	return;
 }
 

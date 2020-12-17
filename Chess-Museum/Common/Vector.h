@@ -1,5 +1,7 @@
 #pragma once
-#include "Common.h"
+#include <iostream>
+#include <string>
+#include "MathBase.h"
 
 class Vector2f {
 protected:
@@ -36,6 +38,8 @@ public:
 	Vector2f& scale(const float &scaleX, const float &scaleY);
 	Vector2f& rotate(const float& angle);	// rotate in degree
 	const float angle(const Vector2f& that) const;	// angle from this rotate to that (in degree)
+// Output
+	void output(const std::string &name = "DEFAULT") const;
 };
 
 class Vector3f {

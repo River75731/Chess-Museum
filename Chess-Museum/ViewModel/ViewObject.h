@@ -16,8 +16,6 @@ public:
 	virtual void draw() = 0;	// call the drawing function in View
 };
 
-int ViewObject::objectCount = 0;
-
 class ViewObject2d : public ViewObject {
 
 };

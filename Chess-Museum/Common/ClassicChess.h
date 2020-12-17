@@ -1,5 +1,8 @@
 #pragma once
-#include "Common.h"
+#include <vector>
+#include "Position.h"
+#include "Chess.h"
+
 
 /*
 	Classic Chess

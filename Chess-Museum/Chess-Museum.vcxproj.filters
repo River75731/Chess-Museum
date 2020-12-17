@@ -37,6 +37,9 @@
     <Filter Include="源文件\Model">
       <UniqueIdentifier>{33fd254f-a2a3-4476-beec-a73b4f72b375}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\TEST">
+      <UniqueIdentifier>{05c682e4-32ef-4f86-a8d6-c5ed30ac5232}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ViewModel\ViewObject.h">
@@ -72,7 +75,13 @@
     <ClInclude Include="Common\Chess.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Angle.h">
+    <ClInclude Include="TEST\TEST.h">
+      <Filter>头文件\TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="TEST\TEST_VectorPosition.h">
+      <Filter>头文件\TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\MathBase.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
   </ItemGroup>
@@ -97,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Common\Chess.cpp">
       <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

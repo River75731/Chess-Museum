@@ -77,6 +77,9 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -98,6 +101,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -115,13 +119,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Common\Angle.h" />
+    <ClInclude Include="Common\MathBase.h" />
     <ClInclude Include="Common\Chess.h" />
     <ClInclude Include="Common\ClassicChess.h" />
     <ClInclude Include="Common\Common.h" />
     <ClInclude Include="Common\Position.h" />
     <ClInclude Include="Common\Vector.h" />
     <ClInclude Include="Model\Model.h" />
+    <ClInclude Include="TEST\TEST.h" />
+    <ClInclude Include="TEST\TEST_VectorPosition.h" />
     <ClInclude Include="ViewModel\ViewGroup.h" />
     <ClInclude Include="ViewModel\ViewModel.h" />
     <ClInclude Include="ViewModel\ViewObject.h" />
@@ -133,6 +139,7 @@
     <ClCompile Include="Common\ClassicChess.cpp" />
     <ClCompile Include="Common\Position.cpp" />
     <ClCompile Include="Common\Vector.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ViewModel\ViewGroup.cpp" />
     <ClCompile Include="ViewModel\ViewObject.cpp" />
     <ClCompile Include="ViewModel\ViewScene.cpp" />

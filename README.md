@@ -42,6 +42,8 @@ Contributors :
 
 ## Rules of Programming
 
+所有模块测试均放于/TEST/TEST_xxxx.h
+
 命名规则：
 
 尽量使用float而不是double

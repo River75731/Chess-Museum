@@ -1,5 +1,5 @@
 #pragma once
-#include "Common.h"
+#include "Vector.h"
 
 class Position2f {
 protected:
@@ -30,6 +30,8 @@ public:
 	Position2f& setInArea(const float& xmin, const float& ymin, const float& xlength, const float& ylength);
 	bool inRange(const float& xmin, const float& ymin, const float& xmax, const float& ymax) const;
 	Position2f& setInRange(const float& xmin, const float& ymin, const float& xmax, const float& ymax);
+// Output
+	void output(const std::string &name = "DEFAULT") const;
 };
 
 class Position3f {

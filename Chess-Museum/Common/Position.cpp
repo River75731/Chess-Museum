@@ -123,3 +123,8 @@ Position2f & Position2f::setInRange(const float & xmin, const float & ymin, cons
 	if (this->y > ymax) this->y = ymax;
 	return *this;
 }
+
+void Position2f::output(const std::string & name) const
+{
+	std::cout << "Position2f : " << name << "\t = ( " << this->x << " , " << this->y << " ).\n";
+}

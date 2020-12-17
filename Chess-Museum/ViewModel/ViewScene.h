@@ -1,6 +1,6 @@
 #pragma once
 #include "../Common/Common.h"
-#include "ViewModel.h"
+#include "ViewGroup.h"
 
 // All dynamic object in one scene(window) should be ViewScene2d or ViewScene3d
 // Don't instantiate ViewScene!

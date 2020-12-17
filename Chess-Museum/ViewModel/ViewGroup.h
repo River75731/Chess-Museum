@@ -1,6 +1,6 @@
 #pragma once
 #include "../Common/Common.h"
-#include "ViewModel.h"
+#include "ViewObject.h"
 
 // All dynamic object (with texture or without texture) must be inherited from ViewGroup2d / ViewGroup3d
 // Don't instantiate ViewGroup!
@@ -15,17 +15,15 @@ public:
 	virtual void draw() = 0;
 };
 
-int ViewGroup::groupCount = 0;
-
 class ViewGroup2d : public ViewGroup {
 protected:
-	Position2d groupOrigin;
+	Position2f groupOrigin;
 	std::vector<std::shared_ptr<ViewObject2d>> objects;
 };
 
 class ViewGroup3d : public ViewGroup {
 protected:
-	Position3d groupOrigin;
+	Position3f groupOrigin;
 	std::vector<std::shared_ptr<ViewObject3d>> objects;
 };
 

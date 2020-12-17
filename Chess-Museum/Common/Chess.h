@@ -1,5 +1,5 @@
 #pragma once
-#include"Common.h"
+#include <memory>
 
 class ChessPosition {
 public:

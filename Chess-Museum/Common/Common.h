@@ -1,17 +1,18 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <vector>
 #include <memory>
 #include <cmath>
+
+// Positions and Vector classes
+
 #include "Position.h"
 #include "Vector.h"
-#include "Angle.h"
+#include "MathBase.h"
+
+// Chess classes
 
 #include "Chess.h"
 #include "ClassicChess.h"
 
-const float floatError = 1e-7;
-
-inline bool floatEqual(const float& x, const float& y) {
-	return (x - y <= floatError) && (y - x <= floatError);
-}
