@@ -44,6 +44,16 @@ Contributors :
 
 命名规则：
 
+尽量使用float而不是double
+
+唯一指针：`std::unique_ptr`
+
+共享指针：（方便内存管理）`std::shared_ptr`
+
+定长数组：`std::array`
+
+不定长数组：`std::vector`
+
 UpperCamelCase : 类名、命名空间名
 
 lowerCamelCase : 变量名、函数名、方法名
@@ -58,9 +68,9 @@ XX的数目 ： xxxCount
 
 XX的编号 ： xxxIdx (index)
 
-二维变量（坐标等）：xx2d, xx2i (double / int)
+二维变量（坐标等）：xx2f, xx2i (float / int)
 
-三维变量（坐标等）：xx3d, xx2d
+三维变量（坐标等）：xx3f, xx3i
 
 
 
@@ -141,6 +151,18 @@ Layers :
 
 
 ### Common Layer
+
+#### Vector & Position
+
+Position - Position = Vector
+
+Position + Vector = Position
+
+Vector + Position illegal!
+
+inArea : (xmin, ymin, xlength, ylength)
+
+inRange: (xmin, ymin, xmax, ymax)
 
 #### Chess
 

@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Common\Angle.h" />
     <ClInclude Include="Common\Chess.h" />
     <ClInclude Include="Common\ClassicChess.h" />
     <ClInclude Include="Common\Common.h" />

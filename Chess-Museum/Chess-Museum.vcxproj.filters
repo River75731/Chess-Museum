@@ -72,6 +72,9 @@
     <ClInclude Include="Common\Chess.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\Angle.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewModel\ViewObject.cpp">

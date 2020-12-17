@@ -9,7 +9,8 @@
 	Status : 0(Not End, White turn), 1(Not End, Black turn), 2(End, White Win), 3(End, Black Win)
 	Object : Dead(0) and Alive(1)
 	ObjectIdx : index in object array
-	Object Array : [32], each has
+	Object Array : [32], each has a ClssicChessObject
+	History :
 	8	R	K	B	Q	KK	B	K	R
 	7	P	P	P	P	P	P	P	P
 	6
@@ -55,11 +56,11 @@ public:
 
 class ClassicChessObject {
 protected:
-	int index;
+	const int index;
 	ClassicChessObjectStatus status;
-	ClassicChessPlayerType player;
 	ClassicChessObjectType type;
-	ClassicChessPosition position;
+	const ClassicChessPlayerType player;
+	const ClassicChessPosition position;
 };
 
 class ClassicChessMove : public ChessMove{
@@ -67,11 +68,13 @@ protected:
 	ClassicChessObject object;
 	ClassicChessPosition dest;
 public:
-	bool isValid() const;
+	bool isValid() const;	
 };
 
 class ClassicChess : public Chess{
-protected:
-
+private:
+	ClassicChessObject objects[32];
+	std::vector<ClassicChessMove> history;
 public:
+	ClassicChess();
 };
