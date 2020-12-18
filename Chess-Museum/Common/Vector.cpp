@@ -18,6 +18,12 @@ Vector2f::Vector2f(const Vector2f & that)
 	this->y = that.getY();
 }
 
+Vector2f::Vector2f(const Vector2i & that)
+{
+	this->x = (float)(that.getX());
+	this->y = (float)(that.getY());
+}
+
 Vector2f::~Vector2f()
 {
 }
@@ -166,3 +172,183 @@ void Vector2f::output(const std::string &name) const
 	return;
 }
 
+Vector2i::Vector2i()
+{
+	this->x = 0;
+	this->y = 0;
+}
+
+Vector2i::Vector2i(const int & x, const int & y)
+{
+	this->x = x;
+	this->y = y;
+}
+
+Vector2i::Vector2i(const Vector2i & that)
+{
+	this->x = that.getX();
+	this->y = that.getY();
+}
+
+Vector2i::Vector2i(const Vector2f & that)
+{
+	this->x = floatRound(that.getX());
+	this->y = floatRound(that.getY());
+}
+
+Vector2i::~Vector2i()
+{
+}
+
+const int Vector2i::getX() const
+{
+	return this->x;
+}
+
+const int Vector2i::getY() const
+{
+	return this->y;
+}
+
+Vector2i & Vector2i::setX(const int & x)
+{
+	this->x = x;
+	return *this;
+}
+
+Vector2i & Vector2i::setY(const int & y)
+{
+	this->y = y;
+	return *this;
+}
+
+const float Vector2i::getAngle() const
+{
+	if (x == 0 && y == 0) return 0;
+	float angle = toDegree(acos(x / this->getLength()));
+	return y >= 0 ? angle : 360 - angle;
+}
+
+const float Vector2i::getLength() const
+{
+	return (float)sqrt(this->x * this->x + this->y * this->y);
+}
+
+Vector2i Vector2i::operator+(const Vector2i & that) const
+{
+	return Vector2i(this->x + that.getX(), this->y + that.getY());
+}
+
+Vector2i Vector2i::operator-(const Vector2i & that) const
+{
+	return Vector2i(this->x - that.getX(), this->y - that.getY());
+}
+
+Vector2i Vector2i::operator-() const
+{
+	return Vector2i(-this->x, -this->y);
+}
+
+Vector2i Vector2i::operator*(const int & that) const
+{
+	return Vector2i(this->x * that, this->y * that);
+}
+
+Vector2i Vector2i::operator/(const int & that) const
+{
+	return Vector2i(this->x / that, this->y / that);
+}
+
+bool Vector2i::operator==(const Vector2i & that) const
+{
+	return this->x == that.getX() && this->y == that.getY();
+}
+
+bool Vector2i::operator!=(const Vector2i & that) const
+{
+	return this->x != that.getX() || this->y != that.getY();
+}
+
+Vector2i & Vector2i::operator=(const Vector2i & that)
+{
+	this->x = that.getX();
+	this->y = that.getY();
+	return *this;
+}
+
+Vector2i & Vector2i::operator+=(const Vector2i & that)
+{
+	this->x += that.getX();
+	this->y += that.getY();
+	return *this;
+}
+
+Vector2i & Vector2i::operator-=(const Vector2i & that)
+{
+	this->x -= that.getX();
+	this->y -= that.getY();
+	return *this;
+}
+
+Vector2i & Vector2i::operator*=(const int & that)
+{
+	this->x *= that;
+	this->y *= that;
+	return *this;
+}
+
+Vector2i & Vector2i::operator/=(const int & that)
+{
+	this->x /= that;
+	this->y /= that;
+	return *this;
+}
+
+const int Vector2i::dot(const Vector2i & that) const
+{
+	return this->x * that.getX() + this->y * that.getY();
+}
+
+Vector2i & Vector2i::scale(const int & scaleX, const int & scaleY)
+{
+	this->x *= scaleX;
+	this->y *= scaleY;
+	return *this;
+}
+
+Vector2i & Vector2i::rotate(const int & angle)
+{
+	int smallAngle = angle % 360;
+	if (smallAngle == 180 || smallAngle == -180)
+	{
+		this->x = -this->x;
+		this->y = -this->y;
+		return *this;
+	}
+	if (smallAngle == 90 || smallAngle == -270)
+	{
+		smallAngle = this->x;
+		this->x = -this->y;
+		this->y = this->x;
+		return *this;
+	}
+	if (smallAngle == -90 || smallAngle == 270)
+	{
+		smallAngle = this->x;
+		this->x = this->y;
+		this->y = -this->x;
+		return *this;
+	}
+	return *this;
+}
+
+const float Vector2i::angle(const Vector2i & that) const
+{
+	return that.getAngle() - this->getAngle();
+}
+
+void Vector2i::output(const std::string & name) const
+{
+	std::cout << "Vector2i : " << name << "\t = ( " << this->x << " , " << this->y << " ),\t Length = " << this->getLength() << ",\t Angle = " << this->getAngle() << " degree.\n";
+	return;
+}

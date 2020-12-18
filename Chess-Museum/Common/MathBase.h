@@ -15,3 +15,7 @@ const float floatError = (float)1e-7;
 inline bool floatEqual(const float& x, const float& y) {
 	return (x - y <= floatError) && (y - x <= floatError);
 }
+
+inline int floatRound(const float& x) {
+	return (int)(x + 0.5);
+}

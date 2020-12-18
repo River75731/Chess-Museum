@@ -70,9 +70,9 @@ XX的数目 ： xxxCount
 
 XX的编号 ： xxxIdx (index)
 
-二维变量（坐标等）：xx2f, xx2i (float / int)
+二维变量（坐标等）：xx2f, xx2i (float / int), xx2d(不分类型)
 
-三维变量（坐标等）：xx3f, xx3i
+三维变量（坐标等）：xx3f, xx3i, xx3d
 
 
 
@@ -165,6 +165,8 @@ Vector + Position illegal!
 inArea : (xmin, ymin, xlength, ylength)
 
 inRange: (xmin, ymin, xmax, ymax)
+
+int 和 float 不能混用计算，如果需要混用需要显式调用类型转换
 
 #### Chess
 
