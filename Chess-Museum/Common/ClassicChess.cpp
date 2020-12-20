@@ -140,6 +140,17 @@ bool ClassicChessMove::isValid() const
 	return false;
 }
 
+ClassicChessPosition ClassicChess::toPosition(const int & index) const
+{
+	return ClassicChessPosition(index % 8 + 1, index / 8 + 1);
+}
+
+int ClassicChess::toIndex(const ClassicChessPosition & position) const
+{
+	return position.getY() * 8 + position.getX() - 9;
+}
+
 ClassicChess::ClassicChess()
 {
+
 }

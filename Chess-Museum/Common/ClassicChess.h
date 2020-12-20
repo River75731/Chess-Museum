@@ -115,11 +115,13 @@ public:
 class ClassicChess : public Chess{
 private:
 	ClassicChessStatus status;
-	std::array<int, 32> objects;		// store the object locations in array board
+	std::array<int, 32> objects;		// store the object locations in array board, -1 if dead
 	std::array<std::unique_ptr<ClassicChessObject>, 64> board;	// store the board
 	std::vector<std::unique_ptr<ClassicChessMove>> history; // chess history
 
-
+	// functions
+	ClassicChessPosition toPosition(const int& index) const; // index to position
+	int toIndex(const ClassicChessPosition& position) const; // position to index
 
 	void loadMsg(std::string address);
 	void saveMsg(std::string address);
@@ -127,8 +129,11 @@ private:
 	void execMove(std::unique_ptr<ChessMove> move) = 0;	// execute a move
 	bool isValidMove(std::unique_ptr<ChessMove> move) const = 0; // whether a move is valid (consider all objects)
 public:
+	// Constructors & Destructor
 	ClassicChess();
 	ClassicChess(std::string address);
+	~ClassicChess();
+	// functions to public
 	void tryUpgradePawn(const ClassicChessObjectType& type);	// upgrade a pawn after judging whether it's valid
-	void tryMove(const std::unique_ptr<ChessMove>& move);	// execute a move after judging whether it's valid
+	void tryMove(const std::unique_ptr<ClassicChessMove>& move);	// execute a move after judging whether it's valid
 };
