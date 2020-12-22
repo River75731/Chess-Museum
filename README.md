@@ -123,10 +123,11 @@ Layers :
 **TODO:**  添加材质板块
 
 1. 包含一个**静态物体**的信息，即不包含任何空间位置，只包含一个物体模型，包括物体的模型组成和材质、颜色等
-
 2. 所有静态物体均从ViewObject2d/ViewObject3d中继承并构造init和draw方法，这里**一定**是可以使用显示列表构造的（因为是静态的）。注释写清楚物体的起始位置和绘制的xyz轴及物体大小。
-
 3. Object一旦产生便不能修改，每个Object只能有一个实体，建议使用const成员 & static函数
+4. 禁止实例化ViewObject2d/ViewObject3d，更新后加入要求：不能在3dgroup中出现2dobject，不能在2dgroup中出现3dobject
+5. ViewObject2d 和 ViewObject3d的所有子类对象分开存在两个vector中，分别为object2d和object3d
+6. 子类创建时尽量仅将绘制函数公布public，即尽量保证public的函数均为const的（不改变任何成员），防止通过object2d进入并改变物体信息。
 
 #### ViewGroup
 
