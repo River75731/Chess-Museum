@@ -10,10 +10,13 @@
 	Board : x from 1 to 8 and y from 1 to 8
 	Type : Rook, Knight, Bishop, Queen, King, Pawn
 	Player : White(0) and Black(1)
-	Status : 0(Not End, White turn), 1(Not End, Black turn), 2(End, White Win), 3(End, Black Win)
-	Object : Dead(0) and Alive(1)
-	ObjectIdx : index in object array
-	Object Array : [32], each has a ClssicChessObject
+	Status : 0(Interrupt : Upgrade Pawn), 1(Not End, White turn), 2(Not End, Black turn), 
+			 3(Not End, White Being checked), 4(Not End, Black Being checked), 
+			 5(End, White Win), 6(End, Black Win)
+	ObjectStatus : Dead(0) and Alive(1)
+	Objects : index in board array
+	Board Array : [64], each has a unique_ptr<ClssicChessObject>, can be nullptr
+	Move Type : Passive(0) and Active(1) NOTE: Passive for castling rooks, or being killed
 	History :
 	8	R	K	B	Q	KK	B	K	R
 	7	P	P	P	P	P	P	P	P   BLACK
@@ -45,6 +48,8 @@ enum ClassicChessStatus {
 	CLASSICCHESS_INTERRUPT_UPGRADEPAWN,
 	CLASSICCHESS_WHITE_TURN,
 	CLASSICCHESS_BLACK_TURN,
+	CLASSICCHESS_WHITE_CHECK,	// white being checked
+	CLASSICCHESS_BLACK_CHECK,	// black being checked
 	CLASSICCHESS_WHITE_WIN,
 	CLASSICCHESS_BLACK_WIN
 };
@@ -52,6 +57,11 @@ enum ClassicChessStatus {
 enum ClassicChessObjectStatus {
 	CLASSICCHESS_DEAD,
 	CLASSICCHESS_ALIVE
+};
+
+enum ClassicChessMoveType {
+	CLASSICCHESS_PASSIVEMOVE,
+	CLASSICCHESS_ACTIVEMOVE
 };
 
 class ClassicChessPosition : public Position2i, public ChessPosition{
@@ -89,15 +99,17 @@ class ClassicChessMove : public ChessMove{
 private:
 	const ClassicChessObject object;
 	const ClassicChessPosition dest;
+	const ClassicChessMoveType type;
 public:
 	// Constructor & Destructor
-	ClassicChessMove(const ClassicChessObject& object, const ClassicChessPosition& dest);
-	ClassicChessMove(const ClassicChessObject& object, const int& x, const int& y);
+	ClassicChessMove(const ClassicChessObject& object, const ClassicChessPosition& dest, const ClassicChessMoveType& type = CLASSICCHESS_ACTIVEMOVE);
+	ClassicChessMove(const ClassicChessObject& object, const int& x, const int& y, const ClassicChessMoveType& type = CLASSICCHESS_ACTIVEMOVE);
 	ClassicChessMove(const ClassicChessMove& that);
 	~ClassicChessMove();
 	// Get Method
 	const ClassicChessObject getObject() const;
 	const ClassicChessPosition getDest() const;
+	const ClassicChessMoveType getType() const;
 	/*
 		Valid Move :
 		1 > Both Position of Object and Destination should be valid and shouldn't be the same
@@ -107,7 +119,7 @@ public:
 		5 > KNIGHT goes straight forward for 2 steps and horizontally one step
 		6 > BISHOP goes horizontally n steps and vertically n steps
 		7 > QUEEN goes for BISHOP unions ROOK
-		8 > KING goes one step for any direction
+		8 > KING goes one step for any direction , two steps for castling
 	*/
 	bool isValid() const;	
 };

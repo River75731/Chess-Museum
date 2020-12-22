@@ -59,15 +59,15 @@ const ClassicChessPosition ClassicChessObject::getPosition() const
 	return this->position;
 }
 
-ClassicChessMove::ClassicChessMove(const ClassicChessObject & object, const ClassicChessPosition & dest) : object(object), dest(dest)
+ClassicChessMove::ClassicChessMove(const ClassicChessObject & object, const ClassicChessPosition & dest, const ClassicChessMoveType& type) : object(object), dest(dest), type(type)
 {
 }
 
-ClassicChessMove::ClassicChessMove(const ClassicChessObject & object, const int& x, const int& y) : object(object), dest(x, y)
+ClassicChessMove::ClassicChessMove(const ClassicChessObject & object, const int& x, const int& y, const ClassicChessMoveType& type) : object(object), dest(x, y), type(type)
 {
 }
 
-ClassicChessMove::ClassicChessMove(const ClassicChessMove & that) : object(that.getObject()), dest(that.getDest())
+ClassicChessMove::ClassicChessMove(const ClassicChessMove & that) : object(that.getObject()), dest(that.getDest()), type(that.getType())
 {
 }
 
@@ -83,6 +83,11 @@ const ClassicChessObject ClassicChessMove::getObject() const
 const ClassicChessPosition ClassicChessMove::getDest() const
 {
 	return dest;
+}
+
+const ClassicChessMoveType ClassicChessMove::getType() const
+{
+	return type;
 }
 
 bool ClassicChessMove::isValid() const
@@ -134,6 +139,9 @@ bool ClassicChessMove::isValid() const
 			break;
 		case CLASSICCHESS_KING:
 			if (Position2i(delta).inRange(-1, -1, 1, 1)) return true;
+			else if ((source == Position2i(5, 1) && object.getPlayer() == CLASSICCHESS_WHITE) ||
+				(source == Position2i(5, 8) && object.getPlayer() == CLASSICCHESS_BLACK))
+				if (delta == Vector2i(2, 0) || delta == Vector2i(-2, 0)) return true; // castling
 			else return false;
 			break;
 	}
