@@ -245,7 +245,7 @@ void keyboard(unsigned char key, int x, int y)
 
 int main(int argc, char *argv[])
 {
-    string filename("./obj/deer.obj");
+    string filename(argv[1]);
     tm = new TriangleMesh(filename);
     cout << "TriangleMesh establish success" << endl;
 
@@ -259,7 +259,7 @@ int main(int argc, char *argv[])
     glEnable(GL_DEPTH_TEST);
     // glEnable(GL_COLOR_MATERIAL);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-    glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+    // glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
     glEnable(GL_NORMALIZE);
     glShadeModel(GL_SMOOTH);
 

@@ -64,24 +64,7 @@ class TriangleMesh
 {
 public:
     TriangleMesh(string &filename);
-    void draw()
-    {
-        glPushMatrix();
-        glBegin(GL_TRIANGLES);
-        for (vector<Triangle>::iterator iter = triangles.begin(); iter != triangles.end(); iter++)
-        {
-            Vec3f a, b, c;
-            iter->getV(a, b, c);
-            Vec3f normal;
-            Vec3f::Cross3(normal, a - b, b - c);
-            glNormal3f(normal.x(), normal.y(), normal.z());
-            glVertex3f(a.x(), a.y(), a.z());
-            glVertex3f(b.x(), b.y(), b.z());
-            glVertex3f(c.x(), c.y(), c.z());
-        }
-        glEnd();
-        glPopMatrix();
-    }
+    void draw();
 
 private:
     vector<Triangle> triangles;

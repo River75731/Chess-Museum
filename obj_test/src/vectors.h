@@ -4,12 +4,11 @@
 //
 // originally implemented by Justin Legakis
 //
-
-#include <iostream>
-using namespace std;
-
 #include <assert.h>
+#include <fstream>
+#include <iostream>
 #include <math.h>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -725,16 +724,22 @@ private:
     float data[4];
 };
 
-inline ostream &operator<<(ostream &os, const Vec3f &v)
+inline std::ostream &operator<<(std::ostream &os, const Vec3f &v)
 {
     os << "Vec3f <" << v.x() << ", " << v.y() << ", " << v.z() << ">";
     return os;
 }
 
-inline istream &operator>>(istream &is, Vec3f &v)
+inline std::istream &operator>>(std::istream &is, Vec3f &v)
 {
-    float vx, vy, vz;
-    is >> vx >> vy >> vz;
+    float vx = 0, vy = 0, vz = 0;
+    std::string line;
+    std::getline(is, line);
+    std::istringstream iss(line);
+    iss >> vx;
+    iss >> vy;
+    if (!iss.eof())
+        iss >> vz;
     v.Set(vx, vy, vz);
     return is;
 }
