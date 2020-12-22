@@ -84,6 +84,27 @@
     <ClInclude Include="Common\MathBase.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Common\Matrix.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ObjParser.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Triangle.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\vectors.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TEST\TEST_ObjImport.h">
+      <Filter>头文件\TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\Triangle.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="View\Draw.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewModel\ViewObject.cpp">
@@ -107,8 +128,20 @@
     <ClCompile Include="Common\Chess.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="ViewModel\Triangle.cpp">
+      <Filter>源文件\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Matrix.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ObjParser.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Triangle.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="View\Draw.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

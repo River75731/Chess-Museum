@@ -15,7 +15,7 @@ Vec3f up(0.0, 1.0, 0.0);
 int mouseButton, mouseX, mouseY;
 float angle_radians = 0.2;
 
-TriangleMesh *tm;
+std::vector<TriangleMesh> tm;
 
 void dollyCamera(float dist)
 {
@@ -207,7 +207,10 @@ void display()
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, gold);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shiness);
 
-    tm->draw();
+    for (std::vector<TriangleMesh>::iterator iter = tm.begin(); iter != tm.end(); iter++)
+    {
+        iter->draw();
+    }
     // glutSolidSphere(10.0, 32, 32);
 
     glutSwapBuffers();
@@ -246,7 +249,8 @@ void keyboard(unsigned char key, int x, int y)
 int main(int argc, char *argv[])
 {
     string filename(argv[1]);
-    tm = new TriangleMesh(filename);
+    // std::vector<TriangleMesh> t = TriangleMesh::parseFile(filename);
+    tm = TriangleMesh::parseFile(filename);
     cout << "TriangleMesh establish success" << endl;
 
     glutInit(&argc, argv);

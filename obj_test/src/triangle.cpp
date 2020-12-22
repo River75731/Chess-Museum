@@ -4,10 +4,21 @@
 #include <string>
 #include <vector>
 
-#define MAX 100
-#define MAX_LINE 200
+#define OBJ_MAX_BUF 100
+#define OBJ_MAX_LINE 200
 
-TriangleMesh::TriangleMesh(string &filename)
+TriangleMesh::TriangleMesh(std::string name)
+{
+    // TODO: init ViewObject
+}
+
+TriangleMesh::TriangleMesh(std::string name, const std::vector<Triangle> &tris)
+{
+    // TODO: init ViewObject
+    triangles = tris;
+}
+
+std::vector<TriangleMesh> TriangleMesh::parseFile(std::string filename)
 {
     fstream in(filename, ios::in);
     if (!in.is_open())
@@ -16,19 +27,37 @@ TriangleMesh::TriangleMesh(string &filename)
         exit(0);
     }
 
-    string sbuf;
-    char buf[MAX];
+    std::string sbuf;
+    std::string groupName;
+    char buf[OBJ_MAX_BUF];
     char c;
-    vector<Vec3f> v;
-    vector<Vec3f> vt;
-    vector<Vec3f> vn;
+    std::vector<Vec3f> v;
+    std::vector<Vec3f> vt;
+    std::vector<Vec3f> vn;
+    std::vector<Triangle> triangles;
+    std::vector<TriangleMesh> triangleMeshs;
 
     int cnt = 0;
 
     while (!in.eof())
     {
         in >> sbuf;
-        if (sbuf == "v")
+        if (sbuf == "g")
+        {
+            /* if not first group, save the last one */
+            if (triangles.size() != 0)
+            {
+                TriangleMesh mesh(groupName, triangles);
+                triangleMeshs.emplace_back(mesh);
+                /* clear temp vectors */
+                v.clear();
+                vt.clear();
+                vn.clear();
+                triangles.clear();
+            }
+            in >> groupName;
+        }
+        else if (sbuf == "v")
         {
             Vec3f new_v;
             in >> new_v;
@@ -54,17 +83,17 @@ TriangleMesh::TriangleMesh(string &filename)
             for (int i = 0; i < 3; i++)
             {
                 in >> n[3 * i];
-                n[3 * i] = n[3 * i] < 0 ? v.size() + n[3 * i] + 1 : n[3 * i];
+                n[3 * i] = n[3 * i] < 0 ? v.size() + n[3 * i] + 1 : n[3 * i]; // number of v/vt/vn may be negative
                 in.get(c);
                 if (c != '/')
                     continue;
                 in >> n[3 * i + 1];
-                n[3 * i + 1] = n[3 * i + 1] < 0 ? vt.size() + n[3 * i + 1] + 1 : n[3 * i + 1];
+                n[3 * i + 1] = n[3 * i + 1] < 0 ? vt.size() + n[3 * i + 1] + 1 : n[3 * i + 1]; // number of v/vt/vn may be negative
                 in.get(c);
                 if (c != '/')
                     continue;
                 in >> n[3 * i + 2];
-                n[3 * i + 2] = n[3 * i + 2] < 0 ? vn.size() + n[3 * i + 2] + 1 : n[3 * i + 2];
+                n[3 * i + 2] = n[3 * i + 2] < 0 ? vn.size() + n[3 * i + 2] + 1 : n[3 * i + 2]; // number of v/vt/vn may be negative
             }
             if (n[0] && n[3] && n[6])
                 new_triangle.setV(v[n[0] - 1], v[n[3] - 1], v[n[6] - 1]);
@@ -76,32 +105,43 @@ TriangleMesh::TriangleMesh(string &filename)
         }
         else
         {
-            in.getline(buf, MAX_LINE);
+            in.getline(buf, OBJ_MAX_LINE);
         }
         sbuf = "\0";
     }
+    TriangleMesh mesh(groupName, triangles);
+    triangleMeshs.emplace_back(mesh);
+
     in.close();
+
+    return triangleMeshs;
 }
 
 void TriangleMesh::draw()
 {
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glBegin(GL_TRIANGLES);
-    for (vector<Triangle>::iterator iter = triangles.begin(); iter != triangles.end(); iter++)
+    for (std::vector<Triangle>::iterator iter = triangles.begin(); iter != triangles.end(); iter++)
     {
-        Vec3f a, b, c;
-        Vec3f n[3];
-        iter->getV(a, b, c);
-        iter->getN(n[0], n[1], n[2]);
-        Vec3f normal;
-        Vec3f::Cross3(normal, a - b, b - c);
-        // glNormal3f(normal.x(), normal.y(), normal.z());
-        glNormal3f(n[0].x(), n[0].y(), n[0].z());
-        glVertex3f(a.x(), a.y(), a.z());
-        glNormal3f(n[1].x(), n[1].y(), n[1].z());
-        glVertex3f(b.x(), b.y(), b.z());
-        glNormal3f(n[2].x(), n[2].y(), n[2].z());
-        glVertex3f(c.x(), c.y(), c.z());
+        if (iter->getN()[0].Length() || iter->getN()[1].Length() || iter->getN()[2].Length())
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                glNormal3f(iter->getN()[i].x(), iter->getN()[i].y(), iter->getN()[i].z());
+                glVertex3f(iter->getV()[i].x(), iter->getV()[i].y(), iter->getV()[i].z());
+            }
+        }
+        else
+        {
+            Vec3f normal;
+            Vec3f::Cross3(normal, iter->getV()[0] - iter->getV()[1], iter->getV()[1] - iter->getV()[2]);
+            glNormal3f(normal.x(), normal.y(), normal.z());
+            for (int i = 0; i < 3; i++)
+            {
+                glVertex3f(iter->getV()[i].x(), iter->getV()[i].y(), iter->getV()[i].z());
+            }
+        }
     }
     glEnd();
     glPopMatrix();

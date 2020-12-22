@@ -123,26 +123,37 @@
     <ClInclude Include="Common\Chess.h" />
     <ClInclude Include="Common\ClassicChess.h" />
     <ClInclude Include="Common\Common.h" />
+    <ClInclude Include="Common\Matrix.h" />
+    <ClInclude Include="Common\ObjParser.h" />
     <ClInclude Include="Common\Position.h" />
+    <ClInclude Include="Common\Triangle.h" />
     <ClInclude Include="Common\Vector.h" />
+    <ClInclude Include="Common\vectors.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="TEST\TEST.h" />
+    <ClInclude Include="TEST\TEST_ObjImport.h" />
     <ClInclude Include="TEST\TEST_VectorPosition.h" />
+    <ClInclude Include="ViewModel\Triangle.h" />
     <ClInclude Include="ViewModel\ViewGroup.h" />
     <ClInclude Include="ViewModel\ViewModel.h" />
     <ClInclude Include="ViewModel\ViewObject.h" />
     <ClInclude Include="ViewModel\ViewScene.h" />
+    <ClInclude Include="View\Draw.h" />
     <ClInclude Include="View\View.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Chess.cpp" />
     <ClCompile Include="Common\ClassicChess.cpp" />
+    <ClCompile Include="Common\Matrix.cpp" />
+    <ClCompile Include="Common\ObjParser.cpp" />
     <ClCompile Include="Common\Position.cpp" />
+    <ClCompile Include="Common\Triangle.cpp" />
     <ClCompile Include="Common\Vector.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ViewModel\Triangle.cpp" />
     <ClCompile Include="ViewModel\ViewGroup.cpp" />
     <ClCompile Include="ViewModel\ViewObject.cpp" />
     <ClCompile Include="ViewModel\ViewScene.cpp" />
+    <ClCompile Include="View\Draw.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
