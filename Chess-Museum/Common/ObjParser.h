@@ -5,7 +5,7 @@
 class ObjParser
 {
 public:
-    std::vector<TriangleMesh> parseFile(std::string filename);
+    static std::vector<TriangleMesh> parseFile(std::string filename);
 
 private:
     /* !! NEVER INSTANTIATE ObjParser !! */
