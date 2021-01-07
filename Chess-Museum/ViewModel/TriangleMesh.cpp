@@ -1,13 +1,9 @@
 #include "TriangleMesh.h"
-#include "../View/Draw.h"
-#include "../View/List.h"
 #include <fstream>
 #include <string>
 #include <vector>
 
-TriangleMesh::TriangleMesh(std::string name) : ViewObject3d(name) {}
-
-TriangleMesh::TriangleMesh(std::string name, const std::vector<Triangle> &tris) : ViewObject3d(name)
+TriangleMesh::TriangleMesh(const std::vector<Triangle> &tris)
 {
     triangles = tris;
 }
@@ -17,27 +13,15 @@ const std::vector<Triangle> &TriangleMesh::getTriangles() const
     return triangles;
 }
 
-int TriangleMesh::getListNum() const
-{
-    return listNum;
-}
-
-void TriangleMesh::setListNum(int n)
-{
-    listNum = n;
-}
-
-void TriangleMesh::add(Triangle t)
+void TriangleMesh::add(Triangle &t)
 {
     triangles.emplace_back(t);
 }
 
-void TriangleMesh::init()
-{
-    regObject(*this);
-}
-
 void TriangleMesh::draw() const
 {
-    callObject(*this);
+    for (std::vector<Triangle>::const_iterator iter = triangles.begin(); iter != triangles.end(); iter++)
+    {
+        iter->draw();
+    }
 }
