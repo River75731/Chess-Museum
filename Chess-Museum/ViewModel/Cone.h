@@ -7,10 +7,7 @@
 class Cone : public ViewObject3d
 {
 public:
-    Cone(Vec3f center, Vec3f apex, float radius);
+    Cone();
     virtual void draw() const;
-
 private:
-    Vec3f center, apex;
-    float radius;
 };
