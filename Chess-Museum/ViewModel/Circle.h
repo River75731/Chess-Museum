@@ -6,11 +6,8 @@
 class Circle : public ViewObject3d
 {
 public:
-    Circle(Vec3f center, Vec3f normal, float radius);
-
+    Circle();
     virtual void draw() const;
 
 public:
-    Vec3f center, normal;
-    float radius;
 };

@@ -4,15 +4,13 @@
 #include <vector>
 #include "ViewObject.h"
 
-/*
-The order of the vertices is four on the bottom surface and the corresponding four on top surface
-*/
+/* Centrosymmetric Prism */
 class Prism : public ViewObject3d
 {
 public:
-    Prism(std::vector<Vec3f> &vertices);
+    Prism(int a);
     virtual void draw() const;
 
 private:
-    std::array<Vec3f, 8> v;
+    int a; // number of edges
 };

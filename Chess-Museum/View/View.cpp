@@ -1,4 +1,7 @@
 #include "View.h"
+#include "../Common/ObjParser.h"
+#include "ViewModel.h"
+#include <vector>
 
 void View::Rotate(float angle, Vec3f axis)
 {
@@ -17,7 +20,7 @@ void View::Translate(Vec3f direction)
 
 void View::setList()
 {
-	glNewList(Circle, GL_COMPILE);
+	glNewList(CIRCLE, GL_COMPILE);
 	glBegin(GL_POLYGON);
 	int i = 0;
 	for (i = 0; i <= 360; i++)
@@ -29,86 +32,110 @@ void View::setList()
 	glEnd();
 	glEndList();
 
-	glNewList(Cone, GL_COMPILE);
+	glNewList(CONE, GL_COMPILE);
 	glutSolidCone(1, 1, 32, 32);
 	glEndList();
 
-	glNewList(Cube, GL_COMPILE);
+	glNewList(CUBE, GL_COMPILE);
 	glutSolidCube(1);
 	glEndList();
 
-	glNewList(Cylinder, GL_COMPILE);
-	for (int i = 0; i <= 360; i++)
+	glNewList(CYLINDER, GL_COMPILE);
+	for (int i = 0; i < 360; i++)
 	{
 		float p = i * PI / 180;
 		float q = (i + 1) * PI / 180;
 
 		glBegin(GL_TRIANGLES);
+		glNormal3f(0, -1, 0);
 		glVertex3f(0, 0, 0);
-		glVertex3f(sin(p), 0.0f, cos(p));
-		glVertex3f(sin(q), 0.0f, cos(q));
+		glVertex3f(sin(p), 0, cos(p));
+		glVertex3f(sin(q), 0, cos(q));
+		glNormal3f(0, 1, 0);
 		glVertex3f(0, 1, 0);
 		glVertex3f(sin(p), 1, cos(p));
 		glVertex3f(sin(q), 1, cos(q));
 		glEnd();
 
 		glBegin(GL_POLYGON);
-		glVertex3f(sin(p), 0.0f, cos(p));
-		glVertex3f(sin(q), 0.0f, cos(q));
+		glNormal3f(sin(p), 0, cos(p));
+		glVertex3f(sin(p), 0, cos(p));
+		glNormal3f(sin(q), 0, cos(q));
+		glVertex3f(sin(q), 0, cos(q));
+		glNormal3f(sin(q), 0, cos(q));
 		glVertex3f(sin(q), 1, cos(q));
+		glNormal3f(sin(p), 0, cos(p));
 		glVertex3f(sin(p), 1, cos(p));
 		glEnd();
 	}
 	glEndList();
 
-	glNewList(Prism, GL_COMPILE);
-	glutSolidCube(1);
+	glNewList(PRISM3, GL_COMPILE);
+	for (int i = 0; i < 360; i += 120)
+	{
+		float p = i * PI / 180;
+		float q = (i + 1) * PI / 180;
+
+		glBegin(GL_TRIANGLES);
+		glNormal3f(0, -1, 0);
+		glVertex3f(0, 0, 0);
+		glVertex3f(sin(p), 0, cos(p));
+		glVertex3f(sin(q), 0, cos(q));
+		glNormal3f(0, 1, 0);
+		glVertex3f(0, 1, 0);
+		glVertex3f(sin(p), 1, cos(p));
+		glVertex3f(sin(q), 1, cos(q));
+		glEnd();
+
+		glBegin(GL_POLYGON);
+		glNormal3f(sin(p), 0, cos(p));
+		glVertex3f(sin(p), 0, cos(p));
+		glNormal3f(sin(q), 0, cos(q));
+		glVertex3f(sin(q), 0, cos(q));
+		glNormal3f(sin(q), 0, cos(q));
+		glVertex3f(sin(q), 1, cos(q));
+		glNormal3f(sin(p), 0, cos(p));
+		glVertex3f(sin(p), 1, cos(p));
+		glEnd();
+	}
 	glEndList();
 
-	glNewList(Sphere, GL_COMPILE);
+	glNewList(SPHERE, GL_COMPILE);
 	glutSolidSphere(1, 32, 32);
 	glEndList();
 
-	glNewList(Triangle, GL_COMPILE);
+	/* Set list for all .obj groups */
+	std::map<std::string, ViewObjectType> objMap;
+	objMap["PAWN"] = PAWN;
+	objMap["ROOK"] = ROOK;
+	objMap["KNIGHT"] = KNIGHT;
+	objMap["BISHOP"] = BISHOP;
+	objMap["QUEEN"] = QUEEN;
+	objMap["KING"] = KING;
 
-	glEndList();
+	std::vector<TriangleMesh> tm = ObjParser::parseFile();
+	for (std::vector<TriangleMesh>::iterator iter = tm.begin(); iter != tm.end(); iter++)
+	{
+		glNewList(objMap[iter->getObjName()], GL_COMPILE);
+		for (std::vector<Triangle>::const_iterator iter1 = iter->getTriangles().begin(); iter1 != iter->getTriangles().end(); iter1++)
+		{
+			iter1->draw();
+		}
+		glEndList();
+	}
 }
 
-void View::DrawModel(ViewObjectType Type, Vec3f direction, float angle, Vec3f axis, Vec3f times)
+void View::DrawModel(GLuint listN, Vec2f coordinate, Vec3f translate, float angle, Vec3f axis, Vec3f scale)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
-	Translate(direction);
+	Translate(Vec3f(coordinate.x(), coordinate.y(), 0));
+	Translate(translate);
 	Rotate(angle, axis);
-	Scale(times);
+	Scale(scale);
 
-	switch (Type)
-	{
-	case Circle:
-		glCallList(Circle);
-		break;
-	case Cone:
-		glCallList(Cone);
-		break;
-	case Cube:
-		glCallList(Cube);
-		break;
-	case Cylinder:
+	glCallList(listN);
 
-		break;
-	case Prism:
-
-		break;
-	case Sphere:
-
-		break;
-	case Triangle:
-
-		break;
-
-	default:
-		break;
-	}
 	glPopMatrix();
 }
