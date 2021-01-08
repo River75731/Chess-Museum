@@ -90,9 +90,6 @@
     <ClInclude Include="Common\ObjParser.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Triangle.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Common\vectors.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>

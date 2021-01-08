@@ -64,7 +64,7 @@ enum ClassicChessMoveType {
 	CLASSICCHESS_ACTIVEMOVE
 };
 
-class ClassicChessPosition : public Position2i, public ChessPosition{
+class ClassicChessPosition final : public Position2i, public ChessPosition{
 public:
 	ClassicChessPosition();
 	ClassicChessPosition(const int& x, const int& y);
@@ -74,7 +74,7 @@ public:
 };
 
 // const type ClassicChessObject : object cannot be modified
-class ClassicChessObject {	
+class ClassicChessObject final {	
 private:
 	const int index;
 	const ClassicChessObjectStatus status;
@@ -95,7 +95,7 @@ public:
 };
 
 // const type ClassicChessMove : move cannot be modified
-class ClassicChessMove : public ChessMove{
+class ClassicChessMove final : public ChessMove{
 private:
 	const ClassicChessObject object;
 	const ClassicChessPosition dest;
@@ -124,7 +124,7 @@ public:
 	bool isValid() const;	
 };
 
-class ClassicChess : public Chess{
+class ClassicChess final : public Chess{
 private:
 	ClassicChessStatus status;
 	std::array<int, 32> objects;		// store the object locations in array board, -1 if dead
@@ -134,18 +134,22 @@ private:
 	// functions
 	ClassicChessPosition toPosition(const int& index) const; // index to position
 	int toIndex(const ClassicChessPosition& position) const; // position to index
+	int toIndex(const Position2i& position) const;
+	bool validIndex(const Position2i& position, const Vector2i& delta) const;
 
 	void loadMsg(std::string address);
 	void saveMsg(std::string address);
 
-	void execMove(std::unique_ptr<ChessMove> move) = 0;	// execute a move
-	bool isValidMove(std::unique_ptr<ChessMove> move) const = 0; // whether a move is valid (consider all objects)
+	bool isChecked(const ClassicChessPlayerType player) const;
+	void execMove(std::unique_ptr<ChessMove> move);	// execute a move
+	bool isValidMove(std::unique_ptr<ChessMove> move) const; // whether a move is valid (consider all objects)
 public:
 	// Constructors & Destructor
 	ClassicChess();
 	ClassicChess(std::string address);
 	~ClassicChess();
 	// functions to public
+	void reset(std::string address);
 	void tryUpgradePawn(const ClassicChessObjectType& type);	// upgrade a pawn after judging whether it's valid
 	void tryMove(const std::unique_ptr<ClassicChessMove>& move);	// execute a move after judging whether it's valid
 };

@@ -126,7 +126,6 @@
     <ClInclude Include="Common\Matrix.h" />
     <ClInclude Include="Common\ObjParser.h" />
     <ClInclude Include="Common\Position.h" />
-    <ClInclude Include="Common\Triangle.h" />
     <ClInclude Include="Common\Vector.h" />
     <ClInclude Include="Common\vectors.h" />
     <ClInclude Include="Model\Model.h" />
