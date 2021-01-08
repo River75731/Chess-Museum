@@ -31,6 +31,7 @@ private:
 public:
 	// Constructor & Destructor
 	Exhibit(const ExhibitType& type = EXHIBIT_EMPTY, const unsigned int& textureNum = 0, const Vector3f& translate = Vector3f(), const float& rotate = 0, const Vector3f& scale = Vector3f(1, 1, 1), const bool& hasTable = true, const bool& isRotating = false);
+	Exhibit(const Exhibit& that);
 	~Exhibit();
 	// Get - Set Method
 	const ExhibitType getType() const;
