@@ -2,8 +2,9 @@
 #include "../Common/MathBase.h"
 #include "../Common/vectors.h"
 #include "gl/glut.h"
-#define BUFSIZE 512;
 #include <map>
+
+#define BUFSIZE 512
 
 enum ViewObjectType
 {
@@ -34,7 +35,7 @@ public:
 	static void KeyBoardCallBackFunc(unsigned char k, int x, int y);
 	static void KeyBoardUpCallBackFunc(unsigned char k, int x, int y);
 	static void Display();
-	static void Init(int argc, char* argv[]);
+	static void Init(int argc, char *argv[]);
 	static void Reshape(int w, int h);
 	static void Idle();
 	static void EyeMove();
@@ -43,12 +44,12 @@ public:
 	static bool Move;
 	static char Key;
 	static void PickMode(int x, int y);
-	static int du, OriX , OriY ;   //du���ӵ��x��ļн�
-	static float c ;    
-	static Vec3f EyeLocation ;
+	static int du, OriX, OriY; //du���ӵ��x��ļн�
+	static float c;
+	static Vec3f EyeLocation;
 	static Vec3f EyeDirection;
-	static Vec3f EyeUp ;
-	static Vec3f MoveIncrement ;
-	static float Pitch , Yaw ;//�����ǣ�ƫ����
+	static Vec3f EyeUp;
+	static Vec3f MoveIncrement;
+	static float Pitch, Yaw; //�����ǣ�ƫ����
 	static void DrawModel(GLuint listN, Vec2f coordinate, Vec3f translate, float angle, Vec3f axis, Vec3f scale);
 };

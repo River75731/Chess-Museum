@@ -3,17 +3,17 @@
 #include "../ViewModel/ViewModel.h"
 #include <vector>
 
-
 bool View::ButtonDown = false;
 bool View::Move = false;
-int View::du = 90, View::OriX = -1, View::OriY = -1;   
-float View::c = PI / 180.0;    //���ȺͽǶ�ת������
+int View::du = 90, View::OriX = -1, View::OriY = -1;
+float View::c = PI / 180.0; //??????????????
 Vec3f View::EyeLocation = Vec3f(0, 0, 2.5);
 Vec3f View::EyeDirection = Vec3f(0, 0, -1);
 Vec3f View::EyeUp = Vec3f(0, 1, 0);
 Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
-float View::Pitch = 0, View::Yaw = 270;//�����ǣ�ƫ����
+float View::Pitch = 0, View::Yaw = 270; //????????????
 char View::Key = ' ';
+
 void View::Rotate(float angle, Vec3f axis)
 {
 	glRotatef(angle, axis.x(), axis.y(), axis.z());
@@ -148,30 +148,6 @@ void View::DrawModel(GLuint listN, Vec2f coordinate, Vec3f translate, float angl
 
 	glCallList(listN);
 
-	switch (Type)
-	{
-	case Circle:
-		glCallList(Circle);
-		break;
-	case Cone:
-		glCallList(Cone);
-		break;
-	case Cube:
-		glCallList(Cube);
-		break;
-	case Cylinder:
-		break;
-	case Prism:
-
-		break;
-	case Sphere:
-
-		break;
-
-
-	default:
-		break;
-	}
 	glPopMatrix();
 }
 
@@ -186,7 +162,7 @@ void View::Mouse(int button, int state, int x, int y)
 
 void View::onMouseMove(int x, int y)
 {
-	
+
 	if (ButtonDown)
 	{
 		Pitch -= (y - OriY) * 0.1;
@@ -210,8 +186,8 @@ void View::SetEyeLocation()
 {
 	glLoadIdentity();
 	gluLookAt(EyeLocation[0], EyeLocation[1], EyeLocation[2],
-		EyeLocation[0] + EyeDirection[0], EyeLocation[1] + EyeDirection[1], EyeLocation[2] + EyeDirection[2],
-		EyeUp[0], EyeUp[1], EyeUp[2]);
+			  EyeLocation[0] + EyeDirection[0], EyeLocation[1] + EyeDirection[1], EyeLocation[2] + EyeDirection[2],
+			  EyeUp[0], EyeUp[1], EyeUp[2]);
 }
 
 void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
@@ -229,22 +205,22 @@ void View::EyeMove()
 	switch (Key)
 	{
 	case 'w':
-		EyeLocation += 0.01*EyeDirection;
+		EyeLocation += 0.01 * EyeDirection;
 		break;
 	case 's':
-		EyeLocation -= 0.01*EyeDirection;
+		EyeLocation -= 0.01 * EyeDirection;
 		break;
 	case 'a':
-		EyeLocation += 0.01*MoveIncrement;
+		EyeLocation += 0.01 * MoveIncrement;
 		break;
 	case 'd':
-		EyeLocation -= 0.01*MoveIncrement;
+		EyeLocation -= 0.01 * MoveIncrement;
 		break;
 	case 'z':
-		EyeLocation -= 0.01*EyeUp;
+		EyeLocation -= 0.01 * EyeUp;
 		break;
 	case 'c':
-		EyeLocation += 0.1*EyeUp;
+		EyeLocation += 0.1 * EyeUp;
 		break;
 	case 'q':
 		exit(0);
@@ -253,24 +229,26 @@ void View::EyeMove()
 		break;
 	}
 }
+
 void View::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0, 0, 0, 1);
 	SetEyeLocation();
-	if(Move)
-	EyeMove();
+	if (Move)
+		EyeMove();
 	glEnable(GL_LIGHTING);
-	GLfloat gray[] = { 0.4, 0.4, 0.4, 1.0 };
-	GLfloat light_pos[] = { 10, 10, 10, 0 };
+	GLfloat gray[] = {0.4, 0.4, 0.4, 1.0};
+	GLfloat light_pos[] = {10, 10, 10, 0};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
 	glEnable(GL_LIGHT0);
-	DrawModel(Cube, 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2), Vec3f(4, 0, 0));
+	DrawModel(CUBE, Vec2f(), Vec3f(4, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2));
 	glutSolidCube(1.0f);
 	glutSwapBuffers();
 }
+
 void View::PickMode(int x, int y)
 {
 	GLuint selectBuf[BUFSIZE];
@@ -288,7 +266,7 @@ void View::PickMode(int x, int y)
 	gluPerspective(45, 1, 0.01, 1000.0);
 	glMatrixMode(GL_MODELVIEW);
 	glInitNames();
-	
+
 	int hits;
 
 	// restoring the original projection matrix
@@ -311,11 +289,13 @@ void View::PickMode(int x, int y)
 		ptrNames = ptr + 3;
 		minZ = 0xffffffff;
 
-		for (i = 0; i < hits; i++) {
+		for (i = 0; i < hits; i++)
+		{
 			names = *ptr;
 			ptr++;
 
-			if (*ptr < minZ) {
+			if (*ptr < minZ)
+			{
 				numberOfNames = names;
 				minZ = *ptr;
 				ptrNames = ptr + 2;
@@ -326,45 +306,45 @@ void View::PickMode(int x, int y)
 
 		printf("The closest hit names are ");
 		ptr = ptrNames;
-		for (j = 0; j < numberOfNames; j++, ptr++) {
+		for (j = 0; j < numberOfNames; j++, ptr++)
+		{
 			printf("%d ", *ptr);
 		}
 		printf("\n");
 
 		assert(numberOfNames == 3);
-
 	}
 }
 void View::Reshape(int w, int h)
 {
 
-	glViewport(0, 0, w, h);    //��ͼ;1��2Ϊ�ӿڵ����½�;3��4Ϊ�ӿڵĿ��Ⱥ͸߶�
-	glMatrixMode(GL_PROJECTION);    //����ǰ����ָ��ΪͶӰ����
+	glViewport(0, 0, w, h);		 //???;1??2??????????;3??4???????????
+	glMatrixMode(GL_PROJECTION); //???????????????????
 	glLoadIdentity();
 	gluPerspective(45.0, (float)w / h, 0.01, 1000.0);
-	glMatrixMode(GL_MODELVIEW);     //��ģ���Ӿ������ջӦ�����ľ������.
+	glMatrixMode(GL_MODELVIEW); //???????????????????????????.
 }
 void View::Idle()
 {
 	glutPostRedisplay();
 }
-void View::Init(int argc, char* argv[])
+void View::Init(int argc, char *argv[])
 {
-	glutInit(&argc, argv);                                          //��ʼ��glut��
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);      //���ó�ʼ��ʾģʽ
+	glutInit(&argc, argv);									   //?????glut??
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA); //???��???????
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("***************");
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
 	setList();
-	glutReshapeFunc(Reshape);       //
-	glutDisplayFunc(Display);           //
+	glutReshapeFunc(Reshape); //
+	glutDisplayFunc(Display); //
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyBoardCallBackFunc);
 	glutKeyboardUpFunc(KeyBoardUpCallBackFunc);
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(onMouseMove);
-	glutMainLoop();//enters the GLUT event processing loop.
+	glutMainLoop(); //enters the GLUT event processing loop.
 }
