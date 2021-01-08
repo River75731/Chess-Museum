@@ -69,12 +69,6 @@
     <ClInclude Include="Model\Model.h">
       <Filter>头文件\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Common\ClassicChess.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Chess.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
     <ClInclude Include="TEST\TEST.h">
       <Filter>头文件\TEST</Filter>
     </ClInclude>
@@ -99,8 +93,11 @@
     <ClInclude Include="ViewModel\Triangle.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
-    <ClInclude Include="View\Draw.h">
-      <Filter>头文件\View</Filter>
+    <ClInclude Include="Model\ClassicChess.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Exhibit.h">
+      <Filter>头文件\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,12 +116,6 @@
     <ClCompile Include="Common\Vector.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Common\ClassicChess.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Chess.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
     <ClCompile Include="ViewModel\Triangle.cpp">
       <Filter>源文件\ViewModel</Filter>
     </ClCompile>
@@ -137,8 +128,11 @@
     <ClCompile Include="Common\Triangle.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="View\Draw.cpp">
-      <Filter>源文件\View</Filter>
+    <ClCompile Include="Model\ClassicChess.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>源文件\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

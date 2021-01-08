@@ -11,8 +11,3 @@
 #include "Vector.h"
 #include "MathBase.h"
 
-// Chess classes
-
-#include "Chess.h"
-#include "ClassicChess.h"
-
