@@ -1,6 +1,6 @@
 #include "ObjParser.h"
 #include "../ViewModel/TriangleMesh.h"
-#include "../Common/Triangle.h"
+#include "../ViewModel/Triangle.h"
 
 #define OBJ_MAX_BUF 100
 #define OBJ_MAX_LINE 200
@@ -34,7 +34,7 @@ std::vector<TriangleMesh> ObjParser::parseFile(std::string filename)
             /* if not first group, save the last one */
             if (triangles.size() != 0)
             {
-                TriangleMesh mesh(groupName, triangles);
+                TriangleMesh mesh(triangles);
                 triangleMeshs.emplace_back(mesh);
                 /* clear temp vectors */
                 v.clear();
@@ -96,7 +96,7 @@ std::vector<TriangleMesh> ObjParser::parseFile(std::string filename)
         }
         sbuf = "\0";
     }
-    TriangleMesh mesh(groupName, triangles);
+    TriangleMesh mesh(triangles);
     triangleMeshs.emplace_back(mesh);
     
     in.close();
