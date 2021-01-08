@@ -17,6 +17,17 @@ Exhibit::Exhibit(const ExhibitType & type, const unsigned int & textureNum, cons
 	this->isRotating = isRotating;
 }
 
+Exhibit::Exhibit(const Exhibit & that)
+{
+	this->type = that.getType();
+	this->textureNum = that.getTextureNum();
+	this->translate = that.getTranslate();
+	this->rotate = that.getRotate();
+	this->scale = that.getScale();
+	this->hasTable = that.getHasTable();
+	this->isRotating = that.getIsRotating();
+}
+
 Exhibit::~Exhibit()
 {
 }

@@ -129,6 +129,7 @@
     <ClInclude Include="Model\Chess.h" />
     <ClInclude Include="Model\ClassicChess.h" />
     <ClInclude Include="Model\Exhibit.h" />
+    <ClInclude Include="Model\Map.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="TEST\TEST.h" />
     <ClInclude Include="TEST\TEST_ObjImport.h" />
@@ -146,6 +147,11 @@
     <ClCompile Include="Model\ClassicChess.cpp" />
     <ClCompile Include="Model\Exhibit.cpp" />
     <ClCompile Include="View\View.cpp" />
+    <ClCompile Include="Model\Map.cpp" />
+    <ClCompile Include="ViewModel\Triangle.cpp" />
+    <ClCompile Include="ViewModel\ViewGroup.cpp" />
+    <ClCompile Include="ViewModel\ViewObject.cpp" />
+    <ClCompile Include="ViewModel\ViewScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

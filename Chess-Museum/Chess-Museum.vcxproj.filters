@@ -42,13 +42,46 @@
     <ClInclude Include="Model\Model.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="Model\Map.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Model">
-      <UniqueIdentifier>{4448c56d-9dda-4c9d-bc44-3441f7baca21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{560d7460-8d2d-4f01-b4d9-9e2c80ab857b}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="ViewModel\ViewObject.cpp">
+      <Filter>源文件\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\ViewGroup.cpp">
+      <Filter>源文件\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\ViewScene.cpp">
+      <Filter>源文件\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Position.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Vector.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\Triangle.cpp">
+      <Filter>源文件\ViewModel</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Matrix.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ObjParser.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Triangle.cpp">
+      <Filter>源文件\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ClassicChess.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Map.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
