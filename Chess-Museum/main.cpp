@@ -119,7 +119,7 @@ void draw()
 	}
 	
 
-	View::DrawModel(Cube, 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2), Vec3f(4, 0, 0));
+	View::DrawModel(CUBE, Vec2f(), Vec3f(4, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2));
 	
 	
 	glutSolidCube(1.0f);
