@@ -128,6 +128,7 @@
     <ClInclude Include="Common\vectors.h" />
     <ClInclude Include="Model\ClassicChess.h" />
     <ClInclude Include="Model\Exhibit.h" />
+    <ClInclude Include="Model\Map.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="TEST\TEST.h" />
     <ClInclude Include="TEST\TEST_ObjImport.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Common\Vector.cpp" />
     <ClCompile Include="Model\ClassicChess.cpp" />
     <ClCompile Include="Model\Exhibit.cpp" />
+    <ClCompile Include="Model\Map.cpp" />
     <ClCompile Include="ViewModel\Triangle.cpp" />
     <ClCompile Include="ViewModel\ViewGroup.cpp" />
     <ClCompile Include="ViewModel\ViewObject.cpp" />

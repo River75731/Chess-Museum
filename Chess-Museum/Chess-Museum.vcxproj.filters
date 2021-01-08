@@ -99,6 +99,9 @@
     <ClInclude Include="Model\Exhibit.h">
       <Filter>头文件\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Model\Map.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewModel\ViewObject.cpp">
@@ -132,6 +135,9 @@
       <Filter>源文件\Model</Filter>
     </ClCompile>
     <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Map.cpp">
       <Filter>源文件\Model</Filter>
     </ClCompile>
   </ItemGroup>
