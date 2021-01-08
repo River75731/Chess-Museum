@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Common/vectors.h"
-#include "Triangle.h"
 #include "ViewGroup.h"
 #include <array>
 #include <fstream>
