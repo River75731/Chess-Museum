@@ -4,59 +4,51 @@
 bool View::ButtonDown = false;
 bool View::Move = false;
 int View::du = 90, View::OriX = -1, View::OriY = -1;   
-float View::c = PI / 180.0;    //»¡¶ÈºÍ½Ç¶È×ª»»²ÎÊý
+float View::c = PI / 180.0;    //ï¿½ï¿½ï¿½ÈºÍ½Ç¶ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 Vec3f View::EyeLocation = Vec3f(0, 0, 2.5);
 Vec3f View::EyeDirection = Vec3f(0, 0, -1);
 Vec3f View::EyeUp = Vec3f(0, 1, 0);
 Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
-float View::Pitch = 0, View::Yaw = 270;//¸©Ñö½Ç£¬Æ«º½½Ç
+float View::Pitch = 0, View::Yaw = 270;//ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½Æ«ï¿½ï¿½ï¿½ï¿½
 char View::Key = ' ';
 void View::Rotate(float angle, Vec3f axis)
 {
 	glRotatef(angle, axis.x(), axis.y(), axis.z());
 }
 
-void  View::Scale(Vec3f times)
+void View::Scale(Vec3f times)
 {
 	glScalef(times.x(), times.y(), times.z());
 }
-void View::Translate(Vec3f EyeDirection)
+
+void View::Translate(Vec3f direction)
 {
-	glTranslatef(EyeDirection.x(), EyeDirection.y(), EyeDirection.z());
+	glTranslatef(direction.x(), direction.y(), direction.z());
 }
+
 void View::setList()
 {
-
 	glNewList(Circle, GL_COMPILE);
-
 	glBegin(GL_POLYGON);
-
 	int i = 0;
 	for (i = 0; i <= 360; i++)
 	{
-		
 		float p = i * PI / 180;
 		glNormal3f(0, 1, 0);
 		glVertex3f(sin(p), 0.0f, cos(p));
 	}
 	glEnd();
-
 	glEndList();
 
 	glNewList(Cone, GL_COMPILE);
-	
 	glutSolidCone(1, 1, 32, 32);
-
 	glEndList();
 
 	glNewList(Cube, GL_COMPILE);
-
 	glutSolidCube(1);
-
 	glEndList();
 
 	glNewList(Cylinder, GL_COMPILE);
-
 	for (int i = 0; i <= 360; i++)
 	{
 		float p = i * PI / 180;
@@ -78,46 +70,42 @@ void View::setList()
 		glVertex3f(sin(p), 1, cos(p));
 		glEnd();
 	}
-
 	glEndList();
 
 	glNewList(Prism, GL_COMPILE);
-
 	glutSolidCube(1);
-
 	glEndList();
-	
+
 	glNewList(Sphere, GL_COMPILE);
-
 	glutSolidSphere(1, 32, 32);
-
 	glEndList();
 
 	glNewList(Triangle, GL_COMPILE);
 
 	glEndList();
 }
-void View::DrawModel(Viewobject_Type Type,float angle,Vec3f axis,Vec3f times,Vec3f EyeDirection)
-{	
+
+void View::DrawModel(ViewObjectType Type, Vec3f direction, float angle, Vec3f axis, Vec3f times)
+{
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-	Rotate(angle, axis);
-	Translate(EyeDirection);
-	Scale(times);
-	switch (Type)
 
+	Translate(direction);
+	Rotate(angle, axis);
+	Scale(times);
+
+	switch (Type)
 	{
 	case Circle:
 		glCallList(Circle);
 		break;
 	case Cone:
-
+		glCallList(Cone);
 		break;
 	case Cube:
 		glCallList(Cube);
 		break;
 	case Cylinder:
-		
 		break;
 	case Prism:
 
@@ -296,11 +284,11 @@ void View::PickMode(int x, int y)
 void View::Reshape(int w, int h)
 {
 
-	glViewport(0, 0, w, h);    //½ØÍ¼;1¡¢2ÎªÊÓ¿ÚµÄ×óÏÂ½Ç;3¡¢4ÎªÊÓ¿ÚµÄ¿í¶ÈºÍ¸ß¶È
-	glMatrixMode(GL_PROJECTION);    //½«µ±Ç°¾ØÕóÖ¸¶¨ÎªÍ¶Ó°¾ØÕó
+	glViewport(0, 0, w, h);    //ï¿½ï¿½Í¼;1ï¿½ï¿½2Îªï¿½Ó¿Úµï¿½ï¿½ï¿½ï¿½Â½ï¿½;3ï¿½ï¿½4Îªï¿½Ó¿ÚµÄ¿ï¿½ï¿½ÈºÍ¸ß¶ï¿½
+	glMatrixMode(GL_PROJECTION);    //ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ÎªÍ¶Ó°ï¿½ï¿½ï¿½ï¿½
 	glLoadIdentity();
 	gluPerspective(45.0, (float)w / h, 0.01, 1000.0);
-	glMatrixMode(GL_MODELVIEW);     //¶ÔÄ£ÐÍÊÓ¾°¾ØÕó¶ÑÕ»Ó¦ÓÃËæºóµÄ¾ØÕó²Ù×÷.
+	glMatrixMode(GL_MODELVIEW);     //ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ó¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ»Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 }
 void View::Idle()
 {
@@ -308,8 +296,8 @@ void View::Idle()
 }
 void View::Init(int argc, char* argv[])
 {
-	glutInit(&argc, argv);                                          //³õÊ¼»¯glut¿â
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);      //ÉèÖÃ³õÊ¼ÏÔÊ¾Ä£Ê½
+	glutInit(&argc, argv);                                          //ï¿½ï¿½Ê¼ï¿½ï¿½glutï¿½ï¿½
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);      //ï¿½ï¿½ï¿½Ã³ï¿½Ê¼ï¿½ï¿½Ê¾Ä£Ê½
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("***************");

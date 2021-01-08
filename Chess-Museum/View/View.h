@@ -1,12 +1,19 @@
 #pragma once
-#include "gl/glut.h"
-#include "../Common/vectors.h"
 #include "../Common/MathBase.h"
-#define BUFSIZE 512
-
-enum  Viewobject_Type{
-	Circle = 1, Cone, Cube, Cylinder,Prism,Sphere,Triangle
+#include "../Common/vectors.h"
+#include "gl/glut.h"
+#define BUFSIZE 512;
+enum ViewObjectType
+{
+	Circle = 1,
+	Cone,
+	Cube,
+	Cylinder,
+	Prism,
+	Sphere,
+	Triangle
 };
+
 class View
 {
 public:
@@ -14,7 +21,7 @@ public:
 	static void Scale(Vec3f times);
 	static void Translate(Vec3f direction);
 	static void setList();
-	static void DrawModel(Viewobject_Type Type, float angle, Vec3f axis, Vec3f times, Vec3f direction);
+	static void DrawModel(ViewObjectType Type, Vec3f direction,float angle, Vec3f axis, Vec3f times);
 	static void onMouseMove(int x, int y);
 	static void Mouse(int button, int state, int x, int y);
 	static void SetEyeLocation();
@@ -30,11 +37,11 @@ public:
 	static bool Move;
 	static char Key;
 	static void PickMode(int x, int y);
-	static int du, OriX , OriY ;   //duÊÇÊÓµãºÍxÖáµÄ¼Ð½Ç
+	static int du, OriX , OriY ;   //duï¿½ï¿½ï¿½Óµï¿½ï¿½xï¿½ï¿½Ä¼Ð½ï¿½
 	static float c ;    
 	static Vec3f EyeLocation ;
 	static Vec3f EyeDirection;
 	static Vec3f EyeUp ;
 	static Vec3f MoveIncrement ;
-	static float Pitch , Yaw ;//¸©Ñö½Ç£¬Æ«º½½Ç
+	static float Pitch , Yaw ;//ï¿½ï¿½ï¿½ï¿½ï¿½Ç£ï¿½Æ«ï¿½ï¿½ï¿½ï¿½
 };

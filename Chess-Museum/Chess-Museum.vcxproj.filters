@@ -57,11 +57,16 @@
     <ClInclude Include="Common\Vector.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Common\ClassicChess.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\Chess.h">
       <Filter>头文件\Common</Filter>
+=======
+    <ClInclude Include="Model\Model.h">
+      <Filter>头文件\Model</Filter>
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     </ClInclude>
     <ClInclude Include="TEST\TEST.h">
       <Filter>头文件\TEST</Filter>
@@ -75,6 +80,12 @@
     <ClInclude Include="Common\Matrix.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Common\ObjParser.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     <ClInclude Include="Common\vectors.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
@@ -84,6 +95,7 @@
     <ClInclude Include="ViewModel\Triangle.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ViewModel\Circle.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
@@ -101,6 +113,10 @@
     </ClInclude>
     <ClInclude Include="ViewModel\TriangleMesh.h">
       <Filter>头文件\ViewModel</Filter>
+=======
+    <ClInclude Include="Model\ClassicChess.h">
+      <Filter>头文件\Model</Filter>
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     </ClInclude>
     <ClInclude Include="Model\Exhibit.h">
       <Filter>头文件\Model</Filter>
@@ -113,11 +129,16 @@
     <ClCompile Include="Common\Vector.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Common\ClassicChess.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\Chess.cpp">
       <Filter>源文件\Common</Filter>
+=======
+    <ClCompile Include="ViewModel\Triangle.cpp">
+      <Filter>源文件\ViewModel</Filter>
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     </ClCompile>
     <ClCompile Include="Common\Matrix.cpp">
       <Filter>源文件\Common</Filter>
@@ -125,8 +146,16 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="View\View.cpp">
       <Filter>源文件\View</Filter>
+=======
+    <ClCompile Include="Model\ClassicChess.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>源文件\Model</Filter>
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     </ClCompile>
     <ClCompile Include="Model\Exhibit.cpp">
       <Filter>头文件\Model</Filter>

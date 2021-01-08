@@ -120,14 +120,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Common\MathBase.h" />
-    <ClInclude Include="Common\Chess.h" />
-    <ClInclude Include="Common\ClassicChess.h" />
     <ClInclude Include="Common\Common.h" />
     <ClInclude Include="Common\Matrix.h" />
     <ClInclude Include="Common\Position.h" />
     <ClInclude Include="Common\Vector.h" />
     <ClInclude Include="Common\vectors.h" />
+<<<<<<< HEAD
     <ClInclude Include="Model\Exhibit.h" />
+=======
+    <ClInclude Include="Model\ClassicChess.h" />
+    <ClInclude Include="Model\Exhibit.h" />
+    <ClInclude Include="Model\Model.h" />
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     <ClInclude Include="TEST\TEST.h" />
     <ClInclude Include="TEST\TEST_ObjImport.h" />
     <ClInclude Include="TEST\TEST_VectorPosition.h" />
@@ -139,17 +143,30 @@
     <ClInclude Include="ViewModel\Triangle.h" />
     <ClInclude Include="ViewModel\TriangleMesh.h" />
     <ClInclude Include="ViewModel\ViewGroup.h" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="ViewModel\ViewModel.h" />
+    <ClInclude Include="ViewModel\ViewObject.h" />
+    <ClInclude Include="ViewModel\ViewScene.h" />
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
     <ClInclude Include="View\View.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Common\Chess.cpp" />
-    <ClCompile Include="Common\ClassicChess.cpp" />
     <ClCompile Include="Common\Matrix.cpp" />
     <ClCompile Include="Common\Position.cpp" />
     <ClCompile Include="Common\Vector.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\Exhibit.cpp" />
     <ClCompile Include="View\View.cpp" />
+=======
+    <ClCompile Include="Model\ClassicChess.cpp" />
+    <ClCompile Include="Model\Exhibit.cpp" />
+    <ClCompile Include="ViewModel\Triangle.cpp" />
+    <ClCompile Include="ViewModel\ViewGroup.cpp" />
+    <ClCompile Include="ViewModel\ViewObject.cpp" />
+    <ClCompile Include="ViewModel\ViewScene.cpp" />
+>>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
