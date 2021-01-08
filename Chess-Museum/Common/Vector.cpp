@@ -505,7 +505,7 @@ const float Vector3f::dot(const Vector3f & that) const
 
 Vector3f & Vector3f::normalize()
 {
-	if ((*this) == Vector3f()) return;
+	if ((*this) == Vector3f()) return *this;
 	float length = this->getLength();
 	this->x /= length;
 	this->y /= length;
@@ -544,7 +544,7 @@ Vector3i::Vector3i(const Vector3i & that)
 {
 	this->x = that.getX();
 	this->y = that.getY();
-	this->z = that.getZ()
+	this->z = that.getZ();
 }
 
 Vector3i::Vector3i(const Vector3f & that)

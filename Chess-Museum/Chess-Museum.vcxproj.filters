@@ -1,164 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="头文件\ViewModel">
-      <UniqueIdentifier>{2912c7a6-c32d-4a46-82f6-9c771f24d50b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\ViewModel">
-      <UniqueIdentifier>{ffde1b44-da7b-46eb-a57e-c382bed60b5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Common">
-      <UniqueIdentifier>{b8510ebc-cd1b-40d9-8034-e1a6c9270598}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Common">
-      <UniqueIdentifier>{63e48759-3246-476b-980e-eb2a1056a4c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\View">
-      <UniqueIdentifier>{266c55b4-76a6-40ac-87d8-0299c4467f8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\View">
-      <UniqueIdentifier>{95eb8205-0f25-49ac-8f01-902b6a5b475e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Model">
-      <UniqueIdentifier>{ee97061e-8ab9-40f3-8070-655946456963}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Model">
-      <UniqueIdentifier>{33fd254f-a2a3-4476-beec-a73b4f72b375}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\TEST">
-      <UniqueIdentifier>{05c682e4-32ef-4f86-a8d6-c5ed30ac5232}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Common\Matrix.cpp" />
+    <ClCompile Include="Common\Position.cpp" />
+    <ClCompile Include="Common\Vector.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="View\View.cpp" />
+    <ClCompile Include="Common\ObjParser.cpp" />
+    <ClCompile Include="Model\Chess.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ClassicChess.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ViewModel\ViewGroup.h">
-      <Filter>头文件\ViewModel</Filter>
+    <ClInclude Include="Common\MathBase.h" />
+    <ClInclude Include="Common\Common.h" />
+    <ClInclude Include="Common\Matrix.h" />
+    <ClInclude Include="Common\Position.h" />
+    <ClInclude Include="Common\Vector.h" />
+    <ClInclude Include="Common\vectors.h" />
+    <ClInclude Include="TEST\TEST.h" />
+    <ClInclude Include="TEST\TEST_ObjImport.h" />
+    <ClInclude Include="TEST\TEST_VectorPosition.h" />
+    <ClInclude Include="ViewModel\TriangleMesh.h" />
+    <ClInclude Include="View\View.h" />
+    <ClInclude Include="Common\ObjParser.h" />
+    <ClInclude Include="Model\Chess.h">
+      <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Common.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="View\View.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Position.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Vector.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="Common\ClassicChess.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Chess.h">
-      <Filter>头文件\Common</Filter>
-=======
-    <ClInclude Include="Model\Model.h">
-      <Filter>头文件\Model</Filter>
->>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
-    </ClInclude>
-    <ClInclude Include="TEST\TEST.h">
-      <Filter>头文件\TEST</Filter>
-    </ClInclude>
-    <ClInclude Include="TEST\TEST_VectorPosition.h">
-      <Filter>头文件\TEST</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\MathBase.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Matrix.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="Common\ObjParser.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
->>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
-    <ClInclude Include="Common\vectors.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="TEST\TEST_ObjImport.h">
-      <Filter>头文件\TEST</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\Triangle.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="ViewModel\Circle.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\Cone.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\Cube.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\Cylinder.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\Sphere.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\TriangleMesh.h">
-      <Filter>头文件\ViewModel</Filter>
-=======
     <ClInclude Include="Model\ClassicChess.h">
-      <Filter>头文件\Model</Filter>
->>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Model\Exhibit.h">
-      <Filter>头文件\Model</Filter>
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Common\Position.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Vector.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="Common\ClassicChess.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\Chess.cpp">
-      <Filter>源文件\Common</Filter>
-=======
-    <ClCompile Include="ViewModel\Triangle.cpp">
-      <Filter>源文件\ViewModel</Filter>
->>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
-    </ClCompile>
-    <ClCompile Include="Common\Matrix.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="View\View.cpp">
-      <Filter>源文件\View</Filter>
-=======
-    <ClCompile Include="Model\ClassicChess.cpp">
-      <Filter>源文件\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\Exhibit.cpp">
-      <Filter>源文件\Model</Filter>
->>>>>>> 1643c5d7af0ade25deaf4d449eb3710f5d81f46e
-    </ClCompile>
-    <ClCompile Include="Model\Exhibit.cpp">
-      <Filter>头文件\Model</Filter>
-    </ClCompile>
+    <Filter Include="Model">
+      <UniqueIdentifier>{4448c56d-9dda-4c9d-bc44-3441f7baca21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{560d7460-8d2d-4f01-b4d9-9e2c80ab857b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

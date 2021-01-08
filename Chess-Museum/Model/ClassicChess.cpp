@@ -256,6 +256,7 @@ bool ClassicChess::isValidMove(std::unique_ptr<ChessMove> move) const
 
 	case CLASSICCHESS_BLACK_CHECK:	// black being checked
 	case CLASSICCHESS_WHITE_WIN:
-	case CLASSICCHESS_BLACK_WIN:
+	case CLASSICCHESS_BLACK_WIN:;
 	}
+	return true;
 }

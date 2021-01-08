@@ -22,13 +22,13 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{EEB3E483-9A4F-4F72-B854-21A48F8ED3B8}</ProjectGuid>
     <RootNamespace>ChessMuseum</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -122,38 +122,30 @@
     <ClInclude Include="Common\MathBase.h" />
     <ClInclude Include="Common\Common.h" />
     <ClInclude Include="Common\Matrix.h" />
+    <ClInclude Include="Common\ObjParser.h" />
     <ClInclude Include="Common\Position.h" />
     <ClInclude Include="Common\Vector.h" />
     <ClInclude Include="Common\vectors.h" />
+    <ClInclude Include="Model\Chess.h" />
     <ClInclude Include="Model\ClassicChess.h" />
     <ClInclude Include="Model\Exhibit.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="TEST\TEST.h" />
     <ClInclude Include="TEST\TEST_ObjImport.h" />
     <ClInclude Include="TEST\TEST_VectorPosition.h" />
-    <ClInclude Include="ViewModel\Circle.h" />
-    <ClInclude Include="ViewModel\Cone.h" />
-    <ClInclude Include="ViewModel\Cube.h" />
-    <ClInclude Include="ViewModel\Cylinder.h" />
-    <ClInclude Include="ViewModel\Sphere.h" />
-    <ClInclude Include="ViewModel\Triangle.h" />
     <ClInclude Include="ViewModel\TriangleMesh.h" />
-    <ClInclude Include="ViewModel\ViewGroup.h" />
-    <ClInclude Include="ViewModel\ViewModel.h" />
-    <ClInclude Include="ViewModel\ViewObject.h" />
-    <ClInclude Include="ViewModel\ViewScene.h" />
     <ClInclude Include="View\View.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Matrix.cpp" />
+    <ClCompile Include="Common\ObjParser.cpp" />
     <ClCompile Include="Common\Position.cpp" />
     <ClCompile Include="Common\Vector.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model\Chess.cpp" />
     <ClCompile Include="Model\ClassicChess.cpp" />
     <ClCompile Include="Model\Exhibit.cpp" />
-    <ClCompile Include="ViewModel\Triangle.cpp" />
-    <ClCompile Include="ViewModel\ViewGroup.cpp" />
-    <ClCompile Include="ViewModel\ViewObject.cpp" />
-    <ClCompile Include="ViewModel\ViewScene.cpp" />
+    <ClCompile Include="View\View.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
