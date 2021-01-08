@@ -7,7 +7,7 @@ bool View::ButtonDown = false;
 bool View::Move = false;
 int View::du = 90, View::OriX = -1, View::OriY = -1;
 float View::c = PI / 180.0; //??????????????
-Vec3f View::EyeLocation = Vec3f(0, 0, 2.5);
+Vec3f View::EyeLocation = Vec3f(0, 0, 0);
 Vec3f View::EyeDirection = Vec3f(0, 0, -1);
 Vec3f View::EyeUp = Vec3f(0, 1, 0);
 Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
@@ -220,7 +220,7 @@ void View::EyeMove()
 		EyeLocation -= 0.01 * EyeUp;
 		break;
 	case 'c':
-		EyeLocation += 0.1 * EyeUp;
+		EyeLocation += 0.01 * EyeUp;
 		break;
 	case 'q':
 		exit(0);
@@ -244,8 +244,27 @@ void View::Display()
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
 	glEnable(GL_LIGHT0);
-	DrawModel(CUBE, Vec2f(), Vec3f(4, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2));
-	glutSolidCube(1.0f);
+	glBegin(GL_LINES);
+	glVertex3f(10000, 0, 0);
+	glVertex3f(-10000, 0, 0);
+	glVertex3f(0, 10000, 0);
+	glVertex3f(-0, -10000, 0);
+	glVertex3f(0, 0, 10000);
+	glVertex3f(-0, 0, -10000);
+		glEnd();
+	DrawModel(CYLINDER, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1));
+	DrawModel(CYLINDER, Vec2f(), Vec3f(0, 10, 0), 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2));
+	
+	// std::vector<TriangleMesh> tm = ObjParser::parseFile();
+	
+	// std::vector<TriangleMesh>::iterator iter = tm.begin();
+	// for (std::vector<Triangle>::const_iterator iter1 = iter->getTriangles().begin(); iter1 != iter->getTriangles().end(); iter1++)
+	// {
+	// 	iter1->draw();
+	// }
+	
+
+	//glutSolidCube(1.0f);
 	glutSwapBuffers();
 }
 
@@ -321,7 +340,7 @@ void View::Reshape(int w, int h)
 	glViewport(0, 0, w, h);		 //???;1??2??????????;3??4???????????
 	glMatrixMode(GL_PROJECTION); //???????????????????
 	glLoadIdentity();
-	gluPerspective(45.0, (float)w / h, 0.01, 1000.0);
+	gluPerspective(45.0, (float)w / h, 0.01, 100000.0);
 	glMatrixMode(GL_MODELVIEW); //???????????????????????????.
 }
 void View::Idle()

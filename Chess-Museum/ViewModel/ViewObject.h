@@ -44,6 +44,3 @@ public:
 	static const int getCount();
 	const int getIdx() const;
 };
-
-std::vector<std::shared_ptr<ViewObject2d>> object2d;
-std::vector<std::shared_ptr<ViewObject3d>> object3d;

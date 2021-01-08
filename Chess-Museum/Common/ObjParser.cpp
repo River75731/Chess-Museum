@@ -5,16 +5,16 @@
 #define OBJ_MAX_LINE 200
 #define OBJ_FILE_NUM 1
 
-static std::string objFilePath = "";
+static std::string objFilePath = "obj/";
 static std::string objFileName[OBJ_FILE_NUM] =
     {"chess.obj"};
 
-std::vector<TriangleMesh> &ObjParser::parseFile()
+std::vector<TriangleMesh> ObjParser::parseFile()
 {
     std::vector<TriangleMesh> TriangleMeshs;
     for (int i = 0; i < OBJ_FILE_NUM; i++)
     {
-        fstream in(objFileName[i], ios::in);
+        fstream in(objFilePath + objFileName[i], ios::in);
         if (!in.is_open())
         {
             cout << "Error opening file." << endl;

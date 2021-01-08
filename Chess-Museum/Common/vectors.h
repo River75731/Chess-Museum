@@ -11,6 +11,7 @@ using namespace std;
 
 #include <assert.h>
 #include <math.h>
+#include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -734,8 +735,16 @@ inline ostream &operator<<(ostream &os, const Vec3f &v)
 
 inline istream &operator>>(istream &is, Vec3f &v)
 {
-    float vx, vy, vz;
-    is >> vx >> vy >> vz;
+    float vx = 0, vy = 0, vz = 0;
+    char sbuf[100];
+    is.getline(sbuf, 100);
+    istringstream iss(sbuf);
+    if (!iss.eof())
+        iss >> vx;
+    if (!iss.eof())
+        iss >> vy;
+    if (!iss.eof())
+        iss >> vz;
     v.Set(vx, vy, vz);
     return is;
 }

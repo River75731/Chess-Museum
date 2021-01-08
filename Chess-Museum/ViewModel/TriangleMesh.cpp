@@ -1,5 +1,5 @@
 #include "TriangleMesh.h"
-#include "Triangle.h"
+#include "../View//View.h"
 #include <fstream>
 #include <string>
 #include <vector>
@@ -84,7 +84,3 @@ void TriangleMesh::add(Triangle &t)
     triangles.emplace_back(t);
 }
 
-void TriangleMesh::draw() const
-{
-    View::DrawModel(listNum, transform.coordinate, transform.translate, transform.angle, transform.axis, transform.scale);
-}

@@ -1,13 +1,12 @@
 #pragma once
 
 #include "../Common/vectors.h"
-#include "ViewGroup.h"
 #include <array>
 #include <fstream>
 #include <string>
 #include <vector>
 
-class Triangle : public ViewObject3d
+class Triangle
 {
 public:
     void setV(Vec3f a, Vec3f b, Vec3f c);
@@ -24,7 +23,7 @@ private:
     std::array<Vec3f, 3> vt;
 };
 
-class TriangleMesh : public ViewObject3d
+class TriangleMesh
 {
 public:
     TriangleMesh(std::string name, const std::vector<Triangle> &tris);
@@ -36,10 +35,8 @@ public:
     void setListNum(int n);
     void add(Triangle &t);
 
-    virtual void draw() const;
-
 private:
     std::string objName;
-    GLuint listNum;
+    int listNum;
     std::vector<Triangle> triangles;
 };
