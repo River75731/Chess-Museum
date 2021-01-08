@@ -12,7 +12,6 @@ void Cylinder::draw() const
     Vec3f up(0, 1, 0), normal(upCenter - downCenter), axis;
     float angle = acos(up.Dot3(normal) / up.Length() / normal.Length()) / PI * 180;
     Vec3f::Cross3(axis, up, normal);
-    
     glTranslatef(downCenter.x(), downCenter.y(), downCenter.z());
     glRotatef(angle, axis.x(), axis.y(), axis.z());
 

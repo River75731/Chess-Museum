@@ -1,5 +1,2 @@
-﻿  ClassicChess.cpp
-  Position.cpp
-  正在生成代码...
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\common\classicchess.cpp(111): warning C4715: “ClassicChessMove::isValid”: 不是所有的控件路径都返回值
-  Chess-Museum.vcxproj -> D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\Debug\Chess-Museum.exe
+﻿  View.cpp
+  Chess-Museum.vcxproj -> C:\Users\uzi\Documents\Tencent Files\1041766392\FileRecv\Chess-Museum(1)\Debug\Chess-Museum.exe

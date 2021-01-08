@@ -42,20 +42,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ViewModel\ViewObject.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
     <ClInclude Include="ViewModel\ViewGroup.h">
-      <Filter>头文件\ViewModel</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\ViewScene.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
     <ClInclude Include="Common\Common.h">
       <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewModel\ViewModel.h">
-      <Filter>头文件\ViewModel</Filter>
     </ClInclude>
     <ClInclude Include="View\View.h">
       <Filter>头文件\View</Filter>
@@ -65,9 +56,6 @@
     </ClInclude>
     <ClInclude Include="Common\Vector.h">
       <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Model\Model.h">
-      <Filter>头文件\Model</Filter>
     </ClInclude>
     <ClInclude Include="Common\ClassicChess.h">
       <Filter>头文件\Common</Filter>
@@ -87,12 +75,6 @@
     <ClInclude Include="Common\Matrix.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\ObjParser.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\Triangle.h">
-      <Filter>头文件\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Common\vectors.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
@@ -102,20 +84,29 @@
     <ClInclude Include="ViewModel\Triangle.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
-    <ClInclude Include="View\Draw.h">
-      <Filter>头文件\View</Filter>
+    <ClInclude Include="ViewModel\Circle.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\Cone.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\Cube.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\Cylinder.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\Sphere.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\TriangleMesh.h">
+      <Filter>头文件\ViewModel</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Exhibit.h">
+      <Filter>头文件\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ViewModel\ViewObject.cpp">
-      <Filter>源文件\ViewModel</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModel\ViewGroup.cpp">
-      <Filter>源文件\ViewModel</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewModel\ViewScene.cpp">
-      <Filter>源文件\ViewModel</Filter>
-    </ClCompile>
     <ClCompile Include="Common\Position.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
@@ -128,20 +119,17 @@
     <ClCompile Include="Common\Chess.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="ViewModel\Triangle.cpp">
-      <Filter>源文件\ViewModel</Filter>
-    </ClCompile>
     <ClCompile Include="Common\Matrix.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Common\ObjParser.cpp">
-      <Filter>源文件\Common</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Common\Triangle.cpp">
-      <Filter>源文件\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="View\Draw.cpp">
+    <ClCompile Include="View\View.cpp">
       <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>头文件\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
