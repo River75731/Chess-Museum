@@ -352,3 +352,339 @@ void Vector2i::output(const std::string & name) const
 	std::cout << "Vector2i : " << name << "\t = ( " << this->x << " , " << this->y << " ),\t Length = " << this->getLength() << ",\t Angle = " << this->getAngle() << " degree.\n";
 	return;
 }
+
+Vector3f::Vector3f()
+{
+	x = 0;
+	y = 0;
+	z = 0;
+}
+
+Vector3f::Vector3f(const float & x, const float & y, const float & z)
+{
+	this->x = x;
+	this->y = y;
+	this->z = z;
+}
+
+Vector3f::Vector3f(const Vector3f & that)
+{
+	this->x = that.getX();
+	this->y = that.getY();
+	this->z = that.getZ();
+}
+
+Vector3f::Vector3f(const Vector3i & that)
+{
+	this->x = (float)(that.getX());
+	this->y = (float)(that.getY());
+	this->z = (float)(that.getZ());
+}
+
+Vector3f::~Vector3f()
+{
+}
+
+const float Vector3f::getX() const
+{
+	return this->x;
+}
+
+const float Vector3f::getY() const
+{
+	return this->y;
+}
+
+const float Vector3f::getZ() const
+{
+	return this->z;
+}
+
+Vector3f & Vector3f::setX(const float & x)
+{
+	this->x = x;
+	return *this;
+}
+
+Vector3f & Vector3f::setY(const float & y)
+{
+	this->y = y;
+	return *this;
+}
+
+Vector3f & Vector3f::setZ(const float & z)
+{
+	this->z = z;
+	return *this;
+}
+
+const float Vector3f::getLength() const
+{
+	return sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
+}
+
+Vector3f Vector3f::operator+(const Vector3f & that) const
+{
+	return Vector3f(this->x + that.getX(), this->y + that.getY(), this->z + that.getZ());
+}
+
+Vector3f Vector3f::operator-(const Vector3f & that) const
+{
+	return Vector3f(this->x - that.getX(), this->y - that.getY(), this->z - that.getZ());
+}
+
+Vector3f Vector3f::operator-() const
+{
+	return Vector3f(-this->x, -this->y, -this->z);
+}
+
+Vector3f Vector3f::operator*(const float & that) const
+{
+	return Vector3f(this->x * that, this->y * that, this->z * that);
+}
+
+Vector3f Vector3f::operator/(const float & that) const
+{
+	return Vector3f(this->x / that, this->y / that, this->z / that);
+}
+
+bool Vector3f::operator==(const Vector3f & that) const
+{
+	return floatEqual(this->x, that.getX()) && floatEqual(this->y, that.getY()) && floatEqual(this->z, that.getZ());
+}
+
+bool Vector3f::operator!=(const Vector3f & that) const
+{
+	return !floatEqual(this->x, that.getX()) || !floatEqual(this->y, that.getY()) || !floatEqual(this->z, that.getZ());
+}
+
+Vector3f & Vector3f::operator=(const Vector3f & that)
+{
+	this->x = that.getX();
+	this->y = that.getY();
+	this->z = that.getZ();
+	return *this;
+}
+
+Vector3f & Vector3f::operator+=(const Vector3f & that)
+{
+	this->x += that.getX();
+	this->y += that.getY();
+	this->z += that.getZ();
+	return *this;
+}
+
+Vector3f & Vector3f::operator-=(const Vector3f & that)
+{
+	this->x -= that.getX();
+	this->y -= that.getY();
+	this->z -= that.getZ();
+	return *this;
+}
+
+Vector3f & Vector3f::operator*=(const float & that)
+{
+	this->x *= that;
+	this->y *= that;
+	this->z *= that;
+	return *this;
+}
+
+Vector3f & Vector3f::operator/=(const float & that)
+{
+	this->x /= that;
+	this->y /= that;
+	this->z /= that;
+	return *this;
+}
+
+const float Vector3f::dot(const Vector3f & that) const
+{
+	return this->x * that.getX() + this->y * that.getY() + this->z * that.getZ();
+}
+
+Vector3f & Vector3f::normalize()
+{
+	if ((*this) == Vector3f()) return;
+	float length = this->getLength();
+	this->x /= length;
+	this->y /= length;
+	this->z /= length;
+	return *this;
+}
+
+Vector3f & Vector3f::scale(const float & scaleX, const float & scaleY, const float & scaleZ)
+{
+	this->x *= scaleX;
+	this->y *= scaleY;
+	this->z *= scaleZ;
+	return *this;
+}
+
+void Vector3f::output(const std::string & name) const
+{
+	std::cout << "Vector3f : " << name << "\t = ( " << this->x << " , " << this->y << " , " << this->z << " ),\t Length = " << this->getLength() << ".\n";
+}
+
+Vector3i::Vector3i()
+{
+	x = 0;
+	y = 0;
+	z = 0;
+}
+
+Vector3i::Vector3i(const int & x, const int & y, const int & z)
+{
+	this->x = x;
+	this->y = y;
+	this->z = z;
+}
+
+Vector3i::Vector3i(const Vector3i & that)
+{
+	this->x = that.getX();
+	this->y = that.getY();
+	this->z = that.getZ()
+}
+
+Vector3i::Vector3i(const Vector3f & that)
+{
+	this->x = floatRound(that.getX());
+	this->y = floatRound(that.getY());
+	this->z = floatRound(that.getZ());
+}
+
+Vector3i::~Vector3i()
+{
+}
+
+const int Vector3i::getX() const
+{
+	return this->x;
+}
+
+const int Vector3i::getY() const
+{
+	return this->y;
+}
+
+const int Vector3i::getZ() const
+{
+	return this->z;
+}
+
+Vector3i & Vector3i::setX(const int & x)
+{
+	this->x = x;
+	return *this;
+}
+
+Vector3i & Vector3i::setY(const int & y)
+{
+	this->y = y;
+	return *this;
+}
+
+Vector3i & Vector3i::setZ(const int & z)
+{
+	this->z = z;
+	return *this;
+}
+
+const float Vector3i::getLength() const
+{
+	return sqrt(float(this->x * this->x + this->y * this->y + this->z * this->z));
+}
+
+Vector3i Vector3i::operator+(const Vector3i & that) const
+{
+	return Vector3i(this->x + that.getX(), this->y + that.getY(), this->z + that.getZ());
+}
+
+Vector3i Vector3i::operator-(const Vector3i & that) const
+{
+	return Vector3i(this->x - that.getX(), this->y - that.getY(), this->z - that.getZ());
+}
+
+Vector3i Vector3i::operator-() const
+{
+	return Vector3i(-this->x, -this->y, -this->z);
+}
+
+Vector3i Vector3i::operator*(const int & that) const
+{
+	return Vector3i(this->x * that, this->y * that, this->z * that);
+}
+
+Vector3i Vector3i::operator/(const int & that) const
+{
+	return Vector3i(this->x / that, this->y / that, this->z / that);
+}
+
+bool Vector3i::operator==(const Vector3i & that) const
+{
+	return this->x == that.getX() && this->y == that.getY() && this->z == that.getZ();
+}
+
+bool Vector3i::operator!=(const Vector3i & that) const
+{
+	return this->x != that.getX() || this->y != that.getY() || this->z != that.getZ();
+}
+
+Vector3i & Vector3i::operator=(const Vector3i & that)
+{
+	this->x = that.getX();
+	this->y = that.getY();
+	this->z = that.getZ();
+	return *this;
+}
+
+Vector3i & Vector3i::operator+=(const Vector3i & that)
+{
+	this->x += that.getX();
+	this->y += that.getY();
+	this->z += that.getZ();
+	return *this;
+}
+
+Vector3i & Vector3i::operator-=(const Vector3i & that)
+{
+	this->x -= that.getX();
+	this->y -= that.getY();
+	this->z -= that.getZ();
+	return *this;
+}
+
+Vector3i & Vector3i::operator*=(const int & that)
+{
+	this->x *= that;
+	this->y *= that;
+	this->z *= that;
+	return *this;
+}
+
+Vector3i & Vector3i::operator/=(const int & that)
+{
+	this->x /= that;
+	this->y /= that;
+	this->z /= that;
+	return *this;
+}
+
+const int Vector3i::dot(const Vector3i & that) const
+{
+	return this->x * that.getX() + this->y * that.getY() + this->z * that.getZ();
+}
+
+Vector3i & Vector3i::scale(const int & scaleX, const int & scaleY, const int & scaleZ)
+{
+	this->x *= scaleX;
+	this->y *= scaleY;
+	this->z *= scaleZ;
+	return *this;
+}
+
+void Vector3i::output(const std::string & name) const
+{
+	std::cout << "Vector3i : " << name << "\t = ( " << this->x << " , " << this->y << " , " << this->z << " ),\t Length = " << this->getLength() << ".\n";
+}
