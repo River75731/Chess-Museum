@@ -1,15 +1,16 @@
 #include "Exhibit.h"
 
-const float Exhibit::scaleSpeed = 1.05;
-const float Exhibit::scaleMax = 2;
-const float Exhibit::rotateSpeed = 0.1;
-const float Exhibit::translateSpeed = 0.05;
-const float Exhibit::translateMax = 1;
+const float Exhibit::scaleSpeed = 1.05f;
+const float Exhibit::scaleMax = 2.0f;
+const float Exhibit::rotateSpeed = 0.1f;
+const float Exhibit::translateSpeed = 0.05f;
+const float Exhibit::translateMax = 1.0f;
 
-Exhibit::Exhibit(const ExhibitType & type, const unsigned int & textureNum, const Vector3f & translate, const float & rotate, const Vector3f & scale, const bool & hasTable, const bool & isRotating)
+Exhibit::Exhibit(const ExhibitType & type, const unsigned int & textureNum, const unsigned int & lightNum = 0, const Vector3f & translate, const float & rotate, const Vector3f & scale, const bool & hasTable, const bool & isRotating)
 {
 	this->type = type;
 	this->textureNum = textureNum;
+	this->lightNum = lightNum;
 	this->translate = translate;
 	this->rotate = rotate;
 	this->scale = scale;
@@ -21,6 +22,7 @@ Exhibit::Exhibit(const Exhibit & that)
 {
 	this->type = that.getType();
 	this->textureNum = that.getTextureNum();
+	this->lightNum = that.getLightNum();
 	this->translate = that.getTranslate();
 	this->rotate = that.getRotate();
 	this->scale = that.getScale();
@@ -42,6 +44,11 @@ const unsigned int Exhibit::getTextureNum() const
 	return this->textureNum;
 }
 
+const unsigned int Exhibit::getLightNum() const
+{
+	return this->lightNum;
+}
+
 const bool Exhibit::getIsRotating() const
 {
 	return this->isRotating;
@@ -56,6 +63,12 @@ Exhibit & Exhibit::setType(const ExhibitType & type)
 Exhibit & Exhibit::setTextureNum(const unsigned int & textureNum)
 {
 	this->textureNum = textureNum;
+	return *this;
+}
+
+Exhibit & Exhibit::setLightNum(const unsigned int & lightNum)
+{
+	this->lightNum = lightNum;
 	return *this;
 }
 
@@ -86,6 +99,12 @@ Exhibit & Exhibit::setHasTable(const bool & hasTable)
 Exhibit & Exhibit::setIsRotating(const bool & isRotating)
 {
 	this->isRotating = isRotating;
+	return *this;
+}
+
+Exhibit & Exhibit::clearLight()
+{
+	this->lightNum = 0;
 	return *this;
 }
 
