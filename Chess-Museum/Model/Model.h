@@ -26,7 +26,7 @@ class Model final
 private:
 	ModelState state;
 	std::shared_ptr<Map> map;
-	std::vector<ClassicChess> chess;
+	//std::vector<ClassicChess> chess;
 	std::vector<Position2i> chessLocation;
 
 

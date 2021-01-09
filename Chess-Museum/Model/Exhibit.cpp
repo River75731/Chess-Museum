@@ -6,7 +6,7 @@ const float Exhibit::rotateSpeed = 0.1f;
 const float Exhibit::translateSpeed = 0.05f;
 const float Exhibit::translateMax = 1.0f;
 
-Exhibit::Exhibit(const ExhibitType & type, const unsigned int & textureNum, const unsigned int & lightNum = 0, const Vector3f & translate, const float & rotate, const Vector3f & scale, const bool & hasTable, const bool & isRotating)
+Exhibit::Exhibit(const ExhibitType & type, const unsigned int & textureNum, const unsigned int & lightNum, const Vector3f & translate, const float & rotate, const Vector3f & scale, const bool & hasTable, const bool & isRotating)
 {
 	this->type = type;
 	this->textureNum = textureNum;

@@ -216,8 +216,9 @@ void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, flo
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
 	}
+	else
+		glDisable(GL_TEXTURE_2D);
 	glCallList(type);
-	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
@@ -305,7 +306,7 @@ void View::EyeMove()
 void View::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0, 0, 0, 1);
+	glClearColor(1, 1, 1, 1);
 	SetEyeLocation();
 	if (Move)
 		EyeMove();
@@ -317,6 +318,7 @@ void View::Display()
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
 	glEnable(GL_LIGHT0);
 
+	glColor3f(0, 0, 0);
 	glBegin(GL_LINES);
 	glVertex3f(10000, 0, 0);
 	glVertex3f(-10000, 0, 0);
@@ -326,9 +328,9 @@ void View::Display()
 	glVertex3f(-0, 0, -10000);
 	glEnd();
 
-	DrawModel(PAWN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 0);
-	DrawModel(PAWN, Vec2f(), Vec3f(2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 1);
-	DrawModel(PAWN, Vec2f(), Vec3f(-2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 2);
+	DrawModel(PAWN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), -1);
+	DrawModel(PAWN, Vec2f(), Vec3f(0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 0);
+	DrawModel(PAWN, Vec2f(), Vec3f(-0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 1);
 
 	glutSwapBuffers();
 }
@@ -506,7 +508,7 @@ void View::texload(int i, std::string filename)
 				 bitmapInfoHeader.biWidth,
 				 bitmapInfoHeader.biHeight,
 				 0,
-				 GL_RGB,
+				 GL_BGR,
 				 GL_UNSIGNED_BYTE,
 				 bitmapData);
 }

@@ -1,31 +1,4 @@
-<<<<<<< HEAD
-﻿  ObjParser.cpp
-  View.cpp
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(376,17): warning C4018: “<”: 有符号/无符号不匹配
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(450,16): warning C4101: “temp”: 未引用的局部变量
-  正在生成代码...
+﻿  View.cpp
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(378,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(452,16): warning C4101: “temp”: 未引用的局部变量
   Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe
-=======
-﻿  Matrix.cpp
-  ObjParser.cpp
-  Position.cpp
-  Vector.cpp
-  main.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  ClassicChess.cpp
-  Exhibit.cpp
-  Map.cpp
-  TriangleMesh.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  ViewGroup.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  ViewObject.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  ViewScene.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  View.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(311): warning C4018: “<”: 有符号/无符号不匹配
-  正在生成代码...
-  Chess-Museum.vcxproj -> D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\Debug\Chess-Museum.exe
->>>>>>> f007180e86b02dae97614dc78057aa41fa574403

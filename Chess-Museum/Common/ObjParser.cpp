@@ -4,19 +4,11 @@
 
 #define OBJ_MAX_BUF 100
 #define OBJ_MAX_LINE 200
-#define OBJ_FILE_NUM 9
+#define OBJ_FILE_NUM 1
 
 static std::string objFilePath = "obj/";
 static std::string objFileName[OBJ_FILE_NUM] =
-    {"pawn.obj",
-     "rook.obj",
-     "knight.obj",
-     "bishop.obj",
-     "queen.obj",
-     "king.obj",
-     "table.obj",
-     "chess_board.obj",
-     "marble_table.obj"};
+    {"pawn.obj"};
 
 std::vector<TriangleMesh> ObjParser::parseFile()
 {
