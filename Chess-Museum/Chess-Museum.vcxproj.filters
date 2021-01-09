@@ -143,5 +143,8 @@
     <ClCompile Include="ViewModel\TriangleMesh.cpp">
       <Filter>源文件\ViewModel</Filter>
     </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

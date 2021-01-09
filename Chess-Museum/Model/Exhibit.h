@@ -22,6 +22,7 @@ private:
 	// translate -> rotate -> scale
 	ExhibitType type;
 	unsigned int textureNum; // # of texture, 0 for empty
+	unsigned int lightNum;	// # of light, 0 for unable light
 	Vector3f translate;	
 	float rotate; // rotate through z-axis
 	Vector3f scale;
@@ -30,12 +31,13 @@ private:
 
 public:
 	// Constructor & Destructor
-	Exhibit(const ExhibitType& type = EXHIBIT_EMPTY, const unsigned int& textureNum = 0, const Vector3f& translate = Vector3f(), const float& rotate = 0, const Vector3f& scale = Vector3f(1, 1, 1), const bool& hasTable = true, const bool& isRotating = false);
+	Exhibit(const ExhibitType& type = EXHIBIT_EMPTY, const unsigned int& textureNum = 0, const unsigned int & lightNum = 0, const Vector3f& translate = Vector3f(), const float& rotate = 0, const Vector3f& scale = Vector3f(1, 1, 1), const bool& hasTable = true, const bool& isRotating = false);
 	Exhibit(const Exhibit& that);
 	~Exhibit();
 	// Get - Set Method
 	const ExhibitType getType() const;
 	const unsigned int getTextureNum() const;
+	const unsigned int getLightNum() const;
 	const Vector3f getTranslate() const;
 	const float getRotate() const;
 	const Vector3f getScale() const;
@@ -43,12 +45,16 @@ public:
 	const bool getIsRotating() const;
 	Exhibit& setType(const ExhibitType& type);
 	Exhibit& setTextureNum(const unsigned int& textureNum);
+	Exhibit& setLightNum(const unsigned int& lightNum);
 	Exhibit& setTranslate(const Vector3f& translate);
 	Exhibit& setRotate(const float& rotate);
 	Exhibit& setScale(const Vector3f& scale);
 	Exhibit& setHasTable(const bool& hasTable);
 	Exhibit& setIsRotating(const bool& isRotating);
 	// Change State
+
+	// change the light to unable
+	Exhibit& clearLight();
 
 	// change the texture to empty
 	Exhibit& clearTexture();
