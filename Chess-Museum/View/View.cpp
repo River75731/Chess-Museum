@@ -14,6 +14,76 @@ Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
 float View::Pitch = 0, View::Yaw = 270; //????????????
 char View::Key = ' ';
 
+std::map<std::string, ViewObjectType> View::objMap;
+
+std::map<ViewObjectType, std::vector<int>> View::texMap;
+std::string View::texturePath = "texture/";
+unsigned int View::texture[TEXTURE_NUM] = {0};
+std::string View::texFileNames[TEXTURE_NUM] =
+	{
+		"tex_marble_table.bmp",
+		"pawn_white.bmp",
+		"pawn_black.bmp",
+		"rook_white.bmp",
+		"rook_black.bmp",
+		"knight_white.bmp",
+		"knight_black.bmp",
+		"bishop_white.bmp",
+		"bishop_black.bmp",
+		"queen_white.bmp",
+		"queen_black.bmp",
+		"king_white.bmp",
+		"king_black.bmp"};
+
+void View::initMapRelation()
+{
+	objMap["PAWN"] = PAWN;
+	objMap["ROOK"] = ROOK;
+	objMap["KNIGHT"] = KNIGHT;
+	objMap["BISHOP"] = BISHOP;
+	objMap["QUEEN"] = QUEEN;
+	objMap["KING"] = KING;
+	objMap["TABLE"] = TABLE;
+	objMap["MARBLETABLE"] = MARBLETABLE;
+	objMap["CHESSBOARD"] = CHESSBOARD;
+
+	std::vector<int> tex;
+
+	tex.emplace_back(texture[0]);
+	texMap[MARBLETABLE] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[1]);
+	tex.emplace_back(texture[2]);
+	texMap[PAWN] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[3]);
+	tex.emplace_back(texture[4]);
+	texMap[ROOK] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[5]);
+	tex.emplace_back(texture[6]);
+	texMap[KNIGHT] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[7]);
+	tex.emplace_back(texture[8]);
+	texMap[BISHOP] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[9]);
+	tex.emplace_back(texture[10]);
+	texMap[QUEEN] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[11]);
+	tex.emplace_back(texture[12]);
+	texMap[KING] = tex;
+	tex.clear();
+}
+
 void View::Rotate(float angle, Vec3f axis)
 {
 	glRotatef(angle, axis.x(), axis.y(), axis.z());
@@ -32,15 +102,19 @@ void View::Translate(Vec3f direction)
 void View::setList()
 {
 	glNewList(CIRCLE, GL_COMPILE);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glBegin(GL_POLYGON);
 	int i = 0;
 	for (i = 0; i <= 360; i++)
 	{
 		float p = i * PI / 180;
 		glNormal3f(0, 1, 0);
+		glTexCoord2f(sin(p), cos(p));
 		glVertex3f(sin(p), 0.0f, cos(p));
 	}
 	glEnd();
+	glDisable(GL_TEXTURE_2D);
 	glEndList();
 
 	glNewList(CONE, GL_COMPILE);
@@ -115,15 +189,6 @@ void View::setList()
 	glutSolidSphere(1, 32, 32);
 	glEndList();
 
-	/* Set list for all .obj groups */
-	std::map<std::string, ViewObjectType> objMap;
-	objMap["PAWN"] = PAWN;
-	objMap["ROOK"] = ROOK;
-	objMap["KNIGHT"] = KNIGHT;
-	objMap["BISHOP"] = BISHOP;
-	objMap["QUEEN"] = QUEEN;
-	objMap["KING"] = KING;
-
 	std::vector<TriangleMesh> tm = ObjParser::parseFile();
 	for (std::vector<TriangleMesh>::iterator iter = tm.begin(); iter != tm.end(); iter++)
 	{
@@ -136,7 +201,7 @@ void View::setList()
 	}
 }
 
-void View::DrawModel(GLuint listN, Vec2f coordinate, Vec3f translate, float angle, Vec3f axis, Vec3f scale)
+void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, float angle, Vec3f axis, Vec3f scale, int texIndex)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -146,7 +211,13 @@ void View::DrawModel(GLuint listN, Vec2f coordinate, Vec3f translate, float angl
 	Rotate(angle, axis);
 	Scale(scale);
 
-	glCallList(listN);
+	if (texIndex != -1)
+	{
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
+	}
+	glCallList(type);
+	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
 }
@@ -200,6 +271,7 @@ void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
 {
 	Move = false;
 }
+
 void View::EyeMove()
 {
 	switch (Key)
@@ -244,6 +316,7 @@ void View::Display()
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
 	glEnable(GL_LIGHT0);
+
 	glBegin(GL_LINES);
 	glVertex3f(10000, 0, 0);
 	glVertex3f(-10000, 0, 0);
@@ -251,20 +324,12 @@ void View::Display()
 	glVertex3f(-0, -10000, 0);
 	glVertex3f(0, 0, 10000);
 	glVertex3f(-0, 0, -10000);
-		glEnd();
-	DrawModel(CYLINDER, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1));
-	DrawModel(CYLINDER, Vec2f(), Vec3f(0, 10, 0), 0, Vec3f(0, 1, 0), Vec3f(2, 2, 2));
-	
-	// std::vector<TriangleMesh> tm = ObjParser::parseFile();
-	
-	// std::vector<TriangleMesh>::iterator iter = tm.begin();
-	// for (std::vector<Triangle>::const_iterator iter1 = iter->getTriangles().begin(); iter1 != iter->getTriangles().end(); iter1++)
-	// {
-	// 	iter1->draw();
-	// }
-	
+	glEnd();
 
-	//glutSolidCube(1.0f);
+	DrawModel(PAWN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 0);
+	DrawModel(PAWN, Vec2f(), Vec3f(2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 1);
+	DrawModel(PAWN, Vec2f(), Vec3f(-2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 2);
+
 	glutSwapBuffers();
 }
 
@@ -334,36 +399,129 @@ void View::PickMode(int x, int y)
 		assert(numberOfNames == 3);
 	}
 }
+
 void View::Reshape(int w, int h)
 {
-
-	glViewport(0, 0, w, h);		 //???;1??2??????????;3??4???????????
-	glMatrixMode(GL_PROJECTION); //???????????????????
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0, (float)w / h, 0.01, 100000.0);
-	glMatrixMode(GL_MODELVIEW); //???????????????????????????.
+	glMatrixMode(GL_MODELVIEW);
 }
+
 void View::Idle()
 {
 	glutPostRedisplay();
 }
+
 void View::Init(int argc, char *argv[])
 {
-	glutInit(&argc, argv);									   //?????glut??
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA); //???ио???????
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("***************");
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
+
+	initTexture();
+	initMapRelation();
 	setList();
-	glutReshapeFunc(Reshape); //
-	glutDisplayFunc(Display); //
+
+	glutReshapeFunc(Reshape);
+	glutDisplayFunc(Display);
 	glutIdleFunc(Idle);
 	glutKeyboardFunc(KeyBoardCallBackFunc);
 	glutKeyboardUpFunc(KeyBoardUpCallBackFunc);
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
 	glutMouseFunc(Mouse);
 	glutMotionFunc(onMouseMove);
-	glutMainLoop(); //enters the GLUT event processing loop.
+
+	glutMainLoop();
+}
+
+unsigned char *View::LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader)
+{
+	FILE *filePtr;
+	BITMAPFILEHEADER bitmapFileHeader;
+	unsigned char *bitmapImage;
+	int imageIdx = 0;
+	unsigned char temp;
+
+	fopen_s(&filePtr, filename, "rb");
+	if (filePtr == NULL)
+		return NULL;
+	fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, filePtr);
+	if (bitmapFileHeader.bfType != BITMAP_ID)
+	{
+		fprintf(stderr, "Error in LoadBitmapFile: the file is not a bitmap file\n");
+		return NULL;
+	}
+
+	fread(bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1, filePtr);
+	fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
+	bitmapImage = new unsigned char[bitmapInfoHeader->biSizeImage];
+	if (!bitmapImage)
+	{
+		fprintf(stderr, "Error in LoadBitmapFile: memory error\n");
+		return NULL;
+	}
+
+	fread(bitmapImage, 1, bitmapInfoHeader->biSizeImage, filePtr);
+	if (bitmapImage == NULL)
+	{
+		fprintf(stderr, "Error in LoadBitmapFile: memory error\n");
+		return NULL;
+	}
+
+	// // Reverse
+	// int size = bitmapInfoHeader->biSizeImage;
+	// for (imageIdx = 0; imageIdx <= size / 2; imageIdx++)
+	// {
+	// 	temp = bitmapImage[imageIdx];
+	// 	bitmapImage[imageIdx] = bitmapImage[size - imageIdx - 1];
+	// 	bitmapImage[size - imageIdx - 1] = temp;
+	// }
+
+	fclose(filePtr);
+	return bitmapImage;
+}
+
+void View::texload(int i, std::string filename)
+{
+	BITMAPINFOHEADER bitmapInfoHeader;
+	unsigned char *bitmapData;
+	char c_filename[BUFSIZE];
+	strcpy(c_filename, (texturePath + filename).c_str());
+
+	bitmapData = LoadBitmapFile(c_filename, &bitmapInfoHeader);
+	glBindTexture(GL_TEXTURE_2D, texture[i]);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D,
+				 0,
+				 GL_RGB,
+				 bitmapInfoHeader.biWidth,
+				 bitmapInfoHeader.biHeight,
+				 0,
+				 GL_RGB,
+				 GL_UNSIGNED_BYTE,
+				 bitmapData);
+}
+
+void View::initTexture()
+{
+	glGenTextures(TEXTURE_NUM, texture);
+	for (int i = 0; i < TEXTURE_NUM; i++)
+	{
+		texload(i, texFileNames[i]);
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }

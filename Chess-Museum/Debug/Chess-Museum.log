@@ -1,4 +1,6 @@
-﻿  View.cpp
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(311,17): warning C4018: “<”: 有符号/无符号不匹配
+﻿  ObjParser.cpp
+  View.cpp
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(376,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(450,16): warning C4101: “temp”: 未引用的局部变量
+  正在生成代码...
   Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe

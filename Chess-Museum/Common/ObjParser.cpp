@@ -1,13 +1,22 @@
 #include "ObjParser.h"
 #include "../ViewModel/TriangleMesh.h"
+#include <sstream>
 
 #define OBJ_MAX_BUF 100
 #define OBJ_MAX_LINE 200
-#define OBJ_FILE_NUM 1
+#define OBJ_FILE_NUM 9
 
 static std::string objFilePath = "obj/";
 static std::string objFileName[OBJ_FILE_NUM] =
-    {"chess.obj"};
+    {"pawn.obj",
+     "rook.obj",
+     "knight.obj",
+     "bishop.obj",
+     "queen.obj",
+     "king.obj",
+     "table.obj",
+     "chess_board.obj",
+     "marble_table.obj"};
 
 std::vector<TriangleMesh> ObjParser::parseFile()
 {
@@ -72,28 +81,41 @@ std::vector<TriangleMesh> ObjParser::parseFile()
             else if (sbuf == "f")
             {
                 Triangle new_triangle;
-                int n[9] = {0};
-                for (int i = 0; i < 3; i++)
+                int n[12] = {0};
+                in.getline(buf, OBJ_MAX_LINE);
+                istringstream iss(buf);
+                int i = 0;
+                while (!iss.eof() && i <= 3)
                 {
-                    in >> n[3 * i];
+                    iss >> n[3 * i];
                     n[3 * i] = n[3 * i] < 0 ? v.size() + n[3 * i] + 1 : n[3 * i]; // number of v/vt/vn may be negative
-                    in.get(c);
+                    iss.get(c);
                     if (c != '/')
                         continue;
-                    in >> n[3 * i + 1];
+                    iss >> n[3 * i + 1];
                     n[3 * i + 1] = n[3 * i + 1] < 0 ? vt.size() + n[3 * i + 1] + 1 : n[3 * i + 1]; // number of v/vt/vn may be negative
-                    in.get(c);
+                    iss.get(c);
                     if (c != '/')
                         continue;
-                    in >> n[3 * i + 2];
+                    iss >> n[3 * i + 2];
                     n[3 * i + 2] = n[3 * i + 2] < 0 ? vn.size() + n[3 * i + 2] + 1 : n[3 * i + 2]; // number of v/vt/vn may be negative
+                    i++;
                 }
                 if (n[0] && n[3] && n[6])
-                    new_triangle.setV(v[n[0] - 1], v[n[3] - 1], v[n[6] - 1]);
+                    if (n[9])
+                        new_triangle.setV(v[n[0] - 1], v[n[3] - 1], v[n[6] - 1], v[n[9] - 1]);
+                    else
+                        new_triangle.setV(v[n[0] - 1], v[n[3] - 1], v[n[6] - 1]);
                 if (n[1] && n[4] && n[7])
-                    new_triangle.setT(vt[n[1] - 1], vt[n[4] - 1], vt[n[7] - 1]);
+                    if (n[10])
+                        new_triangle.setT(vt[n[1] - 1], vt[n[4] - 1], vt[n[7] - 1], vt[n[10] - 1]);
+                    else
+                        new_triangle.setT(vt[n[1] - 1], vt[n[4] - 1], vt[n[7] - 1]);
                 if (n[2] && n[5] && n[8])
-                    new_triangle.setN(vn[n[2] - 1], vn[n[5] - 1], vn[n[8] - 1]);
+                    if (n[11])
+                        new_triangle.setN(vn[n[2] - 1], vn[n[5] - 1], vn[n[8] - 1], vn[n[11] - 1]);
+                    else
+                        new_triangle.setN(vn[n[2] - 1], vn[n[5] - 1], vn[n[8] - 1]);
                 triangles.emplace_back(new_triangle);
             }
             else

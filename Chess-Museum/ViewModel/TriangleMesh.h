@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Common/vectors.h"
-#include <array>
+#include <vector>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -12,15 +12,18 @@ public:
     void setV(Vec3f a, Vec3f b, Vec3f c);
     void setN(Vec3f a, Vec3f b, Vec3f c);
     void setT(Vec3f a, Vec3f b, Vec3f c);
-    const std::array<Vec3f, 3> &getV() const { return v; }
-    const std::array<Vec3f, 3> &getN() const { return vn; }
-    const std::array<Vec3f, 3> &getT() const { return vt; }
-    virtual void draw() const;
+    void setV(Vec3f a, Vec3f b, Vec3f c, Vec3f d);
+    void setN(Vec3f a, Vec3f b, Vec3f c, Vec3f d);
+    void setT(Vec3f a, Vec3f b, Vec3f c, Vec3f d);
+    const std::vector<Vec3f> &getV() const { return v; }
+    const std::vector<Vec3f> &getN() const { return vn; }
+    const std::vector<Vec3f> &getT() const { return vt; }
+    void draw() const;
 
 private:
-    std::array<Vec3f, 3> v;
-    std::array<Vec3f, 3> vn;
-    std::array<Vec3f, 3> vt;
+    std::vector<Vec3f> v;
+    std::vector<Vec3f> vn;
+    std::vector<Vec3f> vt;
 };
 
 class TriangleMesh
