@@ -1,4 +1,11 @@
 ﻿  View.cpp
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(378,17): warning C4018: “<”: 有符号/无符号不匹配
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(452,16): warning C4101: “temp”: 未引用的局部变量
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(245,2): warning C4065: switch 语句包含“default”但是未包含“case”标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(232,8): warning C4102: “CIRCLE”: 未引用的标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(233,6): warning C4102: “CONE”: 未引用的标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(234,6): warning C4102: “CUBE”: 未引用的标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(235,10): warning C4102: “CYLINDER”: 未引用的标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(236,8): warning C4102: “PRISM3”: 未引用的标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(237,8): warning C4102: “SPHERE”: 未引用的标签
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(404,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(486,16): warning C4101: “temp”: 未引用的局部变量
   Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe

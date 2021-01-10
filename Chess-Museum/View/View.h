@@ -1,6 +1,7 @@
 #pragma once
 #include "../Common/MathBase.h"
 #include "../Common/vectors.h"
+#pragma comment(lib, "glew32.lib")
 #include <gl/glew.h>
 #include <gl/glut.h>
 #include <map>
@@ -57,9 +58,12 @@ private:
 
 	static void initMapRelation();
 	static void setList();
+
 	static unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 	static void texload(int i, std::string filename);
 	static void initTexture();
+
+	static void loadShader();
 
 	//==========================================================================================
 	//==========================================================================================
@@ -75,7 +79,9 @@ private:
 	static Vec3f MoveIncrement;
 	static float Pitch, Yaw;
 
-	static std::map<std::string, ViewObjectType> objMap;
+	static std::map<std::string, ViewObjectType> objMap; // from OBJ_NAME to TYPE
+	static std::map<ViewObjectType, GLuint> listMap; // from TYPE to listNum/VAO
+	static std::map<GLuint, unsigned int> VAOMap; // from VAO to FACE_NUM
 	static std::map<ViewObjectType, std::vector<int>> texMap;
 	static std::string texFileNames[TEXTURE_NUM];
 	static unsigned int texture[TEXTURE_NUM];

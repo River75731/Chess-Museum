@@ -1,20 +1,25 @@
 #include "View.h"
 #include "../Common/ObjParser.h"
+#include "../Common/textfile.h"
 #include "../ViewModel/ViewModel.h"
 #include <vector>
+
+#define MAX_FRAGMENT_NUM 100000
 
 bool View::ButtonDown = false;
 bool View::Move = false;
 int View::du = 90, View::OriX = -1, View::OriY = -1;
-float View::c = PI / 180.0; //??????????????
+float View::c = PI / 180.0;
 Vec3f View::EyeLocation = Vec3f(0, 0, 0);
 Vec3f View::EyeDirection = Vec3f(0, 0, -1);
 Vec3f View::EyeUp = Vec3f(0, 1, 0);
 Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
-float View::Pitch = 0, View::Yaw = 270; //????????????
+float View::Pitch = 0, View::Yaw = 270;
 char View::Key = ' ';
 
 std::map<std::string, ViewObjectType> View::objMap;
+std::map<ViewObjectType, GLuint> View::listMap;
+std::map<GLuint, unsigned int> View::VAOMap;
 
 std::map<ViewObjectType, std::vector<int>> View::texMap;
 std::string View::texturePath = "texture/";
@@ -37,6 +42,12 @@ std::string View::texFileNames[TEXTURE_NUM] =
 
 void View::initMapRelation()
 {
+	objMap["CIRCLE"] = CIRCLE;
+	objMap["CONE"] = CONE;
+	objMap["CUBE"] = CUBE;
+	objMap["CYLINDER"] = CYLINDER;
+	objMap["PRISM3"] = PRISM3;
+	objMap["SPHERE"] = SPHERE;
 	objMap["PAWN"] = PAWN;
 	objMap["ROOK"] = ROOK;
 	objMap["KNIGHT"] = KNIGHT;
@@ -192,12 +203,9 @@ void View::setList()
 	std::vector<TriangleMesh> tm = ObjParser::parseFile();
 	for (std::vector<TriangleMesh>::iterator iter = tm.begin(); iter != tm.end(); iter++)
 	{
-		glNewList(objMap[iter->getObjName()], GL_COMPILE);
-		for (std::vector<Triangle>::const_iterator iter1 = iter->getTriangles().begin(); iter1 != iter->getTriangles().end(); iter1++)
-		{
-			iter1->draw();
-		}
-		glEndList();
+		iter->setVAO();
+		listMap[objMap[iter->getObjName()]] = iter->getListNum();
+		VAOMap[iter->getListNum()] = iter->getF().size();
 	}
 }
 
@@ -211,16 +219,66 @@ void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, flo
 	Rotate(angle, axis);
 	Scale(scale);
 
+	glEnable(GL_TEXTURE_2D);
 	if (texIndex != -1)
 	{
-		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
 	}
 	else
-		glDisable(GL_TEXTURE_2D);
-	glCallList(type);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+	switch (type)
+	{
+	CIRCLE:
+	CONE:
+	CUBE:
+	CYLINDER:
+	PRISM3:
+	SPHERE:
+		glCallList(type);
+		break;
+	default:
+		glBindVertexArray(listMap[type]);
+		glDrawElements(GL_TRIANGLES, VAOMap[listMap[type]] * 3, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+		glBindVertexArray(0);
+		break;
+	}
+
+	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
+}
+
+void View::Display()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1, 1, 1, 1);
+	SetEyeLocation();
+	if (Move)
+		EyeMove();
+	glEnable(GL_LIGHTING);
+	GLfloat gray[] = {0.4, 0.4, 0.4, 1.0};
+	GLfloat light_pos[] = {10, 10, 10, 0};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
+	glEnable(GL_LIGHT0);
+
+	glColor3f(0, 0, 0);
+	glBegin(GL_LINES);
+	glVertex3f(10000, 0, 0);
+	glVertex3f(-10000, 0, 0);
+	glVertex3f(0, 10000, 0);
+	glVertex3f(-0, -10000, 0);
+	glVertex3f(0, 0, 10000);
+	glVertex3f(-0, 0, -10000);
+	glEnd();
+
+	DrawModel(PAWN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), -1);
+	DrawModel(PAWN, Vec2f(), Vec3f(0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 0);
+	DrawModel(PAWN, Vec2f(), Vec3f(-0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 1);
+
+	glutSwapBuffers();
 }
 
 void View::Mouse(int button, int state, int x, int y)
@@ -278,22 +336,22 @@ void View::EyeMove()
 	switch (Key)
 	{
 	case 'w':
-		EyeLocation += 0.01 * EyeDirection;
+		EyeLocation += 0.001 * EyeDirection;
 		break;
 	case 's':
-		EyeLocation -= 0.01 * EyeDirection;
+		EyeLocation -= 0.001 * EyeDirection;
 		break;
 	case 'a':
-		EyeLocation += 0.01 * MoveIncrement;
+		EyeLocation += 0.001 * MoveIncrement;
 		break;
 	case 'd':
-		EyeLocation -= 0.01 * MoveIncrement;
+		EyeLocation -= 0.001 * MoveIncrement;
 		break;
 	case 'z':
-		EyeLocation -= 0.01 * EyeUp;
+		EyeLocation -= 0.001 * EyeUp;
 		break;
 	case 'c':
-		EyeLocation += 0.01 * EyeUp;
+		EyeLocation += 0.001 * EyeUp;
 		break;
 	case 'q':
 		exit(0);
@@ -301,38 +359,6 @@ void View::EyeMove()
 	default:
 		break;
 	}
-}
-
-void View::Display()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1, 1, 1, 1);
-	SetEyeLocation();
-	if (Move)
-		EyeMove();
-	glEnable(GL_LIGHTING);
-	GLfloat gray[] = {0.4, 0.4, 0.4, 1.0};
-	GLfloat light_pos[] = {10, 10, 10, 0};
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
-	glEnable(GL_LIGHT0);
-
-	glColor3f(0, 0, 0);
-	glBegin(GL_LINES);
-	glVertex3f(10000, 0, 0);
-	glVertex3f(-10000, 0, 0);
-	glVertex3f(0, 10000, 0);
-	glVertex3f(-0, -10000, 0);
-	glVertex3f(0, 0, 10000);
-	glVertex3f(-0, 0, -10000);
-	glEnd();
-
-	DrawModel(PAWN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), -1);
-	DrawModel(PAWN, Vec2f(), Vec3f(0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 0);
-	DrawModel(PAWN, Vec2f(), Vec3f(-0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 1);
-
-	glutSwapBuffers();
 }
 
 void View::PickMode(int x, int y)
@@ -424,11 +450,19 @@ void View::Init(int argc, char *argv[])
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("***************");
 
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		//Problem: glewInit failed, something is seriously wrong.
+		cout << "glewInit failed, aborting." << endl;
+	}
+
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
 
 	initTexture();
 	initMapRelation();
+	loadShader();
 	setList();
 
 	glutReshapeFunc(Reshape);
@@ -526,4 +560,47 @@ void View::initTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
+void View::loadShader()
+{
+	char vfilename[] = "shader/v.vert";
+	char ffilename[] = "shader/f.frag";
+	GLuint v, f, p;
+	char *vs = NULL, *fs = NULL;
+	v = glCreateShader(GL_VERTEX_SHADER);
+	f = glCreateShader(GL_FRAGMENT_SHADER);
+	vs = textFileRead(vfilename);
+	fs = textFileRead(ffilename);
+	const char *vv = vs;
+	const char *ff = fs;
+	glShaderSource(v, 1, &vv, NULL);
+	glShaderSource(f, 1, &ff, NULL);
+	free(vs);
+	free(fs);
+	glCompileShader(v);
+	glCompileShader(f);
+	p = glCreateProgram();
+	glAttachShader(p, v);
+	glAttachShader(p, f);
+	glLinkProgram(p);
+	glUseProgram(p);
+
+	GLint length;
+	GLsizei num;
+	char *log;
+	glGetShaderiv(v, GL_INFO_LOG_LENGTH, &length);
+	if (length > 0)
+	{
+		log = (char *) malloc(sizeof(char) * length);
+		glGetShaderInfoLog(v, length, &num, log);
+		std::cout << "Vertex shader compile log:" << std::endl << log << std::endl << std::endl << std::endl;
+	}
+	glGetShaderiv(f, GL_INFO_LOG_LENGTH, &length);
+	if (length > 0)
+	{
+		log = (char *) malloc(sizeof(char) * length);
+		glGetShaderInfoLog(f, length, &num, log);
+		std::cout << "Fragment shader compile log:" << std::endl << log << std::endl << std::endl << std::endl;
+	}
 }

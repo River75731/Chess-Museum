@@ -40,6 +40,12 @@
     <Filter Include="头文件\TEST">
       <UniqueIdentifier>{05c682e4-32ef-4f86-a8d6-c5ed30ac5232}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Light">
+      <UniqueIdentifier>{c7280c82-7f49-4892-a714-64240cbcf393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Light">
+      <UniqueIdentifier>{e20eb7ad-7e90-4fa5-ad08-92be8d79c42b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ViewModel\ViewObject.h">
@@ -102,6 +108,9 @@
     <ClInclude Include="ViewModel\TriangleMesh.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
+    <ClInclude Include="Common\textfile.h">
+      <Filter>头文件\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewModel\ViewObject.cpp">
@@ -128,12 +137,6 @@
     <ClCompile Include="Model\ClassicChess.cpp">
       <Filter>源文件\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Exhibit.cpp">
-      <Filter>源文件\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\Map.cpp">
-      <Filter>源文件\Model</Filter>
-    </ClCompile>
     <ClCompile Include="View\View.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
@@ -143,8 +146,13 @@
     <ClCompile Include="ViewModel\TriangleMesh.cpp">
       <Filter>源文件\ViewModel</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Model.cpp">
-      <Filter>源文件\Model</Filter>
+    <ClCompile Include="Common\textfile.cpp">
+      <Filter>源文件\Common</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\DefaultMap.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>
