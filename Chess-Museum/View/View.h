@@ -89,6 +89,7 @@ private:
 	static ViewSceneType CurrentState;
 	static Model MyModel;
 	static void DrawScene();
+	static void DrawGround();
 
 	static std::map<std::string, ViewObjectType> objMap; // from OBJ_NAME to TYPE
 	static std::map<ViewObjectType, GLuint> listMap; // from TYPE to listNum/VAO
