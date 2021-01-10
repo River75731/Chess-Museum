@@ -139,7 +139,10 @@ void TriangleMesh::setVAO()
     GLfloat *texCoordes = new GLfloat[6 * MAX_FRAGMENT_NUM];
     GLuint *indexes = new GLuint[3 * MAX_FRAGMENT_NUM];
 
-    for (size_t i = 0; i < f.size(); i++)
+    int vnn = 0, n = 0, t = 0, in = 0;
+
+    size_t i;
+    for (i = 0; i < f.size(); i++)
     {
         for (int b = 0; b < 3; b++)
         {
@@ -147,13 +150,19 @@ void TriangleMesh::setVAO()
             {
                 vertexes[12 * i + 4 * b + a] = v[f[i][3 * b + 0] - 1][a];
                 normals[12 * i + 4 * b + a] = vn[f[i][3 * b + 2] - 1][a];
+                vnn++;
+                n++;
             }
             vertexes[12 * i + 4 * b + 3] = 1.0f;
             normals[12 * i + 4 * b + 3] = 1.0f;
+            vnn++;
+            n++;
             indexes[3 * i + b] = 3 * i + b;
+            in++;
             for (int a = 0; a < 2; a++)
             {
                 texCoordes[6 * i + 2 * b + a] = vt[f[i][3 * b + 1] - 1][a];
+                t++;
             }
         }
     }
@@ -167,6 +176,7 @@ void TriangleMesh::setVAO()
     GLuint vertexVBO, normalVBO, texVBO;
     GLuint VBOs[3] = {0};
 
+    glBindVertexArray(0);
     glGenBuffers(3, VBOs);
     if (VBOs[0] > 0)
     {

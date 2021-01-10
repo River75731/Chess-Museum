@@ -15,13 +15,12 @@ void main(){
 	float NdotH = clamp(dot(halfAngle, norm), 0.0, 1.0);
 
     // "Half-Lambert" technique for more pleasing diffuse term
-	float diffuse  = 1.0 * NdotL;
+
+	float diffuse  = NdotL >= 0.0 ? 1.0 * NdotL : 0.0;
 	float specular = pow(NdotH, 32.0);
 
-    if (NdotL > 0.0)
-	    gl_FragColor = diffuse * texture2D(gSampler, TexCoord0.st) + vec4(specular * 0.2);
-    else
-        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+	gl_FragColor = vec4(0.1) + diffuse * texture2D(gSampler, TexCoord0.st);
+	// * texture2D(gSampler, TexCoord0.st)
 }
 
 

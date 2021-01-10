@@ -4,11 +4,18 @@
 
 #define OBJ_MAX_BUF 100
 #define OBJ_MAX_LINE 200
-#define OBJ_FILE_NUM 1
+#define OBJ_FILE_NUM 8
 
 static std::string objFilePath = "obj/";
 static std::string objFileName[OBJ_FILE_NUM] =
-    {"pawn.obj"};
+    {"pawn.obj",
+     "rook.obj",
+     "bishop.obj",
+     "knight.obj",
+     "queen.obj",
+     "king.obj",
+     "marble_table.obj",
+     "chess_board.obj"};
 
 std::vector<TriangleMesh> ObjParser::parseFile()
 {
@@ -40,6 +47,7 @@ std::vector<TriangleMesh> ObjParser::parseFile()
                 {
                     mesh.setObjName(groupName);
                     TriangleMeshs.emplace_back(mesh);
+                    mesh = TriangleMesh();
                 }
                 in >> groupName;
             }
@@ -65,7 +73,7 @@ std::vector<TriangleMesh> ObjParser::parseFile()
             else if (sbuf == "f")
             {
                 std::array<unsigned int, 9> n = {0};
-                
+
                 for (int i = 0; i < 3; i++)
                 {
                     in >> n[3 * i];
@@ -91,6 +99,7 @@ std::vector<TriangleMesh> ObjParser::parseFile()
         }
         mesh.setObjName(groupName);
         TriangleMeshs.emplace_back(mesh);
+        mesh = TriangleMesh();
 
         in.close();
     }

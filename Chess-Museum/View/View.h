@@ -10,7 +10,7 @@
 
 #define BUFSIZE 512
 /* Texture */
-#define TEXTURE_NUM 13
+#define TEXTURE_NUM 20
 #define BITMAP_ID 0x4D42
 #define imageweight 128
 #define imageheight 128
