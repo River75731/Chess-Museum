@@ -19,7 +19,7 @@ void main(){
 	float diffuse  = NdotL >= 0.0 ? 1.0 * NdotL : 0.0;
 	float specular = pow(NdotH, 32.0);
 
-	gl_FragColor = vec4(0.1) + diffuse * texture2D(gSampler, TexCoord0.st);
+	gl_FragColor = vec4(0.1) + diffuse * texture2D(gSampler, TexCoord0.st)+vec4(specular);
 	// * texture2D(gSampler, TexCoord0.st)
 }
 
