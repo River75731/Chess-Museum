@@ -108,8 +108,13 @@
     <ClInclude Include="ViewModel\TriangleMesh.h">
       <Filter>头文件\ViewModel</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Light\light.h">
       <Filter>头文件\Light</Filter>
+=======
+    <ClInclude Include="Common\textfile.h">
+      <Filter>头文件\Common</Filter>
+>>>>>>> ed51142fd4b483afbc23f732f37ad691d27ff94e
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,12 +142,6 @@
     <ClCompile Include="Model\ClassicChess.cpp">
       <Filter>源文件\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Exhibit.cpp">
-      <Filter>源文件\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Model\Map.cpp">
-      <Filter>源文件\Model</Filter>
-    </ClCompile>
     <ClCompile Include="View\View.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
@@ -152,8 +151,8 @@
     <ClCompile Include="ViewModel\TriangleMesh.cpp">
       <Filter>源文件\ViewModel</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Model.cpp">
-      <Filter>源文件\Model</Filter>
+    <ClCompile Include="Common\textfile.cpp">
+      <Filter>源文件\Common</Filter>
     </ClCompile>
     <ClCompile Include="Light\light.cpp">
       <Filter>源文件\Light</Filter>
