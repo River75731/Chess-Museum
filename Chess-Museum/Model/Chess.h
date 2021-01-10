@@ -13,8 +13,5 @@ public:
 
 class Chess {
 protected:
-	virtual void execMove(std::unique_ptr<ChessMove> move) = 0;	// execute a move
-	virtual bool isValidMove(std::unique_ptr<ChessMove> move) const = 0; // whether a move is valid (consider all objects)
 public:
-	virtual void tryMove(std::unique_ptr<ChessMove> move) = 0;	// execute a move after judging whether it's valid
 };

@@ -131,6 +131,7 @@
     <ClInclude Include="Common\textfile.h" />
     <ClInclude Include="Common\Vector.h" />
     <ClInclude Include="Common\vectors.h" />
+    <ClInclude Include="Model\Chess.h" />
     <ClInclude Include="Model\ClassicChess.h" />
     <ClInclude Include="Model\Exhibit.h" />
     <ClInclude Include="Model\Map.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="View\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Data\DefaultChess.txt" />
     <Text Include="Data\DefaultMap.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
