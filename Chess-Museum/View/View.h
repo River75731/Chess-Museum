@@ -92,4 +92,5 @@ private:
 	static unsigned int texture[TEXTURE_NUM];
 	static std::string texturePath;
 	static void DrawEdit();
+	static void DrawGround();
 };
