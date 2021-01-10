@@ -10,7 +10,8 @@
 
 #include "Chess.h"
 #include "ClassicChess.h"
-
+#define WIDTH 1024
+#define LENGTH 1024
 
 enum ModelState {
 	MODEL_PLAYMODE,
@@ -33,8 +34,8 @@ private:
 	Position2i chosenBlock;	// highlight block
 	Exhibit chosenExhibit;	// the chosen Exhibit
 
-	void loadMap(const std::string& address = "../Data/DefaultMap.txt");
-	void saveMap(const std::string& address = "../Data/SavedMap.txt");
+	void loadMap(const std::string& address = "Data/DefaultMap.txt");
+	void saveMap(const std::string& address = "Data/SavedMap.txt");
 
 
 public:

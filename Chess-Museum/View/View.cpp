@@ -3,22 +3,23 @@
 #include "../Common/textfile.h"
 #include "../ViewModel/ViewModel.h"
 #include <vector>
-
-#define MAX_FRAGMENT_NUM 100000
-
+#include <iostream>
 bool View::ButtonDown = false;
 bool View::Move = false;
 int View::du = 90, View::OriX = -1, View::OriY = -1;
-float View::c = PI / 180.0;
-Vec3f View::EyeLocation = Vec3f(0, 0, 0);
-Vec3f View::EyeDirection = Vec3f(0, 0, -1);
+float View::c = PI / 180.0; 
+Vec3f View::EyeLocation = Vec3f(0, 0, 2);
+Vec3f View::EyeDirection = Vec3f(-1.99999,0.0069813,0.0);
 Vec3f View::EyeUp = Vec3f(0, 1, 0);
-Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
-float View::Pitch = 0, View::Yaw = 270;
+Vec3f View::MoveIncrement = Vec3f(0.00174537,0,0.999998);
+Vec3f View::EyeDirection_t = Vec3f(-1.99999, 0.0069813, 0.0);
+float View::Pitch = 0, View::Yaw = 180; 
 char View::Key = ' ';
 
 GLuint program;
 
+ViewSceneType View::CurrentState = SCENE;
+Model View::MyModel = Model();
 std::map<std::string, ViewObjectType> View::objMap;
 std::map<ViewObjectType, GLuint> View::listMap;
 std::map<GLuint, unsigned int> View::VAOMap;
@@ -129,8 +130,7 @@ void View::Translate(Vec3f direction)
 void View::setList()
 {
 	glNewList(CIRCLE, GL_COMPILE);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
+
 	glBegin(GL_POLYGON);
 	int i = 0;
 	for (i = 0; i <= 360; i++)
@@ -306,14 +306,15 @@ void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, flo
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
-	Translate(Vec3f(coordinate.x(), coordinate.y(), 0));
-	Translate(translate);
+	Translate(Vec3f(coordinate.x(), 0, coordinate.y()));
+	//Translate(translate);
 	Rotate(angle, axis);
 	Scale(scale);
 
 	glEnable(GL_TEXTURE_2D);
 	if (texIndex != -1)
 	{
+		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
 	}
 	else
@@ -494,9 +495,11 @@ void View::onMouseMove(int x, int y)
 			Yaw = 0.0;
 		else if (Yaw < 0.0)
 			Yaw = 360.0;
-		EyeDirection.Set(1.0 * cos(c * Yaw) * cos(c * Pitch), 1.0 * sin(c * Pitch), 1.0 * sin(c * Yaw) * cos(c * Pitch));
+		EyeDirection.Set(2.0 * cos(c * Yaw) * cos(c * Pitch), 2.0 * sin(c * Pitch), 2.0 * sin(c * Yaw) * cos(c * Pitch));
 		EyeUp.Set(1.0 * cos(c * Yaw) * cos(c * (Pitch + 90.0)), 1.0 * sin(c * (Pitch + 90.0)), 1.0 * sin(c * Yaw) * cos(c * (Pitch + 90.0)));
-		MoveIncrement.Set(1.0 * cos(c * (Yaw - 90.0)) * cos(c * Pitch), 1.0 * sin(c * Pitch), 1.0 * sin(c * (Yaw - 90.0)) * cos(c * Pitch));
+		
+		EyeDirection_t.Set(1.0 * cos(c * Yaw), 0, 1.0 * sin(c * Yaw));
+		MoveIncrement. Set(1.0 * sin(c * Yaw), 0, -1.0 * cos(c * Yaw));
 		OriX = x, OriY = y;
 	}
 }
@@ -512,6 +515,24 @@ void View::SetEyeLocation()
 void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 {
 	Key = k;
+	switch (k)
+	{
+	case 'e':
+	case 'E':
+		CurrentState = EDIT;
+		Reshape(600, 600);
+		break;
+	case 'r':
+	case 'R':
+		CurrentState = SCENE;
+		Reshape(600, 600);
+		break;
+	case 'm':
+	case 'M':
+		CurrentState = CHESS;
+		break;
+	}
+	
 	Move = true;
 }
 
@@ -522,32 +543,57 @@ void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
 
 void View::EyeMove()
 {
-	switch (Key)
-	{
-	case 'w':
-		EyeLocation += 0.01 * EyeDirection;
-		break;
-	case 's':
-		EyeLocation -= 0.01 * EyeDirection;
-		break;
-	case 'a':
-		EyeLocation += 0.01 * MoveIncrement;
-		break;
-	case 'd':
-		EyeLocation -= 0.01 * MoveIncrement;
-		break;
-	case 'z':
-		EyeLocation -= 0.01 * EyeUp;
-		break;
-	case 'c':
-		EyeLocation += 0.01 * EyeUp;
-		break;
-	case 'q':
-		exit(0);
-		break;
-	default:
-		break;
-	}
+
+
+	Vec3f temp_vec = EyeLocation;
+	
+		switch (Key)
+		{
+		float temp[3];
+		case 'w':
+			temp_vec += 0.05 * EyeDirection_t;
+			temp_vec.Get(temp[0], temp[1], temp[2]);	
+			
+			if (MyModel.canEnter(Position2i((int)(-temp[0]+0.5),(int)(-temp[2]+0.5)))||CurrentState==EDIT)
+			{
+				EyeLocation += 0.01 * EyeDirection_t;
+			}
+			break;
+		case 's':
+			temp_vec -= 0.05 * EyeDirection_t;
+			temp_vec.Get(temp[0], temp[1], temp[2]);
+
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT)
+			EyeLocation -= 0.01 * EyeDirection_t;
+			break;
+		case 'a':
+			temp_vec += 0.05 * MoveIncrement;
+			temp_vec.Get(temp[0], temp[1], temp[2]);
+
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT)
+			EyeLocation += 0.01 * MoveIncrement;
+			break;
+		case 'd':
+			temp_vec -= 0.05 * MoveIncrement;
+			temp_vec.Get(temp[0], temp[1], temp[2]);
+
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT)
+			EyeLocation -= 0.01 * MoveIncrement;
+			break;
+		case 'z':
+
+			EyeLocation -= 0.01 * EyeUp;
+			break;
+		case 'c':
+			EyeLocation += 0.01 * EyeUp;
+			break;
+		case 'q':
+			exit(0);
+			break;
+		default:
+			break;
+		}
+	
 }
 
 void View::PickMode(int x, int y)
@@ -622,7 +668,20 @@ void View::Reshape(int w, int h)
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
+	if (CurrentState == SCENE)
+	{
+		EyeLocation = Vec3f(0, 0, -2);
+		EyeDirection = Vec3f(-1.99999, 0.0069813, 0.0);
+		EyeUp = Vec3f(0, 1, 0);
+	}
+	else if (CurrentState == EDIT)
+	{
+		EyeLocation = Vec3f(-5, 4, 0);
+		EyeDirection = Vec3f(-1.77385,- 0.923499,0.024773);
+		EyeUp = Vec3f(-0.379386,0.92521,- 0.00728536);
+	}
 	gluPerspective(90.0, (float)w / h, 0.01, 100000.0);
+	
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -700,15 +759,6 @@ unsigned char *View::LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfo
 		return NULL;
 	}
 
-	// // Reverse
-	// int size = bitmapInfoHeader->biSizeImage;
-	// for (imageIdx = 0; imageIdx <= size / 2; imageIdx++)
-	// {
-	// 	temp = bitmapImage[imageIdx];
-	// 	bitmapImage[imageIdx] = bitmapImage[size - imageIdx - 1];
-	// 	bitmapImage[size - imageIdx - 1] = temp;
-	// }
-
 	fclose(filePtr);
 	return bitmapImage;
 }
@@ -749,6 +799,78 @@ void View::initTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
+void View::DrawScene()
+{	
+	if (CurrentState == EDIT)
+	{
+		DrawEdit();
+	}
+	for (int i = 1; i <= 11; i++)
+	{
+		for (int j = 1; j <= 11; j++)
+		{
+			Exhibit temp = Exhibit();
+			MyModel.getExhibit(Position2i(i, j), temp);
+			switch (temp.getType())
+			{
+			case  EXHIBIT_EMPTY:
+
+				break;
+			case  EXHIBIT_CHESS_SET:
+
+				break;
+			case EXHIBIT_CUBE:
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()) , temp.getTextureNum());
+				break;
+			case EXHIBIT_DOOR:
+
+				break;
+			case EXHIBIT_WINDOW:
+
+				break;
+
+			case EXHIBIT_PAWN:
+
+				break;
+			case EXHIBIT_ROOK:
+
+				break;
+			case EXHIBIT_KNIGHT:
+
+				break;
+			case EXHIBIT_BISHOP:
+				break;
+
+			case EXHIBIT_QUEEN:
+				break;
+			case EXHIBIT_KING:
+
+				break;
+			}
+		}
+	}
+}
+
+void View::DrawEdit()
+{
+	for (int i = 0; i <= 10; i++)
+	{
+			glLineWidth(2);
+			glBegin(GL_LINES);
+			glVertex3f(-i-0.5, 0, -0.5);
+			glVertex3f(-i-0.5, 0, -10.5);
+			glEnd();	
+	}
+	for (int i = 0; i <= 10; i++)
+	{
+		glLineWidth(2);
+		glBegin(GL_LINES);
+		glVertex3f(-0.5, 0, -i-0.5);
+		glVertex3f(-20.5, 0, -i-0.5);
+		glEnd();
+	}
 }
 
 void View::loadShader()

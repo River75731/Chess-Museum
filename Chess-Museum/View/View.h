@@ -1,12 +1,14 @@
 #pragma once
+#pragma comment(lib,"glew32.lib")
 #include "../Common/MathBase.h"
 #include "../Common/vectors.h"
-#pragma comment(lib, "glew32.lib")
 #include <gl/glew.h>
 #include <gl/glut.h>
 #include <map>
 #include <vector>
 #include <windows.h>
+#include "../Model/Exhibit.h"
+#include "../Model/Model.h"
 
 #define BUFSIZE 512
 /* Texture */
@@ -33,7 +35,12 @@ enum ViewObjectType
 	MARBLETABLE,
 	CHESSBOARD
 };
-
+enum ViewSceneType
+{
+	SCENE,
+	CHESS,
+	EDIT
+};
 class View
 {
 public:
@@ -67,7 +74,7 @@ private:
 
 	//==========================================================================================
 	//==========================================================================================
-
+	static void DrawExhibit(ExhibitType Type);
 	static bool ButtonDown;
 	static bool Move;
 	static char Key;
@@ -75,9 +82,14 @@ private:
 	static float c;
 	static Vec3f EyeLocation;
 	static Vec3f EyeDirection;
+	static Vec3f EyeDirection_t;
 	static Vec3f EyeUp;
 	static Vec3f MoveIncrement;
 	static float Pitch, Yaw;
+	static ViewSceneType CurrentState;
+	static Model MyModel;
+	static void DrawScene();
+	static std::map<std::string, ViewObjectType> objMap;
 
 	static std::map<std::string, ViewObjectType> objMap; // from OBJ_NAME to TYPE
 	static std::map<ViewObjectType, GLuint> listMap; // from TYPE to listNum/VAO
@@ -86,4 +98,5 @@ private:
 	static std::string texFileNames[TEXTURE_NUM];
 	static unsigned int texture[TEXTURE_NUM];
 	static std::string texturePath;
+	static void DrawEdit();
 };
