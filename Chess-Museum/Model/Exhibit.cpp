@@ -245,7 +245,7 @@ std::istream & operator>>(std::istream & is, Exhibit & exhibit)
 std::ostream & operator<<(std::ostream & os, const Exhibit & exhibit)
 {
 	os << Exhibit::toString.at(exhibit.getType()) << " ";
-	os << exhibit.getTextureNum() << " " << exhibit.getLightNum << std::endl;
+	os << exhibit.getTextureNum() << " " << exhibit.getLightNum() << std::endl;
 	os << exhibit.getTranslate().getX() << " " << exhibit.getTranslate().getY() << " " << exhibit.getTranslate().getZ() << std::endl;
 	os << exhibit.getRotate() << std::endl;
 	os << exhibit.getScale().getX() << " " << exhibit.getScale().getY() << " " << exhibit.getScale().getZ() << std::endl;

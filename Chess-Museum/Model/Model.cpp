@@ -1,13 +1,13 @@
 #include "Model.h"
 
-static const std::map<const ModelState, const std::string> toString = {
+const std::map<const ModelState, const std::string> Model::toString = {
 	{MODEL_PLAYMODE, "MODEL_PLAYMODE"},
 	{MODEL_EDITMODE, "MODEL_EDITMODE"},
 	{MODEL_EDIT_EXHIBIT, "MODEL_EDIT_EXHIBIT"},	
 	{MODEL_PLAY_CHESS, "MODEL_PLAY_CHESS"},
 	{MODEL_PLAY_CHESS_HISTORY, "MODEL_PLAY_CHESS_HISTORY"}
 };
-static const std::map<const std::string, const ModelState> toState = {
+const std::map<const std::string, const ModelState> Model::toState = {
 	{"MODEL_PLAYMODE", MODEL_PLAYMODE},
 	{"MODEL_EDITMODE", MODEL_EDITMODE},
 	{"MODEL_EDIT_EXHIBIT", MODEL_EDIT_EXHIBIT},
@@ -31,10 +31,10 @@ void Model::loadMap(const std::string& address)
 	map.reset(new Map(width, height));
 	std::unique_ptr<Exhibit[]> exhibit(new Exhibit[itemNum + 1]);
 	exhibit[0] = Exhibit();
-	for (int i = 1; i <= itemNum; i++) fin >> exhibit[i];
+	for (unsigned int i = 1; i <= itemNum; i++) fin >> exhibit[i];
 	// todo : Chess Input
-	for (int i = 1; i <= height; i++) {
-		for (int j = 1; j <= width; j++) {
+	for (unsigned int i = 1; i <= height; i++) {
+		for (unsigned int j = 1; j <= width; j++) {
 			fin >> item;
 			if (item > itemNum) {
 				std::cout << "ERROR : item out of range!" << std::endl;
@@ -186,7 +186,7 @@ void Model::execTranslate(const float & time, const int & directX, const int & d
 {
 	if (state == MODEL_EDIT_EXHIBIT)
 	{
-		chosenExhibit.execTranslate(time, directX, tirectY, directZ);
+		chosenExhibit.execTranslate(time, directX, directY, directZ);
 	}
 }
 
