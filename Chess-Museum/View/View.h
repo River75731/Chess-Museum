@@ -12,7 +12,7 @@
 
 #define BUFSIZE 512
 /* Texture */
-#define TEXTURE_NUM 13
+#define TEXTURE_NUM 20
 #define BITMAP_ID 0x4D42
 #define imageweight 128
 #define imageheight 128
@@ -65,9 +65,12 @@ private:
 
 	static void initMapRelation();
 	static void setList();
+
 	static unsigned char *LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfoHeader);
 	static void texload(int i, std::string filename);
 	static void initTexture();
+
+	static void loadShader();
 
 	//==========================================================================================
 	//==========================================================================================
@@ -87,6 +90,10 @@ private:
 	static Model MyModel;
 	static void DrawScene();
 	static std::map<std::string, ViewObjectType> objMap;
+
+	static std::map<std::string, ViewObjectType> objMap; // from OBJ_NAME to TYPE
+	static std::map<ViewObjectType, GLuint> listMap; // from TYPE to listNum/VAO
+	static std::map<GLuint, unsigned int> VAOMap; // from VAO to FACE_NUM
 	static std::map<ViewObjectType, std::vector<int>> texMap;
 	static std::string texFileNames[TEXTURE_NUM];
 	static unsigned int texture[TEXTURE_NUM];

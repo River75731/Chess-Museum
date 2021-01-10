@@ -1,5 +1,6 @@
 #include "View.h"
 #include "../Common/ObjParser.h"
+#include "../Common/textfile.h"
 #include "../ViewModel/ViewModel.h"
 #include <vector>
 #include <iostream>
@@ -15,9 +16,14 @@ Vec3f View::MoveIncrement = Vec3f(0.00174537,0,0.999998);
 Vec3f View::EyeDirection_t = Vec3f(-1.99999, 0.0069813, 0.0);
 float View::Pitch = 0, View::Yaw = 180; 
 char View::Key = ' ';
+
+GLuint program;
+
 ViewSceneType View::CurrentState = SCENE;
 Model View::MyModel = Model();
 std::map<std::string, ViewObjectType> View::objMap;
+std::map<ViewObjectType, GLuint> View::listMap;
+std::map<GLuint, unsigned int> View::VAOMap;
 
 std::map<ViewObjectType, std::vector<int>> View::texMap;
 std::string View::texturePath = "texture/";
@@ -36,10 +42,20 @@ std::string View::texFileNames[TEXTURE_NUM] =
 		"queen_white.bmp",
 		"queen_black.bmp",
 		"king_white.bmp",
-		"king_black.bmp"};
+		"king_black.bmp",
+		"chess_board.bmp",
+		"floor.bmp",
+		"wood_red.bmp",
+		"wood_brown.bmp"};
 
 void View::initMapRelation()
 {
+	objMap["CIRCLE"] = CIRCLE;
+	objMap["CONE"] = CONE;
+	objMap["CUBE"] = CUBE;
+	objMap["CYLINDER"] = CYLINDER;
+	objMap["PRISM3"] = PRISM3;
+	objMap["SPHERE"] = SPHERE;
 	objMap["PAWN"] = PAWN;
 	objMap["ROOK"] = ROOK;
 	objMap["KNIGHT"] = KNIGHT;
@@ -54,6 +70,10 @@ void View::initMapRelation()
 
 	tex.emplace_back(texture[0]);
 	texMap[MARBLETABLE] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[13]);
+	texMap[CHESSBOARD] = tex;
 	tex.clear();
 
 	tex.emplace_back(texture[1]);
@@ -84,6 +104,12 @@ void View::initMapRelation()
 	tex.emplace_back(texture[11]);
 	tex.emplace_back(texture[12]);
 	texMap[KING] = tex;
+	tex.clear();
+
+	tex.emplace_back(texture[14]);
+	tex.emplace_back(texture[15]);
+	tex.emplace_back(texture[16]);
+	texMap[CUBE] = tex;
 	tex.clear();
 }
 
@@ -123,8 +149,84 @@ void View::setList()
 	glutSolidCone(1, 1, 32, 32);
 	glEndList();
 
+	GLfloat vertexes[] = {
+		0.5f, 0.0f, 0.5f, 1.0f,
+		0.5f, 0.0f, -0.5f, 1.0f,
+		-0.5f, 0.0f, -0.5f, 1.0f,
+		-0.5f, 0.0f, 0.5f, 1.0f,
+		0.5f, 1.0f, 0.5f, 1.0f,
+		0.5f, 1.0f, -0.5f, 1.0f,
+		-0.5f, 1.0f, -0.5f, 1.0f,
+		-0.5f, 1.0f, 0.5f, 1.0f};
+	GLfloat normals[] = {
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		-1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, -1.0f,
+		0.0f, 1.0f, 0.0f};
+	GLfloat texCoordes[] = {
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f};
 	glNewList(CUBE, GL_COMPILE);
-	glutSolidCube(1);
+	glBegin(GL_QUADS);
+
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 0 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 3 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 2 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 1 * 4);
+
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 0 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 1 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 5 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 4 * 4);
+
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 2 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 3 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 7 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 6 * 4);
+
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 0 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 4 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 7 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 3 * 4);
+
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 1 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 2 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 6 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 5 * 4);
+
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 4 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 5 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 6 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 7 * 4);
+	glEnd();
 	glEndList();
 
 	glNewList(CYLINDER, GL_COMPILE);
@@ -194,14 +296,9 @@ void View::setList()
 	std::vector<TriangleMesh> tm = ObjParser::parseFile();
 	for (std::vector<TriangleMesh>::iterator iter = tm.begin(); iter != tm.end(); iter++)
 	{
-		glNewList(objMap[iter->getObjName()], GL_COMPILE);
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texMap[objMap[iter->getObjName()]][0]);
-		for (std::vector<Triangle>::const_iterator iter1 = iter->getTriangles().begin(); iter1 != iter->getTriangles().end(); iter1++)
-		{
-			iter1->draw();
-		}
-		glEndList();
+		iter->setVAO();
+		listMap[objMap[iter->getObjName()]] = iter->getListNum();
+		VAOMap[iter->getListNum()] = iter->getF().size();
 	}
 }
 
@@ -215,16 +312,164 @@ void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, flo
 	Rotate(angle, axis);
 	Scale(scale);
 
+	glEnable(GL_TEXTURE_2D);
 	if (texIndex != -1)
 	{
 		glEnable(GL_TEXTURE_2D);
-		
+		glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
 	}
 	else
-		glDisable(GL_TEXTURE_2D);
-	glCallList(type);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+	switch (type)
+	{
+	case CIRCLE:
+	case CONE:
+	case CUBE:
+	case CYLINDER:
+	case PRISM3:
+	case SPHERE:
+		glUseProgram(0);
+		glCallList(type);
+		break;
+	default:
+		glUseProgram(program);
+		glBindVertexArray(listMap[type]);
+		glDrawElements(GL_TRIANGLES, VAOMap[listMap[type]] * 3, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+		glBindVertexArray(0);
+		break;
+	}
+
+	glDisable(GL_TEXTURE_2D);
 
 	glPopMatrix();
+}
+
+void View::Display()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1, 1, 1, 1);
+	SetEyeLocation();
+	if (Move)
+		EyeMove();
+	glEnable(GL_LIGHTING);
+	GLfloat gray[] = {0.4, 0.4, 0.4, 1.0};
+	GLfloat light_pos[] = {10, 10, 10, 0};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
+	glEnable(GL_LIGHT0);
+
+	glColor3f(0, 0, 0);
+	glBegin(GL_LINES);
+	glVertex3f(10000, 0, 0);
+	glVertex3f(-10000, 0, 0);
+	glVertex3f(0, 10000, 0);
+	glVertex3f(-0, -10000, 0);
+	glVertex3f(0, 0, 10000);
+	glVertex3f(-0, 0, -10000);
+	glEnd();
+
+	DrawModel(KING, Vec2f(), Vec3f(1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
+	DrawModel(QUEEN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
+	DrawModel(QUEEN, Vec2f(), Vec3f(0, 0, -1), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
+	DrawModel(QUEEN, Vec2f(), Vec3f(0, 0, -2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
+	DrawModel(BISHOP, Vec2f(), Vec3f(-1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(KNIGHT, Vec2f(), Vec3f(-2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(ROOK, Vec2f(), Vec3f(2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(PAWN, Vec2f(), Vec3f(3, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(MARBLETABLE, Vec2f(), Vec3f(0, 0, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(CHESSBOARD, Vec2f(), Vec3f(0, 1, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(CUBE, Vec2f(), Vec3f(0, 2, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), -1);
+	DrawModel(CUBE, Vec2f(), Vec3f(0, 3, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	DrawModel(CUBE, Vec2f(), Vec3f(0, 4, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
+
+	GLfloat vertexes[] = {
+		0.5f, 0.0f, 0.5f, 1.0f,
+		0.5f, 0.0f, -0.5f, 1.0f,
+		-0.5f, 0.0f, -0.5f, 1.0f,
+		-0.5f, 0.0f, 0.5f, 1.0f,
+		0.5f, 1.0f, 0.5f, 1.0f,
+		0.5f, 1.0f, -0.5f, 1.0f,
+		-0.5f, 1.0f, -0.5f, 1.0f,
+		-0.5f, 1.0f, 0.5f, 1.0f};
+	GLfloat normals[] = {
+		0.0f, -1.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		-1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, -1.0f,
+		0.0f, 1.0f, 0.0f};
+	GLfloat texCoordes[] = {
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f};
+	glBindTexture(GL_TEXTURE_2D, texMap[CUBE][1]);
+	glBegin(GL_QUADS);
+
+	glNormal3fv(normals + 0 * 3);
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 0 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 1 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 2 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 3 * 4);
+
+	glNormal3fv(normals + 1 * 3);
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 0 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 1 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 5 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 4 * 4);
+
+	glNormal3fv(normals + 2 * 3);
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 2 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 3 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 7 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 6 * 4);
+
+	glNormal3fv(normals + 3 * 3);
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 0 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 3 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 7 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 4 * 4);
+
+	glNormal3fv(normals + 4 * 3);
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 1 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 2 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 6 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 5 * 4);
+
+	glNormal3fv(normals + 5 * 3);
+	glTexCoord2fv(texCoordes + 0 * 2);
+	glVertex4fv(vertexes + 4 * 4);
+	glTexCoord2fv(texCoordes + 1 * 2);
+	glVertex4fv(vertexes + 5 * 4);
+	glTexCoord2fv(texCoordes + 2 * 2);
+	glVertex4fv(vertexes + 6 * 4);
+	glTexCoord2fv(texCoordes + 3 * 2);
+	glVertex4fv(vertexes + 7 * 4);
+	glEnd();
+
+	glutSwapBuffers();
 }
 
 void View::Mouse(int button, int state, int x, int y)
@@ -358,38 +603,6 @@ void View::EyeMove()
 	
 }
 
-void View::Display()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1, 1, 1, 1);
-	SetEyeLocation();
-	if (Move)
-		EyeMove();
-	
-	glEnable(GL_LIGHTING);
-	GLfloat gray[] = {0.4, 0.4, 0.4, 1.0};
-	GLfloat light_pos[] = {10, 10, 10, 0};
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
-	glEnable(GL_LIGHT0);
-
-	glColor3f(0, 0, 0);
-	glBegin(GL_LINES);
-	glVertex3f(10000, 0, 0);
-	glVertex3f(-10000, 0, 0);
-	glVertex3f(0, 10000, 0);
-	glVertex3f(-0, -10000, 0);
-	glVertex3f(0, 0, 10000);
-	glVertex3f(-0, 0, -10000);
-	glEnd();
-	float yt[3];
-	MoveIncrement.Get(yt[0], yt[1], yt[2]);
-	DrawScene();
-
-	glutSwapBuffers();
-}
-
 void View::PickMode(int x, int y)
 {
 	GLuint selectBuf[BUFSIZE];
@@ -492,13 +705,19 @@ void View::Init(int argc, char *argv[])
 	glutInitWindowSize(600, 600);
 	glutCreateWindow("***************");
 
-	bool fucku =(glewInit()==GLEW_OK);
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		//Problem: glewInit failed, something is seriously wrong.
+		cout << "glewInit failed, aborting." << endl;
+	}
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_NORMALIZE);
 
 	initTexture();
 	initMapRelation();
+	loadShader();
 	setList();
 
 	glutReshapeFunc(Reshape);
@@ -687,3 +906,52 @@ void View::DrawEdit()
 	}
 }
 
+void View::loadShader()
+{
+	char vfilename[] = "shader/v.vert";
+	char ffilename[] = "shader/f.frag";
+	GLuint v, f, p;
+	char *vs = NULL, *fs = NULL;
+	v = glCreateShader(GL_VERTEX_SHADER);
+	f = glCreateShader(GL_FRAGMENT_SHADER);
+	vs = textFileRead(vfilename);
+	fs = textFileRead(ffilename);
+	const char *vv = vs;
+	const char *ff = fs;
+	glShaderSource(v, 1, &vv, NULL);
+	glShaderSource(f, 1, &ff, NULL);
+	free(vs);
+	free(fs);
+	glCompileShader(v);
+	glCompileShader(f);
+	p = glCreateProgram();
+	glAttachShader(p, v);
+	glAttachShader(p, f);
+	glLinkProgram(p);
+	glUseProgram(p);
+	program = p;
+
+	GLint length;
+	GLsizei num;
+	char *log;
+	glGetShaderiv(v, GL_INFO_LOG_LENGTH, &length);
+	if (length > 0)
+	{
+		log = (char *)malloc(sizeof(char) * length);
+		glGetShaderInfoLog(v, length, &num, log);
+		std::cout << "Vertex shader compile log:" << std::endl
+				  << log << std::endl
+				  << std::endl
+				  << std::endl;
+	}
+	glGetShaderiv(f, GL_INFO_LOG_LENGTH, &length);
+	if (length > 0)
+	{
+		log = (char *)malloc(sizeof(char) * length);
+		glGetShaderInfoLog(f, length, &num, log);
+		std::cout << "Fragment shader compile log:" << std::endl
+				  << log << std::endl
+				  << std::endl
+				  << std::endl;
+	}
+}
