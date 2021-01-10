@@ -18,7 +18,6 @@ private:
 	static const float translateSpeed;	// 0.05
 	static const float translateMax;	// 1
 
-
 	// translate -> rotate -> scale
 	ExhibitType type;
 	unsigned int textureNum; // # of texture, 0 for empty
@@ -30,6 +29,10 @@ private:
 	bool isRotating;
 
 public:
+	// ExhibitTypeName to String
+	static const std::map<const ExhibitType, const std::string> toString;
+	static const std::map<const std::string, const ExhibitType> toType;
+
 	// Constructor & Destructor
 	Exhibit(const ExhibitType& type = EXHIBIT_EMPTY, const unsigned int& textureNum = 0, const unsigned int & lightNum = 0, const Vector3f& translate = Vector3f(), const float& rotate = 0, const Vector3f& scale = Vector3f(1, 1, 1), const bool& hasTable = true, const bool& isRotating = false);
 	Exhibit(const Exhibit& that);
@@ -53,11 +56,17 @@ public:
 	Exhibit& setIsRotating(const bool& isRotating);
 	// Change State
 
+	// whether the exhibit is empty
+	const bool isEmpty();
+
 	// change the light to unable
 	Exhibit& clearLight();
 
 	// change the texture to empty
 	Exhibit& clearTexture();
+
+	// change the type of exhibit
+	Exhibit& changeType(const ExhibitType& type);
 
 	// change the state of hastable to the opposite
 	Exhibit& changeHasTable();
@@ -75,3 +84,15 @@ public:
 	Exhibit& execScale(const int& directX = true, const int& directY = true, const int& directZ = true); 
 
 };
+
+std::istream& operator>>(std::istream& is, Exhibit &exhibit);
+std::ostream& operator<<(std::ostream& os, const Exhibit &exhibit);
+
+/*
+	*** Exhibit Data ***
+	type textureNum lightNum;	
+	translateX translateY translateZ
+	rotate
+	scaleX scaleY scaleZ
+	hasTable(1/0) isRotating(1/0)
+*/

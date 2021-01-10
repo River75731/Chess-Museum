@@ -157,6 +157,9 @@
     <ClCompile Include="ViewModel\ViewScene.cpp" />
     <ClCompile Include="View\View.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\DefaultMap.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

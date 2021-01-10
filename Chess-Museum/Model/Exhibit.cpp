@@ -6,6 +6,15 @@ const float Exhibit::rotateSpeed = 0.1f;
 const float Exhibit::translateSpeed = 0.05f;
 const float Exhibit::translateMax = 1.0f;
 
+const std::map<const ExhibitType, const std::string> Exhibit::toString = {
+	{EXHIBIT_EMPTY, "EXHIBIT_EMPTY"},
+	{EXHIBIT_CUBE, "EXHIBIT_CUBE"}
+};
+const std::map<const std::string, const ExhibitType> Exhibit::toType = {
+	{"EXHIBIT_EMPTY", EXHIBIT_EMPTY},
+	{"EXHIBIT_CUBE", EXHIBIT_CUBE}
+};
+
 Exhibit::Exhibit(const ExhibitType & type, const unsigned int & textureNum, const unsigned int & lightNum, const Vector3f & translate, const float & rotate, const Vector3f & scale, const bool & hasTable, const bool & isRotating)
 {
 	this->type = type;
@@ -102,6 +111,11 @@ Exhibit & Exhibit::setIsRotating(const bool & isRotating)
 	return *this;
 }
 
+const bool Exhibit::isEmpty()
+{
+	return type == EXHIBIT_EMPTY;
+}
+
 Exhibit & Exhibit::clearLight()
 {
 	this->lightNum = 0;
@@ -111,6 +125,12 @@ Exhibit & Exhibit::clearLight()
 Exhibit & Exhibit::clearTexture()
 {
 	this->textureNum = 0;
+	return *this;
+}
+
+Exhibit & Exhibit::changeType(const ExhibitType& type)
+{
+	this->type = type;
 	return *this;
 }
 
@@ -203,4 +223,32 @@ const float Exhibit::getRotate() const
 const Vector3f Exhibit::getScale() const
 {
 	return this->scale;
+}
+
+std::istream & operator>>(std::istream & is, Exhibit & exhibit)
+{
+	std::string type;
+	unsigned int textureNum, lightNum;
+	is >> type >> textureNum >> lightNum;
+	exhibit.setType(Exhibit::toType.at(type)).setTextureNum(textureNum).setLightNum(lightNum);
+	float x, y, z, r;
+	is >> x >> y >> z >> r;
+	exhibit.setTranslate(Vector3f(x, y, z)).setRotate(r);
+	is >> x >> y >> z;
+	exhibit.setScale(Vector3f(x, y, z));
+	int hasTable, isRotating;
+	is >> hasTable >> isRotating;
+	exhibit.setHasTable(hasTable != 0).setIsRotating(isRotating != 0);
+	return is;
+}
+
+std::ostream & operator<<(std::ostream & os, const Exhibit & exhibit)
+{
+	os << Exhibit::toString.at(exhibit.getType()) << " ";
+	os << exhibit.getTextureNum() << " " << exhibit.getLightNum << std::endl;
+	os << exhibit.getTranslate().getX() << " " << exhibit.getTranslate().getY() << " " << exhibit.getTranslate().getZ() << std::endl;
+	os << exhibit.getRotate() << std::endl;
+	os << exhibit.getScale().getX() << " " << exhibit.getScale().getY() << " " << exhibit.getScale().getZ() << std::endl;
+	os << (exhibit.getHasTable() ? 1 : 0) << " " << (exhibit.getIsRotating() ? 1 : 0) << std::endl;
+	return os;
 }
