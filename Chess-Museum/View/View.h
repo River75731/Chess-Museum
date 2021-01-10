@@ -1,7 +1,6 @@
 #pragma once
 #include "../Common/MathBase.h"
 #include "../Common/vectors.h"
-#include <gl/glew.h>
 #include <gl/glut.h>
 #include <map>
 #include <vector>

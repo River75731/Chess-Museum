@@ -68,5 +68,5 @@ const bool Map::isEmpty(const Position2i & pos) const
 {
 	int idx = toIndex(pos);
 	if (!isValidIdx(idx)) return false;
-	return data[idx].getType() == EXHIBIT_EMPTY;
+	return data[idx].isEmpty();
 }
