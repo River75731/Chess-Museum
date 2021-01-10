@@ -17,8 +17,7 @@ enum ModelState {
 	MODEL_EDITMODE,
 	MODEL_EDIT_EXHIBIT,			// Editing an exhibit
 	MODEL_PLAY_CHESS,
-	MODEL_PLAY_CHESS_HISTORY,	// chess history
-
+	MODEL_PLAY_CHESS_HISTORY	// chess history
 };
 
 class Model final
@@ -31,36 +30,41 @@ private:
 
 
 	// Use in MODEL_EDITMODE
-	int textureCnt;	// 0 : unset , other : the number of texture
-	int lightCnt;	// 0 : unset , other : the number of light
-	bool isChosen;			// the highlight block is chosen or not
 	Position2i chosenBlock;	// highlight block
 	Exhibit chosenExhibit;	// the chosen Exhibit
-	   
-	// Use in MODEL_PLAY_CHESS
-	Position2i chosenBlock1;
 
-	void loadMap(std::string address);
-	void saveMap(std::string address);
+	void loadMap(const std::string& address = "../Data/DefaultMap.txt");
+	void saveMap(const std::string& address = "../Data/SavedMap.txt");
 
 
 public:
+	// Model State to String
+	static const std::map<const ModelState, const std::string> toString;
+	static const std::map<const std::string, const ModelState> toState;
 	// Constructor & Destructor
 	Model();
 	~Model();
 	
 	const ModelState getState() const;
+	bool getExhibit(const Position2i& pos, Exhibit& res) const;	// get Exhibit in Play mode or edit mode, return to res, true if valid and false if invalid(place is empty or not the center)
 
 	// Use in MODEL_PLAYMODE
 	bool enterChess(const Position2i& pos);	// Enter Chess Mode which chess is placed at pos, return true if valid
 	void enterEdit();		// Enter edit mode
 	bool canEnter(const Position2i& pos);		// whether player can enter pos or not
-	void resetPlay();		// Reset the play mode and go to the beginning position
 	
 	// Use in MODEL_EDITMODE
-	bool getExhibit(const Position2i& pos, Exhibit& res);	// get Exhibit, return to res, true if valid and false if invalid(place is empty or not the center)
-	void discardSaveExhibit();	// 
-	void saveExhibit();	// save change to Exhibit		
+	void chooseBlock(const Position2i& pos);	// choose a highlight block, each time when changing the highlight block, this func should be called
+	void editExhibit();	// enter edit exhibit mode (edit the exhibit on the highlight block)
+	void deleteExhibit();	// delete an exhibit
+	void enterPlay();	// enter play mode
+
+	// Use in MODEL_EDIT_EXHIBIT
+	const Exhibit getEditingExhibit() const;
+
+	void discardSaveExhibit();	 
+	void saveExhibit();	// save change to Exhibit
+	void changeType(const ExhibitType& type);	// create an exhibit of specified type or change the exhibit type
 	void clearLight();	// change the light to unable
 	void clearTexture();	// change the texture to empty	
 	void setTextureNum(const unsigned int& textureNum);

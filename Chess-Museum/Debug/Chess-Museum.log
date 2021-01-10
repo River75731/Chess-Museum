@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  View.cpp
 D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(245,2): warning C4065: switch 语句包含“default”但是未包含“case”标签
 D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(232,8): warning C4102: “CIRCLE”: 未引用的标签
@@ -9,3 +10,11 @@ D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(237,8
 D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(404,17): warning C4018: “<”: 有符号/无符号不匹配
 D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(486,16): warning C4101: “temp”: 未引用的局部变量
   Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe
+=======
+﻿  Model.cpp
+  View.cpp
+d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(378): warning C4018: “<”: 有符号/无符号不匹配
+d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(452): warning C4101: “temp”: 未引用的局部变量
+  正在生成代码...
+  Chess-Museum.vcxproj -> D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\Debug\Chess-Museum.exe
+>>>>>>> ef7e7ac3ea33f45bb9a94ad9d0dcb2516bc2c85f
