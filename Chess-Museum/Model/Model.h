@@ -10,7 +10,8 @@
 
 #include "Chess.h"
 #include "ClassicChess.h"
-
+#define WIDTH 1024
+#define LENGTH 1024
 
 enum ModelState {
 	MODEL_PLAYMODE,

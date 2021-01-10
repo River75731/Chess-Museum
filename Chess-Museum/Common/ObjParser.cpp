@@ -8,7 +8,7 @@
 
 static std::string objFilePath = "obj/";
 static std::string objFileName[OBJ_FILE_NUM] =
-    {"pawn.obj"};
+    {"bishop.obj"};
 
 std::vector<TriangleMesh> ObjParser::parseFile()
 {

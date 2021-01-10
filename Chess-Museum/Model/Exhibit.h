@@ -3,7 +3,16 @@
 
 enum ExhibitType {
 	EXHIBIT_EMPTY,
-	EXHIBIT_CUBE
+	EXHIBIT_CHESS_SET,
+	EXHIBIT_CUBE,
+	EXHIBIT_DOOR,
+	EXHIBIT_WINDOW,
+	EXHIBIT_PAWN,
+	EXHIBIT_ROOK,
+	EXHIBIT_KNIGHT,
+	EXHIBIT_BISHOP,
+	EXHIBIT_QUEEN,
+	EXHIBIT_KING
 };
 
 class Exhibit final
@@ -52,7 +61,7 @@ public:
 	Exhibit& setHasTable(const bool& hasTable);
 	Exhibit& setIsRotating(const bool& isRotating);
 	// Change State
-
+	
 	// change the light to unable
 	Exhibit& clearLight();
 

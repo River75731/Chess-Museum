@@ -13,7 +13,8 @@ Vec3f View::EyeUp = Vec3f(0, 1, 0);
 Vec3f View::MoveIncrement = Vec3f(-1, 0, 0);
 float View::Pitch = 0, View::Yaw = 270; //????????????
 char View::Key = ' ';
-
+ViewSceneType View::CurrentState = SCENE;
+Model View::MyModel = Model();
 std::map<std::string, ViewObjectType> View::objMap;
 
 std::map<ViewObjectType, std::vector<int>> View::texMap;
@@ -193,6 +194,8 @@ void View::setList()
 	for (std::vector<TriangleMesh>::iterator iter = tm.begin(); iter != tm.end(); iter++)
 	{
 		glNewList(objMap[iter->getObjName()], GL_COMPILE);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texMap[objMap[iter->getObjName()]][0]);
 		for (std::vector<Triangle>::const_iterator iter1 = iter->getTriangles().begin(); iter1 != iter->getTriangles().end(); iter1++)
 		{
 			iter1->draw();
@@ -206,18 +209,18 @@ void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, flo
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
-	Translate(Vec3f(coordinate.x(), coordinate.y(), 0));
+	//Translate(Vec3f(coordinate.x(), coordinate.y(), 0));
 	Translate(translate);
 	Rotate(angle, axis);
 	Scale(scale);
 
-	if (texIndex != -1)
-	{
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
-	}
-	else
-		glDisable(GL_TEXTURE_2D);
+	//if (texIndex != -1)
+	//{
+	//	glEnable(GL_TEXTURE_2D);
+	//	glBindTexture(GL_TEXTURE_2D, texMap[type][texIndex]);
+	//}
+	//else
+	//	glDisable(GL_TEXTURE_2D);
 	glCallList(type);
 
 	glPopMatrix();
@@ -278,22 +281,22 @@ void View::EyeMove()
 	switch (Key)
 	{
 	case 'w':
-		EyeLocation += 0.01 * EyeDirection;
+		EyeLocation += 1 * EyeDirection;
 		break;
 	case 's':
-		EyeLocation -= 0.01 * EyeDirection;
+		EyeLocation -= 1 * EyeDirection;
 		break;
 	case 'a':
-		EyeLocation += 0.01 * MoveIncrement;
+		EyeLocation += 1 * MoveIncrement;
 		break;
 	case 'd':
-		EyeLocation -= 0.01 * MoveIncrement;
+		EyeLocation -= 1 * MoveIncrement;
 		break;
 	case 'z':
-		EyeLocation -= 0.01 * EyeUp;
+		EyeLocation -= 1 * EyeUp;
 		break;
 	case 'c':
-		EyeLocation += 0.01 * EyeUp;
+		EyeLocation += 1 * EyeUp;
 		break;
 	case 'q':
 		exit(0);
@@ -328,10 +331,11 @@ void View::Display()
 	glVertex3f(-0, 0, -10000);
 	glEnd();
 
-	DrawModel(PAWN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), -1);
-	DrawModel(PAWN, Vec2f(), Vec3f(0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 0);
-	DrawModel(PAWN, Vec2f(), Vec3f(-0.1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(0.01, 0.01, 0.01), 1);
-
+	//DrawScene();
+	for (int i = 0; i < 3; i++)
+	{
+		DrawModel(BISHOP, Vec2f(), Vec3f(i, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
+	}
 	glutSwapBuffers();
 }
 
@@ -477,15 +481,6 @@ unsigned char *View::LoadBitmapFile(char *filename, BITMAPINFOHEADER *bitmapInfo
 		return NULL;
 	}
 
-	// // Reverse
-	// int size = bitmapInfoHeader->biSizeImage;
-	// for (imageIdx = 0; imageIdx <= size / 2; imageIdx++)
-	// {
-	// 	temp = bitmapImage[imageIdx];
-	// 	bitmapImage[imageIdx] = bitmapImage[size - imageIdx - 1];
-	// 	bitmapImage[size - imageIdx - 1] = temp;
-	// }
-
 	fclose(filePtr);
 	return bitmapImage;
 }
@@ -526,4 +521,52 @@ void View::initTexture()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
+void View::DrawScene()
+{
+	for (int i = 1; i <= WIDTH; i++)
+	{
+		for (int j = 1; j <= LENGTH; j++)
+		{
+			Exhibit temp = Exhibit();
+			//MyModel.getExhibit(Position2i(i, j), temp);
+			switch (temp.getType())
+			{
+			case  EXHIBIT_EMPTY:
+
+				break;
+			case  EXHIBIT_CHESS_SET:
+
+				break;
+			case EXHIBIT_CUBE:
+				
+				break;
+			case EXHIBIT_DOOR:
+
+				break;
+			case EXHIBIT_WINDOW:
+
+				break;
+
+			case EXHIBIT_PAWN:
+
+				break;
+			case EXHIBIT_ROOK:
+
+				break;
+			case EXHIBIT_KNIGHT:
+
+				break;
+			case EXHIBIT_BISHOP:
+				break;
+
+			case EXHIBIT_QUEEN:
+				break;
+			case EXHIBIT_KING:
+
+				break;
+			}
+		}
+	}
 }

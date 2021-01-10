@@ -6,6 +6,8 @@
 #include <map>
 #include <vector>
 #include <windows.h>
+#include "../Model/Exhibit.h"
+#include "../Model/Model.h"
 
 #define BUFSIZE 512
 /* Texture */
@@ -32,7 +34,12 @@ enum ViewObjectType
 	MARBLETABLE,
 	CHESSBOARD
 };
-
+enum ViewSceneType
+{
+	SCENE,
+	CHESS,
+	EDIT
+};
 class View
 {
 public:
@@ -63,7 +70,7 @@ private:
 
 	//==========================================================================================
 	//==========================================================================================
-
+	static void DrawExhibit(ExhibitType Type);
 	static bool ButtonDown;
 	static bool Move;
 	static char Key;
@@ -74,7 +81,9 @@ private:
 	static Vec3f EyeUp;
 	static Vec3f MoveIncrement;
 	static float Pitch, Yaw;
-
+	static ViewSceneType CurrentState;
+	static Model MyModel;
+	static void DrawScene();
 	static std::map<std::string, ViewObjectType> objMap;
 	static std::map<ViewObjectType, std::vector<int>> texMap;
 	static std::string texFileNames[TEXTURE_NUM];
