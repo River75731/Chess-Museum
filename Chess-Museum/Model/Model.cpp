@@ -127,10 +127,12 @@ void Model::saveExhibit()
 	}
 }
 
-void Model::changeType(const ExhibitType & type)
-{
+void Model::changeType()
+{	
+	
 	if (state == MODEL_EDIT_EXHIBIT)
-	{
+		{int count = chosenExhibit.getType();
+		ExhibitType type = (ExhibitType)(count + 1 >= 12 ? 1 : ++count);
 		chosenExhibit.changeType(type);
 	}
 }
@@ -181,6 +183,19 @@ void Model::changeIsRotating()
 	{
 		chosenExhibit.changeIsRotating();
 	}
+}
+bool Model::moveExhibit(const Position2i& src, const Position2i& dest)
+{
+	Exhibit res = map->getData(dest);
+	if (res.isEmpty())
+	{	
+		res = map->getData(src);
+		map->setData(dest, res);
+		map->setData(src, Exhibit());
+		chosenBlock = dest;
+		return true;
+	}
+	else return false;
 }
 
 void Model::execTranslate(const float & time, const int & directX, const int & directY, const int & directZ)

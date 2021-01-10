@@ -18,7 +18,7 @@
 #define imageheight 128
 
 enum ViewObjectType
-{
+{	EMPTY=0,
 	CIRCLE = 1,
 	CONE,
 	CUBE,
@@ -39,6 +39,7 @@ enum ViewSceneType
 {
 	SCENE,
 	CHESS,
+	EXHIBIT,
 	EDIT
 };
 class View
@@ -71,7 +72,8 @@ private:
 	static void initTexture();
 
 	static void loadShader();
-
+	static Position2i CurrentPosition;
+	static void PoisitionChange();
 	//==========================================================================================
 	//==========================================================================================
 	static void DrawExhibit(ExhibitType Type);

@@ -65,7 +65,7 @@ public:
 
 	void discardSaveExhibit();	 
 	void saveExhibit();	// save change to Exhibit
-	void changeType(const ExhibitType& type);	// create an exhibit of specified type or change the exhibit type
+	void changeType();	// create an exhibit of specified type or change the exhibit type
 	void clearLight();	// change the light to unable
 	void clearTexture();	// change the texture to empty	
 	void setTextureNum(const unsigned int& textureNum);
