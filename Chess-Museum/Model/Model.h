@@ -26,16 +26,21 @@ class Model final
 private:
 	ModelState state;
 	std::shared_ptr<Map> map;
-	//std::vector<ClassicChess> chess;
+	std::vector<ClassicChess> chess;
 	std::vector<Position2i> chessLocation;
-
+	std::shared_ptr<Exhibit[]> exhibit;
+	// Use in MODEL_PLAYMODE
+	int chosenChess;
+	Position2i chosenBlock1;
+	Position2i chosenBlock2;
+	bool chosenOne;		// if true, highlight chosenBlock1
 
 	// Use in MODEL_EDITMODE
 	Position2i chosenBlock;	// highlight block
 	Exhibit chosenExhibit;	// the chosen Exhibit
 
-	void loadMap(const std::string& address = "Data/DefaultMap.txt");
-	void saveMap(const std::string& address = "Data/SavedMap.txt");
+	void loadMap(const std::string& address = "./Data/DefaultMap.txt");
+	void saveMap(const std::string& address = "./Data/SavedMap.txt");
 
 
 public:
@@ -48,6 +53,14 @@ public:
 	
 	const ModelState getState() const;
 	bool getExhibit(const Position2i& pos, Exhibit& res) const;	// get Exhibit in Play mode or edit mode, return to res, true if valid and false if invalid(place is empty or not the center)
+	const ClassicChessObjectType getChessObjectType(const Position2i& chesspos, const Position2i& objpos) const;
+	const ClassicChessPlayerType getChessPlayerType(const Position2i& chesspos, const Position2i& objpos) const;
+
+	// Use in MODEL_PLAY_CHESS
+	void quitChess();
+	void chooseChessBlock(const Position2i& pos);	// change the chosen block (1-8)
+	void execChoose();	// choose a block
+
 
 	// Use in MODEL_PLAYMODE
 	bool enterChess(const Position2i& pos);	// Enter Chess Mode which chess is placed at pos, return true if valid

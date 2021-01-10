@@ -1,5 +1,38 @@
 #include "ClassicChess.h"
 
+const std::map<const std::string, const ClassicChessStatus> ClassicChess::stringToStatus = {
+	{	"CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE", CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE},
+	{	"CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK", CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK},
+	{	"CLASSICCHESS_WHITE_TURN", CLASSICCHESS_WHITE_TURN},
+	{	"CLASSICCHESS_BLACK_TURN", CLASSICCHESS_BLACK_TURN },
+	{	"CLASSICCHESS_WHITE_CHECK", CLASSICCHESS_WHITE_CHECK},	// white being checked
+	{	"CLASSICCHESS_BLACK_CHECK", CLASSICCHESS_BLACK_CHECK},	// black being checked
+	{	"CLASSICCHESS_WHITE_WIN", CLASSICCHESS_WHITE_WIN },
+	{	"CLASSICCHESS_BLACK_WIN", CLASSICCHESS_BLACK_WIN}
+};
+const std::map<const std::string, const ClassicChessMoveType> ClassicChess::stringToMoveType = {
+	{	"CLASSICCHESS_PASSIVEMOVE", CLASSICCHESS_PASSIVEMOVE},
+	{	"CLASSICCHESS_ACTIVEMOVE", CLASSICCHESS_ACTIVEMOVE}
+};
+const std::map<const std::string, const ClassicChessObjectStatus> ClassicChess::stringToObjectStatus = {
+	{	"CLASSICCHESS_DEAD", CLASSICCHESS_DEAD},
+	{	"CLASSICCHESS_ALIVE", CLASSICCHESS_ALIVE}
+};
+const std::map<const std::string, const ClassicChessPlayerType> ClassicChess::stringToPlayerType = {
+	{	"CLASSICCHESS_WHITE", CLASSICCHESS_WHITE},
+	{	"CLASSICCHESS_BLACK", CLASSICCHESS_BLACK}
+};
+const std::map<const std::string, const ClassicChessObjectType> ClassicChess::stringToObjectType = {
+	{	"CLASSICCHESS_EMPTY", CLASSICCHESS_EMPTY},
+	{	"CLASSICCHESS_PAWN", CLASSICCHESS_PAWN},
+	{	"CLASSICCHESS_ROOK", CLASSICCHESS_ROOK},
+	{	"CLASSICCHESS_KNIGHT", CLASSICCHESS_KNIGHT},
+	{	"CLASSICCHESS_BISHOP", CLASSICCHESS_BISHOP},
+	{	"CLASSICCHESS_QUEEN", CLASSICCHESS_QUEEN},
+	{	"CLASSICCHESS_KING", CLASSICCHESS_KING}
+};
+
+
 ClassicChessPosition::ClassicChessPosition() : Position2i()
 {
 }
@@ -8,7 +41,15 @@ ClassicChessPosition::ClassicChessPosition(const int& x, const int& y) : Positio
 {
 }
 
+ClassicChessPosition::ClassicChessPosition(const Position2i & that) : Position2i(that)
+{
+}
+
 ClassicChessPosition::ClassicChessPosition(const ClassicChessPosition & that) : Position2i(that.getX(), that.getY())
+{
+}
+
+ClassicChessPosition::~ClassicChessPosition()
 {
 }
 
@@ -20,6 +61,10 @@ bool ClassicChessPosition::isValid() const
 void ClassicChessPosition::output(const std::string &name) const
 {
 	std::cout << "ClassicChessPosition2i : " << name << "\t = ( " << this->x << " , " << this->y << " ).\n";
+}
+
+ClassicChessObject::ClassicChessObject() : index(-1), type(CLASSICCHESS_EMPTY), player(CLASSICCHESS_WHITE), position(0,0), status(CLASSICCHESS_DEAD)
+{
 }
 
 ClassicChessObject::ClassicChessObject(const int& index, const ClassicChessPlayerType& player, const ClassicChessPosition& position, const ClassicChessObjectType& type, const ClassicChessObjectStatus& status) : index(index), player(player), position(position), status(status), type(type)
@@ -169,6 +214,30 @@ bool ClassicChess::validIndex(const Position2i & position, const Vector2i & delt
 	return toIndex(newpos) >= 0 && toIndex(newpos) <= 63;
 }
 
+void ClassicChess::loadMsg(std::string address)
+{
+	std::ifstream fin;
+	fin.open(address.c_str());
+	if (fin.fail()) {
+		std::cout << "ERROR : Open Chess file failed!" << std::endl;
+		return;
+	}
+	std::string statusIn;
+	fin >> statusIn;
+	status = stringToStatus.at(statusIn);
+	for (int i = 0; i <= 63; i++) board.at(i).reset(new ClassicChessObject());
+	for (int i = 0; i <= 31; i++) 
+	{
+		int index;
+		fin >> index;
+		objects.at(i) = index;
+		std::string objstatus, objtype, objplayer;
+		fin >> objstatus >> objtype >> objplayer;
+		board.at(objects.at(i)).reset(new ClassicChessObject(i, stringToPlayerType.at(objplayer), ClassicChessPosition(toPosition(index)), stringToObjectType.at(objtype), stringToObjectStatus.at(objstatus)));
+	}
+	fin.close();
+}
+
 bool ClassicChess::isChecked(const ClassicChessPlayerType player) const
 {
 	// Find king
@@ -234,29 +303,130 @@ bool ClassicChess::isChecked(const ClassicChessPlayerType player) const
 	return false;
 }
 
-void ClassicChess::execMove(std::unique_ptr<ChessMove> move)
+void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove> &move)
 {
-
+	ClassicChessPosition dest(move->getDest());
+	ClassicChessObject object(move->getObject());
+	for (int i = 0; i <= 31; i++) if (objects.at(i) == toIndex(dest)) {
+		objects.at(i) = -1;
+		break;
+	}
+	objects.at(object.getIndex()) = toIndex(dest);
+	board.at(toIndex(dest)).reset(new ClassicChessObject(object));
+	history.push_back(std::unique_ptr<ClassicChessMove>(new ClassicChessMove(*move)));
+	// todo : castling & update
 }
 
-bool ClassicChess::isValidMove(std::unique_ptr<ChessMove> move) const
+bool ClassicChess::isValidMove(const std::unique_ptr<ClassicChessMove>& move) const
 {
 	switch (status)
 	{
-	/*
-		In UPGRADEPAWN mode, only allow a passive move which move a queen/rook/knight/bishop to 
-	*/
-	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN:
-
-	case CLASSICCHESS_WHITE_TURN:
-
-	case CLASSICCHESS_BLACK_TURN:
-
+	
+	//	In UPGRADEPAWN mode, only allow a passive move which move a queen/rook/knight/bishop to the current position
+	
+	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE:
 	case CLASSICCHESS_WHITE_CHECK:	// white being checked
-
+	case CLASSICCHESS_WHITE_TURN:
+		if (!move->isValid()) return false;
+		if (move->getObject().getPlayer() == CLASSICCHESS_BLACK) return false;
+		if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_WHITE) return false;
+		// todo : block judge
+		return true;
+	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK:
 	case CLASSICCHESS_BLACK_CHECK:	// black being checked
+	case CLASSICCHESS_BLACK_TURN:
+		if (!move->isValid()) return false;
+		if (move->getObject().getPlayer() == CLASSICCHESS_WHITE) return false;
+		if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_BLACK) return false;
+		// todo : block judge
+		return true;
 	case CLASSICCHESS_WHITE_WIN:
-	case CLASSICCHESS_BLACK_WIN:;
+	case CLASSICCHESS_BLACK_WIN: return false;
 	}
 	return true;
+}
+
+ClassicChess::ClassicChess(const std::string & address)
+{
+	loadMsg(address);
+}
+
+ClassicChess::ClassicChess(const ClassicChess & that)
+{
+	status = that.getStatus();
+	objects = that.getIndex();
+	for (int i = 0; i <= 31; i++) {
+		if (objects.at(i) != -1) {
+			board.at(objects.at(i)).reset(new ClassicChessObject(that.getObject(toPosition(objects.at(i)))));
+		}
+	}
+	// todo : copy history
+}
+
+ClassicChess::~ClassicChess()
+{
+	history.clear();
+}
+
+void ClassicChess::tryMove(const std::unique_ptr<ClassicChessMove>& move)
+{
+	std::unique_ptr<ClassicChessMove> newptr(new ClassicChessMove(*move));
+	if (isValidMove(newptr)) execMove(newptr);
+	newptr.release();
+}
+
+void ClassicChess::tryMove(const Position2i & src, const Position2i & dest)
+{
+	for (int i = 0; i <= 31; i++) if (objects.at(i) == toIndex(src))
+	{
+		tryMove(std::unique_ptr<ClassicChessMove>(new ClassicChessMove(ClassicChessObject(*board[toIndex(src)]), ClassicChessPosition(dest))));
+	}
+}
+
+const ClassicChessStatus ClassicChess::getStatus() const
+{
+	return status;
+}
+
+const std::array<int, 32> ClassicChess::getIndex() const
+{
+	return objects;
+}
+
+const ClassicChessObject ClassicChess::getObject(const Position2i & position) const
+{
+	return ClassicChessObject(*(board.at(toIndex(position))));
+}
+
+const bool ClassicChess::isEmpty(const Position2i & position) const 
+{
+	return getObject(position).getType() == CLASSICCHESS_EMPTY;
+}
+
+const bool ClassicChess::isValidChoice(const Position2i & position) const
+{
+	switch (status) {
+	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE:
+	case CLASSICCHESS_WHITE_TURN:
+	case CLASSICCHESS_WHITE_CHECK:
+		return getPlayerType(position) == CLASSICCHESS_WHITE && !isEmpty(position);
+	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK:
+	case CLASSICCHESS_BLACK_TURN:
+	case CLASSICCHESS_BLACK_CHECK:
+		return getPlayerType(position) == CLASSICCHESS_BLACK && !isEmpty(position);
+	case CLASSICCHESS_BLACK_WIN:
+	case CLASSICCHESS_WHITE_WIN:
+		return false;
+	}
+	return false;
+}
+
+const ClassicChessObjectType ClassicChess::getObjectType(const Position2i & position) const
+{
+	return board.at(toIndex(position))->getType();
+}
+
+const ClassicChessPlayerType ClassicChess::getPlayerType(const Position2i & position) const
+{
+	return board.at(toIndex(position))->getPlayer();
 }

@@ -111,6 +111,9 @@
     <ClInclude Include="Common\textfile.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Model\Chess.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewModel\ViewObject.cpp">
@@ -164,6 +167,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\DefaultMap.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="Data\DefaultChess.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

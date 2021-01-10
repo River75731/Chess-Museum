@@ -89,8 +89,8 @@ private:
 	static ViewSceneType CurrentState;
 	static Model MyModel;
 	static void DrawScene();
-	static std::map<std::string, ViewObjectType> objMap;
 
+	static std::map<std::string, ViewObjectType> objMap;
 	static std::map<ViewObjectType, GLuint> listMap; // from TYPE to listNum/VAO
 	static std::map<GLuint, unsigned int> VAOMap; // from VAO to FACE_NUM
 	static std::map<ViewObjectType, std::vector<int>> texMap;
