@@ -64,14 +64,10 @@ public:
 	Exhibit& setHasTable(const bool& hasTable);
 	Exhibit& setIsRotating(const bool& isRotating);
 	// Change State
-<<<<<<< HEAD
-	
-=======
 
 	// whether the exhibit is empty
 	const bool isEmpty();
 
->>>>>>> ef7e7ac3ea33f45bb9a94ad9d0dcb2516bc2c85f
 	// change the light to unable
 	Exhibit& clearLight();
 

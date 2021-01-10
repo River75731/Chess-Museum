@@ -34,8 +34,8 @@ private:
 	Position2i chosenBlock;	// highlight block
 	Exhibit chosenExhibit;	// the chosen Exhibit
 
-	void loadMap(const std::string& address = "../Data/DefaultMap.txt");
-	void saveMap(const std::string& address = "../Data/SavedMap.txt");
+	void loadMap(const std::string& address = "Data/DefaultMap.txt");
+	void saveMap(const std::string& address = "Data/SavedMap.txt");
 
 
 public:

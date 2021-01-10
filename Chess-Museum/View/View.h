@@ -1,6 +1,8 @@
 #pragma once
+#pragma comment(lib,"glew32.lib")
 #include "../Common/MathBase.h"
 #include "../Common/vectors.h"
+#include <gl/glew.h>
 #include <gl/glut.h>
 #include <map>
 #include <vector>
@@ -77,6 +79,7 @@ private:
 	static float c;
 	static Vec3f EyeLocation;
 	static Vec3f EyeDirection;
+	static Vec3f EyeDirection_t;
 	static Vec3f EyeUp;
 	static Vec3f MoveIncrement;
 	static float Pitch, Yaw;
@@ -88,4 +91,5 @@ private:
 	static std::string texFileNames[TEXTURE_NUM];
 	static unsigned int texture[TEXTURE_NUM];
 	static std::string texturePath;
+	static void DrawEdit();
 };
