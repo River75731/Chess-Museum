@@ -1,4 +1,4 @@
 ﻿  View.cpp
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(593,17): warning C4018: “<”: 有符号/无符号不匹配
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(675,16): warning C4101: “temp”: 未引用的局部变量
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(554,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(649,16): warning C4101: “temp”: 未引用的局部变量
   Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe

@@ -149,6 +149,18 @@
     <ClCompile Include="Common\textfile.cpp">
       <Filter>源文件\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Model\Chess.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Map.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\DefaultMap.txt">

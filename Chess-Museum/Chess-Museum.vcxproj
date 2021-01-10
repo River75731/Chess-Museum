@@ -152,7 +152,11 @@
     <ClCompile Include="Common\textfile.cpp" />
     <ClCompile Include="Common\Vector.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model\Chess.cpp" />
     <ClCompile Include="Model\ClassicChess.cpp" />
+    <ClCompile Include="Model\Exhibit.cpp" />
+    <ClCompile Include="Model\Map.cpp" />
+    <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="ViewModel\TriangleMesh.cpp" />
     <ClCompile Include="ViewModel\ViewGroup.cpp" />
     <ClCompile Include="ViewModel\ViewObject.cpp" />
