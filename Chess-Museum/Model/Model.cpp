@@ -290,14 +290,15 @@ void Model::execChoose()
 	if (state == MODEL_PLAY_CHESS) 
 	{
 		if (!chosenOne) {
-			if (chess[chosenChess].isValidChoice(chosenBlock1)) {
+			//if (chess[chosenChess].isValidChoice(chosenBlock1)) {
 				chosenOne = true;
 				return;
-			}
+			//}
 		}
 		if (chosenOne) {
 			chess[chosenChess].tryMove(chosenBlock1, chosenBlock2);
 			chosenOne = false;
+			return;
 		}
 	}
 }

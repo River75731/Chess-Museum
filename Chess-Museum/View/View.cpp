@@ -383,10 +383,11 @@ void View::Display()
 	float a[3], b[3];
 	EyeDirection.Get(a[0], a[1], a[2]);
 	EyeLocation.Get(b[0], b[1], b[2]);
+	/*
 	std::cout << a[0] << ' ' << a[1] << ' ' << a[2] << ' ' << std::endl;
 	std::cout << b[0] << ' ' << b[1] << ' ' << b[2] << ' ' << std::endl;
 	std::cout << "Yaw: " << Yaw << "Pitch: " << Pitch << std::endl;
-
+	*/
 	DrawModel(CUBE, Vec2f(), Vec3f(-6.5, 4, -6.5), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), -1);
 
 	glColor3f(0, 0, 0);
@@ -552,7 +553,7 @@ void View::ChessPlay()
 		break;
 	case (char)0xD:
 
-		MyModel.chooseChessBlock(CurrentChessPosition);
+		MyModel.chooseChessBlock(Position2i(CurrentChessPosition.getX(),CurrentChessPosition.getY()));
 		MyModel.execChoose();
 	}
 }
@@ -802,7 +803,7 @@ void View::Init(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(600, 600);
-	glutCreateWindow("***************");
+	glutCreateWindow("Chess-Museum");
 
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
