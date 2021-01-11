@@ -42,6 +42,7 @@ void Model::loadMap(const std::string& address)
 			}
 			map->setData(Position2i(j, i), exhibit[item]);
 			if (exhibit[item].getType() == EXHIBIT_CLASSICCHESS) {
+				std::cout << "classic chess read" << std::endl;
 				chessLocation.push_back(Position2i(j, i));
 				chess.push_back(ClassicChess());
 			}
@@ -263,7 +264,7 @@ const ClassicChessObjectType Model::getChessObjectType(const Position2i & chessp
 
 const ClassicChessPlayerType Model::getChessPlayerType(const Position2i & chesspos, const Position2i & objpos) const
 {
-	for (size_t i = 0; i <= chessLocation.size(); i++) {
+	for (size_t i = 0; i < chessLocation.size(); i++) {
 		if (chessLocation[i] == chesspos) {
 			return chess[i].getPlayerType(objpos);
 		}
