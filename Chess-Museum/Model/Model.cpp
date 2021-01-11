@@ -263,7 +263,7 @@ const ClassicChessObjectType Model::getChessObjectType(const Position2i & chessp
 
 const ClassicChessPlayerType Model::getChessPlayerType(const Position2i & chesspos, const Position2i & objpos) const
 {
-	for (size_t i = 0; i <= chessLocation.size(); i++) {
+	for (size_t i = 0; i < chessLocation.size(); i++) {
 		if (chessLocation[i] == chesspos) {
 			return chess[i].getPlayerType(objpos);
 		}

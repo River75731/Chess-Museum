@@ -1,2 +1,6 @@
 #TargetFrameworkVersion=v4.0:PlatformToolSet=v141:EnableManagedIncrementalBuild=false:VCToolArchitecture=Native32Bit:WindowsTargetPlatformVersion=10.0.17763.0
+<<<<<<< HEAD
 Debug|Win32|E:\Chess-Museum(1)\|
+=======
+Debug|Win32|D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\|
+>>>>>>> 88b8dde80384fcdde47e88bd9bf0a726fea494cd

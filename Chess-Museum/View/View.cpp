@@ -2,19 +2,19 @@
 #include "../Common/ObjParser.h"
 #include "../Common/textfile.h"
 #include "../ViewModel/ViewModel.h"
-#include <vector>
 #include <iostream>
+#include <vector>
 #define HEIGHT 0.8
 bool View::ButtonDown = false;
 bool View::Move = false;
 int View::du = 90, View::OriX = -1, View::OriY = -1;
-float View::c = PI / 180.0; 
+float View::c = PI / 180.0;
 Vec3f View::EyeLocation = Vec3f(0, 0, 2);
-Vec3f View::EyeDirection = Vec3f(-1.99999,0.0069813,0.0);
+Vec3f View::EyeDirection = Vec3f(-1.99999, 0.0069813, 0.0);
 Vec3f View::EyeUp = Vec3f(0, 1, 0);
-Vec3f View::MoveIncrement = Vec3f(0.00174537,0,0.999998);
+Vec3f View::MoveIncrement = Vec3f(0.00174537, 0, 0.999998);
 Vec3f View::EyeDirection_t = Vec3f(-1.99999, 0.0069813, 0.0);
-float View::Pitch = 0, View::Yaw = 180; 
+float View::Pitch = 0, View::Yaw = 180;
 char View::Key = ' ';
 Position2i View::CurrentPosition = Position2i(1, 1);
 GLuint program;
@@ -70,7 +70,11 @@ void View::initMapRelation()
 
 	std::vector<int> tex;
 
+<<<<<<< HEAD
 	IndexMap[EXHIBIT_EMPTY] = IndexMap[EXHIBIT_CHESS_SET]= IndexMap[EXHIBIT_WINDOW]= IndexMap[EXHIBIT_DOOR_1]= IndexMap[EXHIBIT_DOOR_2]=IndexMap[EXHIBIT_DOOR_3]= IndexMap[EXHIBIT_DOOR_4] =EMPTY;
+=======
+	IndexMap[EXHIBIT_EMPTY] = IndexMap[EXHIBIT_CHESS_SET] = IndexMap[EXHIBIT_WINDOW] = IndexMap[EXHIBIT_DOOR] = EMPTY;
+>>>>>>> 88b8dde80384fcdde47e88bd9bf0a726fea494cd
 
 	IndexMap[EXHIBIT_PAWN] = PAWN;
 	IndexMap[EXHIBIT_ROOK] = ROOK;
@@ -373,7 +377,7 @@ void View::Display()
 		EyeMove();
 	glEnable(GL_LIGHTING);
 	GLfloat gray[] = {0.8, 0.8, 0.8, 1.0};
-	GLfloat light_pos[] = {-6.5, 4,- 6.5, 1};
+	GLfloat light_pos[] = {-6.5, 4, -6.5, 1};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
@@ -391,7 +395,6 @@ void View::Display()
 	glVertex3f(-0, 0, -10000);
 	glEnd();
 
-	
 	DrawScene();
 	glutSwapBuffers();
 }
@@ -422,9 +425,9 @@ void View::onMouseMove(int x, int y)
 			Yaw = 360.0;
 		EyeDirection.Set(2.0 * cos(c * Yaw) * cos(c * Pitch), 2.0 * sin(c * Pitch), 2.0 * sin(c * Yaw) * cos(c * Pitch));
 		EyeUp.Set(1.0 * cos(c * Yaw) * cos(c * (Pitch + 90.0)), 1.0 * sin(c * (Pitch + 90.0)), 1.0 * sin(c * Yaw) * cos(c * (Pitch + 90.0)));
-		
+
 		EyeDirection_t.Set(1.0 * cos(c * Yaw), 0, 1.0 * sin(c * Yaw));
-		MoveIncrement. Set(1.0 * sin(c * Yaw), 0, -1.0 * cos(c * Yaw));
+		MoveIncrement.Set(1.0 * sin(c * Yaw), 0, -1.0 * cos(c * Yaw));
 		OriX = x, OriY = y;
 	}
 }
@@ -458,7 +461,7 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	case 'M':
 		CurrentState = CHESS;
 		break;
-	case (char)(0xD) :
+	case (char)(0xD):
 		if (CurrentState == EDIT)
 		{
 			CurrentState = EXHIBIT;
@@ -480,7 +483,7 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 		break;
 	case 'q':
 		MyModel.getExhibit(Position2i(CurrentPosition), temp);
-		 T = IndexMap[temp.getType()];
+		T = IndexMap[temp.getType()];
 		if (T != EMPTY)
 		{
 			int Size = texMap[T].size();
@@ -504,11 +507,9 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	default:
 		Move = true;
 		break;
-
 	}
-	if(CurrentState == EDIT|| CurrentState == EXHIBIT)
-	PoisitionChange();
-	
+	if (CurrentState == EDIT || CurrentState == EXHIBIT)
+		PoisitionChange();
 }
 
 void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
@@ -519,12 +520,15 @@ void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
 void View::EyeMove()
 {
 
+<<<<<<< HEAD
 	Exhibit d;
 	
+=======
+>>>>>>> 88b8dde80384fcdde47e88bd9bf0a726fea494cd
 	Vec3f temp_vec = EyeLocation;
-	
-		switch (Key)
-		{
+
+	switch (Key)
+	{
 		float temp[3];
 		case 'w':
 			temp_vec += 0.05 * EyeDirection_t;
@@ -591,7 +595,7 @@ void View::PoisitionChange()
 	case 'i':
 		if (CurrentPosition.getX() < 11)
 		{
-			
+
 			if (CurrentState == EXHIBIT)
 			{
 				if (MyModel.moveExhibit(CurrentPosition, CurrentPosition + Vector2i(1, 0)))
@@ -599,9 +603,8 @@ void View::PoisitionChange()
 			}
 			else
 			{
-					CurrentPosition = CurrentPosition + Vector2i(1, 0);
+				CurrentPosition = CurrentPosition + Vector2i(1, 0);
 			}
-
 		}
 		break;
 	case 'j':
@@ -618,7 +621,7 @@ void View::PoisitionChange()
 			}
 		}
 		break;
-	case'k':
+	case 'k':
 		if (CurrentPosition.getX() > 1)
 		{
 			if (CurrentState == EXHIBIT)
@@ -631,7 +634,7 @@ void View::PoisitionChange()
 				CurrentPosition = CurrentPosition - Vector2i(1, 0);
 			}
 		}
-			break;
+		break;
 	case 'l':
 		if (CurrentPosition.getY() < 13)
 		{
@@ -729,11 +732,11 @@ void View::Reshape(int w, int h)
 	else if (CurrentState == EDIT)
 	{
 		EyeLocation = Vec3f(-5, 4, 0);
-		EyeDirection = Vec3f(-1.77385,- 0.923499,0.024773);
-		EyeUp = Vec3f(-0.379386,0.92521,- 0.00728536);
+		EyeDirection = Vec3f(-1.77385, -0.923499, 0.024773);
+		EyeUp = Vec3f(-0.379386, 0.92521, -0.00728536);
 	}
 	gluPerspective(90.0, (float)w / h, 0.01, 100000.0);
-	
+
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -855,12 +858,12 @@ void View::DrawScene()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DrawGround();
-	if (CurrentState == EDIT|| CurrentState==EXHIBIT)
+	if (CurrentState == EDIT || CurrentState == EXHIBIT)
 	{
 		DrawEdit();
-		
+
 		MyModel.enterEdit();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	for (int i = 1; i <= 11; i++)
 	{
@@ -870,14 +873,52 @@ void View::DrawScene()
 			MyModel.getExhibit(Position2i(i, j), temp);
 			switch (temp.getType())
 			{
-			case  EXHIBIT_EMPTY:
+			case EXHIBIT_EMPTY:
 
 				break;
-			case  EXHIBIT_CHESS_SET:
+			case EXHIBIT_CLASSICCHESS:
+				DrawModel(CHESSBOARD, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
+				for (int a = 1; a <= 8; a++)
+				{
+					for (int b = 1; b <= 8; b++)
+					{
+						ClassicChessPlayerType color = MyModel.getChessPlayerType(Position2i(i, j), Position2i(a, b));
+						GLuint tex_num;
+						if (color == CLASSICCHESS_WHITE)
+							tex_num = 0;
+						else
+							tex_num = 1;
+						ClassicChessObjectType ctype;
+						switch (ctype = MyModel.getChessObjectType(Position2i(i, j), Position2i(a, b)))
+						{
+						case CLASSICCHESS_EMPTY:
+							break;
+						case CLASSICCHESS_PAWN:
+							DrawModel(PAWN, Vec2f(-i, -j), Vec3f((a - 4.5) / 8, HEIGHT + 0.05, (b - 4.5) / 8), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.01 * temp.getScale().getX(), 0.01 * temp.getScale().getY(), 0.01 * temp.getScale().getZ()), tex_num);
+							break;
+						case CLASSICCHESS_ROOK:
+							DrawModel(ROOK, Vec2f(-i, -j), Vec3f((a - 4.5) / 8, HEIGHT + 0.05, (b - 4.5) / 8), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.01 * temp.getScale().getX(), 0.01 * temp.getScale().getY(), 0.01 * temp.getScale().getZ()), tex_num);
+							break;
+						case CLASSICCHESS_KNIGHT:
+							DrawModel(KNIGHT, Vec2f(-i, -j), Vec3f((a - 4.5) / 8, HEIGHT + 0.05, (b - 4.5) / 8), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.01 * temp.getScale().getX(), 0.01 * temp.getScale().getY(), 0.01 * temp.getScale().getZ()), tex_num);
+							break;
+						case CLASSICCHESS_BISHOP:
+							DrawModel(BISHOP, Vec2f(-i, -j), Vec3f((a - 4.5) / 8, HEIGHT + 0.05, (b - 4.5) / 8), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.01 * temp.getScale().getX(), 0.01 * temp.getScale().getY(), 0.01 * temp.getScale().getZ()), tex_num);
+							break;
+						case CLASSICCHESS_QUEEN:
+							DrawModel(QUEEN, Vec2f(-i, -j), Vec3f((a - 4.5) / 8, HEIGHT + 0.05, (b - 4.5) / 8), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.01 * temp.getScale().getX(), 0.01 * temp.getScale().getY(), 0.01 * temp.getScale().getZ()), tex_num);
+							break;
+						case CLASSICCHESS_KING:
+							DrawModel(KING, Vec2f(-i, -j), Vec3f((a - 4.5) / 8, HEIGHT + 0.05, (b - 4.5) / 8), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.01 * temp.getScale().getX(), 0.01 * temp.getScale().getY(), 0.01 * temp.getScale().getZ()), tex_num);
+							break;
+						}
+					}
+				}
 
 				break;
 			case EXHIBIT_CUBE:
-				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()) , temp.getTextureNum());
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
 				break;
 			case EXHIBIT_DOOR_1:
 				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 3, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY()*2, temp.getScale().getZ()), temp.getTextureNum());
@@ -970,8 +1011,9 @@ void View::DrawGround()
 	for (int i = 1; i <= 11; i++)
 	{
 		for (int j = 1; j <= 13; j++)
-		{	if(Position2i(i,j)!=CurrentPosition)
-			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0),0, Vec3f(0, 1, 0), Vec3f(1,0.01,1),0);
+		{
+			if (Position2i(i, j) != CurrentPosition)
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 0);
 
 			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 5, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 3);
 		}
@@ -981,18 +1023,18 @@ void View::DrawEdit()
 {
 	for (int i = 0; i <= 11; i++)
 	{
-			glLineWidth(2);
-			glBegin(GL_LINES);
-			glVertex3f(-i-0.5, 0, -0.5);
-			glVertex3f(-i-0.5, 0, -10.5);
-			glEnd();	
+		glLineWidth(2);
+		glBegin(GL_LINES);
+		glVertex3f(-i - 0.5, 0, -0.5);
+		glVertex3f(-i - 0.5, 0, -10.5);
+		glEnd();
 	}
 	for (int i = 0; i <= 13; i++)
 	{
 		glLineWidth(2);
 		glBegin(GL_LINES);
-		glVertex3f(-0.5, 0, -i-0.5);
-		glVertex3f(-20.5, 0, -i-0.5);
+		glVertex3f(-0.5, 0, -i - 0.5);
+		glVertex3f(-20.5, 0, -i - 0.5);
 		glEnd();
 	}
 }
