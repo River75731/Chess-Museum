@@ -335,7 +335,7 @@ bool ClassicChess::isValidMove(const std::unique_ptr<ClassicChessMove>& move) co
 	case CLASSICCHESS_WHITE_TURN:
 		if (!move->isValid()) return false;
 		if (move->getObject().getPlayer() == CLASSICCHESS_BLACK) return false;
-		//if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_WHITE) return false;
+		if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_WHITE) return false;
 		// todo : block judge
 		return true;
 	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK:
@@ -343,7 +343,7 @@ bool ClassicChess::isValidMove(const std::unique_ptr<ClassicChessMove>& move) co
 	case CLASSICCHESS_BLACK_TURN:
 		if (!move->isValid()) return false;
 		if (move->getObject().getPlayer() == CLASSICCHESS_WHITE) return false;
-		//if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_BLACK) return false;
+		if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_BLACK) return false;
 		// todo : block judge
 		return true;
 	case CLASSICCHESS_WHITE_WIN:
