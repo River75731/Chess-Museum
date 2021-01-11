@@ -42,7 +42,6 @@ void Model::loadMap(const std::string& address)
 			}
 			map->setData(Position2i(j, i), exhibit[item]);
 			if (exhibit[item].getType() == EXHIBIT_CLASSICCHESS) {
-				std::cout << "classic chess read" << std::endl;
 				chessLocation.push_back(Position2i(j, i));
 				chess.push_back(ClassicChess());
 			}

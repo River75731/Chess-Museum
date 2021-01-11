@@ -225,7 +225,7 @@ void ClassicChess::loadMsg(std::string address)
 	std::string statusIn;
 	fin >> statusIn;
 	status = stringToStatus.at(statusIn);
-	for (int i = 0; i <= 63; i++) board.at(i).reset(new ClassicChessObject());
+	for(int i = 0; i <= 63; i++) board.at(i).reset(new ClassicChessObject());
 	for (int i = 0; i <= 31; i++) 
 	{
 		int index;
@@ -355,6 +355,7 @@ ClassicChess::ClassicChess(const ClassicChess & that)
 {
 	status = that.getStatus();
 	objects = that.getIndex();
+	for (int i = 0; i <= 63; i++) board.at(i).reset(new ClassicChessObject());
 	for (int i = 0; i <= 31; i++) {
 		if (objects.at(i) != -1) {
 			board.at(objects.at(i)).reset(new ClassicChessObject(that.getObject(toPosition(objects.at(i)))));

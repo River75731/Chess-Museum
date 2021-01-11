@@ -1,6 +1,2 @@
-﻿  Model.cpp
-  View.cpp
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(671,17): warning C4018: “<”: 有符号/无符号不匹配
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(766,16): warning C4101: “temp”: 未引用的局部变量
-  正在生成代码...
-  Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe
+﻿  ClassicChess.cpp
+  Chess-Museum.vcxproj -> D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\Debug\Chess-Museum.exe
