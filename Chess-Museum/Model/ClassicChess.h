@@ -45,7 +45,8 @@ enum ClassicChessPlayerType {
 };
 
 enum ClassicChessStatus {
-	CLASSICCHESS_INTERRUPT_UPGRADEPAWN,
+	CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE,
+	CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK,
 	CLASSICCHESS_WHITE_TURN,
 	CLASSICCHESS_BLACK_TURN,
 	CLASSICCHESS_WHITE_CHECK,	// white being checked
@@ -68,7 +69,9 @@ class ClassicChessPosition final : public Position2i, public ChessPosition{
 public:
 	ClassicChessPosition();
 	ClassicChessPosition(const int& x, const int& y);
+	ClassicChessPosition(const Position2i& that);
 	ClassicChessPosition(const ClassicChessPosition& that);
+	~ClassicChessPosition();
 	bool isValid() const; // whether it's on board
 	void output(const std::string &name = "DEFAULT") const;
 };
@@ -83,6 +86,7 @@ private:
 	const ClassicChessPosition position;
 public:
 	// Constructor & Destructor
+	ClassicChessObject();
 	ClassicChessObject(const int& index, const ClassicChessPlayerType& player, const ClassicChessPosition& position, const ClassicChessObjectType& type, const ClassicChessObjectStatus& status = CLASSICCHESS_ALIVE);
 	ClassicChessObject(const ClassicChessObject& that);
 	~ClassicChessObject();
@@ -141,15 +145,32 @@ private:
 	void saveMsg(std::string address);
 
 	bool isChecked(const ClassicChessPlayerType player) const;
-	void execMove(std::unique_ptr<ChessMove> move);	// execute a move
-	bool isValidMove(std::unique_ptr<ChessMove> move) const; // whether a move is valid (consider all objects)
+	void execMove(const std::unique_ptr<ClassicChessMove> &move);	// execute a move
+	bool isValidMove(const std::unique_ptr<ClassicChessMove>& move) const; // whether a move is valid (consider all objects)
+	void tryMove(const std::unique_ptr<ClassicChessMove>& move);	// execute a move after judging whether it's valid
 public:
+	static const std::map<const std::string, const ClassicChessStatus> stringToStatus;
+	static const std::map<const std::string, const ClassicChessMoveType> stringToMoveType;
+	static const std::map<const std::string, const ClassicChessObjectStatus> stringToObjectStatus;
+	static const std::map<const std::string, const ClassicChessPlayerType> stringToPlayerType;
+	static const std::map<const std::string, const ClassicChessObjectType> stringToObjectType;
+
 	// Constructors & Destructor
-	ClassicChess();
-	ClassicChess(std::string address);
+	ClassicChess(const std::string &address = "./Data/DefaultChess.txt");
+	ClassicChess(const ClassicChess& that);
 	~ClassicChess();
 	// functions to public
 	void reset(std::string address);
 	void tryUpgradePawn(const ClassicChessObjectType& type);	// upgrade a pawn after judging whether it's valid
-	void tryMove(const std::unique_ptr<ClassicChessMove>& move);	// execute a move after judging whether it's valid
+	void tryMove(const Position2i &src, const Position2i& dest);	
+	// Get Method
+	const ClassicChessStatus getStatus() const;
+	const std::array<int, 32> getIndex() const;
+
+	const ClassicChessObject getObject(const Position2i& position) const;
+	const bool isEmpty(const Position2i& position) const;
+	const bool isValidChoice(const Position2i& position) const;
+	const ClassicChessObjectType getObjectType(const Position2i& position) const;
+	const ClassicChessPlayerType getPlayerType(const Position2i& position) const;
+
 };

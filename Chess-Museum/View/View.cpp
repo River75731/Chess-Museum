@@ -16,7 +16,7 @@ Vec3f View::MoveIncrement = Vec3f(0.00174537,0,0.999998);
 Vec3f View::EyeDirection_t = Vec3f(-1.99999, 0.0069813, 0.0);
 float View::Pitch = 0, View::Yaw = 180; 
 char View::Key = ' ';
-
+Position2i View::CurrentPosition = Position2i(1, 1);
 GLuint program;
 
 ViewSceneType View::CurrentState = SCENE;
@@ -26,6 +26,7 @@ std::map<ViewObjectType, GLuint> View::listMap;
 std::map<GLuint, unsigned int> View::VAOMap;
 
 std::map<ViewObjectType, std::vector<int>> View::texMap;
+std::map<ExhibitType, ViewObjectType> IndexMap;
 std::string View::texturePath = "texture/";
 unsigned int View::texture[TEXTURE_NUM] = {0};
 std::string View::texFileNames[TEXTURE_NUM] =
@@ -68,6 +69,15 @@ void View::initMapRelation()
 	objMap["CHESSBOARD"] = CHESSBOARD;
 
 	std::vector<int> tex;
+
+	IndexMap[EXHIBIT_EMPTY] = IndexMap[EXHIBIT_CHESS_SET]= IndexMap[EXHIBIT_WINDOW]= IndexMap[EXHIBIT_DOOR]=EMPTY;
+
+	IndexMap[EXHIBIT_PAWN] = PAWN;
+	IndexMap[EXHIBIT_ROOK] = ROOK;
+	IndexMap[EXHIBIT_KNIGHT] = KNIGHT;
+	IndexMap[EXHIBIT_BISHOP] = BISHOP;
+	IndexMap[EXHIBIT_QUEEN] = QUEEN;
+	IndexMap[EXHIBIT_KING] = KING;
 
 	tex.emplace_back(texture[0]);
 	texMap[MARBLETABLE] = tex;
@@ -380,20 +390,7 @@ void View::Display()
 	glVertex3f(-0, 0, -10000);
 	glEnd();
 
-	/*DrawModel(KING, Vec2f(), Vec3f(1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
-	DrawModel(QUEEN, Vec2f(), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
-	DrawModel(QUEEN, Vec2f(), Vec3f(0, 0, -1), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
-	DrawModel(QUEEN, Vec2f(), Vec3f(0, 0, -2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);
-	DrawModel(BISHOP, Vec2f(), Vec3f(-1, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(KNIGHT, Vec2f(), Vec3f(-2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(ROOK, Vec2f(), Vec3f(2, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(PAWN, Vec2f(), Vec3f(3, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(MARBLETABLE, Vec2f(), Vec3f(0, 0, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(CHESSBOARD, Vec2f(), Vec3f(0, 1, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(CUBE, Vec2f(), Vec3f(0, 2, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), -1);
-	DrawModel(CUBE, Vec2f(), Vec3f(0, 3, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 0);
-	DrawModel(CUBE, Vec2f(), Vec3f(0, 4, 2), 0, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1);*/
-
+	
 	DrawScene();
 	glutSwapBuffers();
 }
@@ -442,6 +439,8 @@ void View::SetEyeLocation()
 void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 {
 	Key = k;
+	Exhibit temp;
+	ViewObjectType T;
 	switch (k)
 	{
 	case 'e':
@@ -458,14 +457,56 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	case 'M':
 		CurrentState = CHESS;
 		break;
-	case (char)(0xD):
-		
+	case (char)(0xD) :
+		if (CurrentState == EDIT)
+		{
+			CurrentState = EXHIBIT;
+			MyModel.chooseBlock(CurrentPosition);
+			MyModel.editExhibit();
+		}
 		break;
-	
+	case 't':
+		MyModel.changeType();
+		MyModel.saveExhibit();
+		MyModel.editExhibit();
+		break;
+	case ' ':
+		if (CurrentState == EXHIBIT)
+		{
+			CurrentState = EDIT;
+			MyModel.saveExhibit();
+		}
+		break;
+	case 'q':
+		MyModel.getExhibit(Position2i(CurrentPosition), temp);
+		 T = IndexMap[temp.getType()];
+		if (T != EMPTY)
+		{
+			int Size = texMap[T].size();
+			int currentnum = temp.getTextureNum();
+			MyModel.setTextureNum(currentnum + 1 >= Size ? 0 : ++currentnum);
+			MyModel.saveExhibit();
+			MyModel.editExhibit();
+		}
+		break;
+	case 'f':
+		MyModel.execRotate(1, true);
+		MyModel.saveExhibit();
+		MyModel.editExhibit();
+		break;
+	case 'g':
+		MyModel.execScale(1, true);
+		MyModel.saveExhibit();
+		MyModel.editExhibit();
+		break;
+
 	default:
 		Move = true;
 		break;
+
 	}
+	if(CurrentState == EDIT|| CurrentState == EXHIBIT)
+	PoisitionChange();
 	
 }
 
@@ -487,7 +528,7 @@ void View::EyeMove()
 			temp_vec += 0.05 * EyeDirection_t;
 			temp_vec.Get(temp[0], temp[1], temp[2]);	
 			
-			if (MyModel.canEnter(Position2i((int)(-temp[0]+0.5),(int)(-temp[2]+0.5)))||CurrentState==EDIT)
+			if (MyModel.canEnter(Position2i((int)(-temp[0]+0.5),(int)(-temp[2]+0.5)))||CurrentState==EDIT|| CurrentState == EXHIBIT)
 			{
 				EyeLocation += 0.01 * EyeDirection_t;
 			}
@@ -496,21 +537,21 @@ void View::EyeMove()
 			temp_vec -= 0.05 * EyeDirection_t;
 			temp_vec.Get(temp[0], temp[1], temp[2]);
 
-			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT)
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT)
 			EyeLocation -= 0.01 * EyeDirection_t;
 			break;
 		case 'a':
 			temp_vec += 0.05 * MoveIncrement;
 			temp_vec.Get(temp[0], temp[1], temp[2]);
 
-			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT)
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT)
 			EyeLocation += 0.01 * MoveIncrement;
 			break;
 		case 'd':
 			temp_vec -= 0.05 * MoveIncrement;
 			temp_vec.Get(temp[0], temp[1], temp[2]);
 
-			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT)
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT)
 			EyeLocation -= 0.01 * MoveIncrement;
 			break;
 		case 'z':
@@ -529,6 +570,70 @@ void View::EyeMove()
 	
 }
 
+void View::PoisitionChange()
+{
+	switch (Key)
+	{
+	case 'i':
+		if (CurrentPosition.getX() < 11)
+		{
+			
+			if (CurrentState == EXHIBIT)
+			{
+				if (MyModel.moveExhibit(CurrentPosition, CurrentPosition + Vector2i(1, 0)))
+					CurrentPosition = CurrentPosition + Vector2i(1, 0);
+			}
+			else
+			{
+					CurrentPosition = CurrentPosition + Vector2i(1, 0);
+			}
+
+		}
+		break;
+	case 'j':
+		if (CurrentPosition.getY() > 1)
+		{
+			if (CurrentState == EXHIBIT)
+			{
+				if (MyModel.moveExhibit(CurrentPosition, CurrentPosition - Vector2i(0, 1)))
+					CurrentPosition = CurrentPosition - Vector2i(0, 1);
+			}
+			else
+			{
+				CurrentPosition = CurrentPosition - Vector2i(0, 1);
+			}
+		}
+		break;
+	case'k':
+		if (CurrentPosition.getX() > 1)
+		{
+			if (CurrentState == EXHIBIT)
+			{
+				if (MyModel.moveExhibit(CurrentPosition, CurrentPosition - Vector2i(1, 0)))
+					CurrentPosition = CurrentPosition - Vector2i(1, 0);
+			}
+			else
+			{
+				CurrentPosition = CurrentPosition - Vector2i(1, 0);
+			}
+		}
+			break;
+	case 'l':
+		if (CurrentPosition.getY() < 13)
+		{
+			if (CurrentState == EXHIBIT)
+			{
+				if (MyModel.moveExhibit(CurrentPosition, CurrentPosition + Vector2i(0, 1)))
+					CurrentPosition = CurrentPosition + Vector2i(0, 1);
+			}
+			else
+			{
+				CurrentPosition = CurrentPosition + Vector2i(0, 1);
+			}
+		}
+		break;
+	}
+}
 void View::PickMode(int x, int y)
 {
 	GLuint selectBuf[BUFSIZE];
@@ -702,12 +807,10 @@ void View::texload(int i, std::string filename)
 	unsigned char *bitmapData;
 	char c_filename[BUFSIZE];
 	strcpy(c_filename, (texturePath + filename).c_str());
-
 	bitmapData = LoadBitmapFile(c_filename, &bitmapInfoHeader);
 	glBindTexture(GL_TEXTURE_2D, texture[i]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 	glTexImage2D(GL_TEXTURE_2D,
 				 0,
 				 GL_RGB,
@@ -738,10 +841,12 @@ void View::DrawScene()
 {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	DrawGround();
-	if (CurrentState == EDIT)
+	if (CurrentState == EDIT|| CurrentState==EXHIBIT)
 	{
 		DrawEdit();
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		
+		MyModel.enterEdit();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	for (int i = 1; i <= 11; i++)
 	{
@@ -758,7 +863,7 @@ void View::DrawScene()
 
 				break;
 			case EXHIBIT_CUBE:
-				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()) , temp.getTextureNum()+1);
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()) , temp.getTextureNum());
 				break;
 			case EXHIBIT_DOOR:
 
@@ -769,33 +874,33 @@ void View::DrawScene()
 				break;
 
 			case EXHIBIT_PAWN:
-				DrawModel(PAWN, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY()+HEIGHT, temp.getScale().getZ()), temp.getTextureNum());
-				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(PAWN, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()),0);
 
 				break;
 			case EXHIBIT_ROOK:
-				DrawModel(ROOK, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() + HEIGHT, temp.getScale().getZ()), temp.getTextureNum());
-				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(ROOK, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
 				break;
 			case EXHIBIT_KNIGHT:
-				DrawModel(KNIGHT, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() + HEIGHT, temp.getScale().getZ()), temp.getTextureNum());
-				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(KNIGHT, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()),0);
 
 				break;
 			case EXHIBIT_BISHOP:
-				DrawModel(BISHOP, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() + HEIGHT, temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(BISHOP, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
 
-				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
 				break;
 
 			case EXHIBIT_QUEEN:
-				DrawModel(QUEEN, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() + HEIGHT, temp.getScale().getZ()), temp.getTextureNum());
-				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(QUEEN, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
 
 				break;
 			case EXHIBIT_KING:
-				DrawModel(KING, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() + HEIGHT, temp.getScale().getZ()), temp.getTextureNum());
-				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(KING, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()),0);
 				break;
 			}
 		}
@@ -806,7 +911,7 @@ void View::DrawGround()
 	for (int i = 1; i <= 11; i++)
 	{
 		for (int j = 1; j <= 13; j++)
-		{
+		{	if(Position2i(i,j)!=CurrentPosition)
 			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0),0, Vec3f(0, 1, 0), Vec3f(1,0.01,1),0);
 
 			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 5, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 3);
@@ -815,7 +920,7 @@ void View::DrawGround()
 }
 void View::DrawEdit()
 {
-	for (int i = 0; i <= 10; i++)
+	for (int i = 0; i <= 11; i++)
 	{
 			glLineWidth(2);
 			glBegin(GL_LINES);
@@ -823,7 +928,7 @@ void View::DrawEdit()
 			glVertex3f(-i-0.5, 0, -10.5);
 			glEnd();	
 	}
-	for (int i = 0; i <= 10; i++)
+	for (int i = 0; i <= 13; i++)
 	{
 		glLineWidth(2);
 		glBegin(GL_LINES);

@@ -107,6 +107,8 @@
     </ClInclude>
     <ClInclude Include="Light\light.h">
       <Filter>头文件\View</Filter>
+    <ClInclude Include="Model\Chess.h">
+      <Filter>头文件\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Data\DefaultMap.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="Data\DefaultChess.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

@@ -20,7 +20,7 @@ void Model::loadMap(const std::string& address)
 	std::ifstream fin;
 	fin.open(address);
 	if (fin.fail()) {
-		std::cout << "Open File failed!" << std::endl;
+		std::cout << "Open Map File failed!" << std::endl;
 		return;
 	}
 	std::string stateIn;
@@ -29,10 +29,9 @@ void Model::loadMap(const std::string& address)
 	unsigned int width, height, itemNum, chessNum, item;
 	fin >> width >> height >> itemNum >> chessNum;
 	map.reset(new Map(width, height));
-	std::unique_ptr<Exhibit[]> exhibit(new Exhibit[itemNum + 1]);
+	exhibit.reset(new Exhibit[itemNum + 1]);
 	exhibit[0] = Exhibit();
-	for (unsigned int i = 1; i <= itemNum; i++) fin >> exhibit[i];
-	// todo : Chess Input
+	for (unsigned int i = 1; i <= itemNum; i++)	fin >> exhibit[i];
 	for (unsigned int i = 1; i <= height; i++) {
 		for (unsigned int j = 1; j <= width; j++) {
 			fin >> item;
@@ -42,6 +41,10 @@ void Model::loadMap(const std::string& address)
 				return;
 			}
 			map->setData(Position2i(j, i), exhibit[item]);
+			if (exhibit[item].getType() == EXHIBIT_CLASSICCHESS) {
+				chessLocation.push_back(Position2i(j, i));
+				chess.push_back(ClassicChess());
+			}
 		}
 	}
 	fin.close();
@@ -51,6 +54,7 @@ Model::Model()
 {
 	loadMap();
 	chosenBlock = Position2i(1, 1);
+	chosenChess = -1;
 	chosenExhibit = Exhibit();
 }
 
@@ -61,6 +65,25 @@ Model::~Model()
 const ModelState Model::getState() const
 {
 	return state;
+}
+
+bool Model::enterChess(const Position2i & pos)
+{
+	if (state == MODEL_PLAYMODE)
+	{
+		for (size_t i = 0; i < chessLocation.size(); i++) 
+			if (pos == chessLocation[i]) {
+				state = MODEL_PLAY_CHESS;
+				chosenChess = i;
+				chosenBlock1 = Position2i(0, 0);
+				chosenBlock2 = Position2i(0, 0);
+				chosenOne = false;
+				return true;
+			}
+		std::cout << "ERROR : Chess cannot find!" << std::endl;
+		return false;
+	}
+	return false;
 }
 
 void Model::enterEdit()
@@ -127,10 +150,12 @@ void Model::saveExhibit()
 	}
 }
 
-void Model::changeType(const ExhibitType & type)
-{
+void Model::changeType()
+{	
+	
 	if (state == MODEL_EDIT_EXHIBIT)
-	{
+		{int count = chosenExhibit.getType();
+		ExhibitType type = (ExhibitType)(count + 1 >= 12 ? 1 : ++count);
 		chosenExhibit.changeType(type);
 	}
 }
@@ -182,6 +207,19 @@ void Model::changeIsRotating()
 		chosenExhibit.changeIsRotating();
 	}
 }
+bool Model::moveExhibit(const Position2i& src, const Position2i& dest)
+{
+	Exhibit res = map->getData(dest);
+	if (res.isEmpty())
+	{	
+		res = map->getData(src);
+		map->setData(dest, res);
+		map->setData(src, Exhibit());
+		chosenBlock = dest;
+		return true;
+	}
+	else return false;
+}
 
 void Model::execTranslate(const float & time, const int & directX, const int & directY, const int & directZ)
 {
@@ -211,6 +249,57 @@ bool Model::getExhibit(const Position2i & pos, Exhibit & res) const
 {
 	res = map->getData(pos);
 	return !res.isEmpty();
+}
+
+const ClassicChessObjectType Model::getChessObjectType(const Position2i & chesspos, const Position2i & objpos) const
+{
+	for (size_t i = 0; i < chessLocation.size(); i++) {
+		if (chessLocation[i] == chesspos) {
+			return chess[i].getObjectType(objpos);
+		}
+	}
+	return CLASSICCHESS_EMPTY;
+}
+
+const ClassicChessPlayerType Model::getChessPlayerType(const Position2i & chesspos, const Position2i & objpos) const
+{
+	for (size_t i = 0; i <= chessLocation.size(); i++) {
+		if (chessLocation[i] == chesspos) {
+			return chess[i].getPlayerType(objpos);
+		}
+	}
+	return CLASSICCHESS_WHITE;
+}
+
+void Model::quitChess()
+{
+	if (state == MODEL_PLAY_CHESS) state = MODEL_PLAYMODE;
+}
+
+void Model::chooseChessBlock(const Position2i & pos)
+{
+	if (state == MODEL_PLAY_CHESS)
+	{
+		if (!chosenOne) chosenBlock1 = pos;
+		else chosenBlock2 = pos;
+	}
+}
+
+void Model::execChoose()
+{
+	if (state == MODEL_PLAY_CHESS) 
+	{
+		if (!chosenOne) {
+			if (chess[chosenChess].isValidChoice(chosenBlock1)) {
+				chosenOne = true;
+				return;
+			}
+		}
+		if (chosenOne) {
+			chess[chosenChess].tryMove(chosenBlock1, chosenBlock2);
+			chosenOne = false;
+		}
+	}
 }
 
 const Exhibit Model::getEditingExhibit() const
