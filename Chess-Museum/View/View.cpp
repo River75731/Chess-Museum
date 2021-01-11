@@ -70,7 +70,7 @@ void View::initMapRelation()
 
 	std::vector<int> tex;
 
-	IndexMap[EXHIBIT_EMPTY] = IndexMap[EXHIBIT_CHESS_SET]= IndexMap[EXHIBIT_WINDOW]= IndexMap[EXHIBIT_DOOR]=EMPTY;
+	IndexMap[EXHIBIT_EMPTY] = IndexMap[EXHIBIT_CHESS_SET]= IndexMap[EXHIBIT_WINDOW]= IndexMap[EXHIBIT_DOOR_1]= IndexMap[EXHIBIT_DOOR_2]=IndexMap[EXHIBIT_DOOR_3]= IndexMap[EXHIBIT_DOOR_4] =EMPTY;
 
 	IndexMap[EXHIBIT_PAWN] = PAWN;
 	IndexMap[EXHIBIT_ROOK] = ROOK;
@@ -326,8 +326,9 @@ void View::DrawModel(ViewObjectType type, Vec2f coordinate, Vec3f translate, flo
 	glPushMatrix();
 
 	Translate(Vec3f(coordinate.x(), 0, coordinate.y()));
-	Translate(translate);
+	
 	Rotate(angle, axis);
+	Translate(translate);
 	Scale(scale);
 
 	glEnable(GL_TEXTURE_2D);
@@ -518,7 +519,8 @@ void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
 void View::EyeMove()
 {
 
-
+	Exhibit d;
+	
 	Vec3f temp_vec = EyeLocation;
 	
 		switch (Key)
@@ -527,31 +529,32 @@ void View::EyeMove()
 		case 'w':
 			temp_vec += 0.05 * EyeDirection_t;
 			temp_vec.Get(temp[0], temp[1], temp[2]);	
-			
-			if (MyModel.canEnter(Position2i((int)(-temp[0]+0.5),(int)(-temp[2]+0.5)))||CurrentState==EDIT|| CurrentState == EXHIBIT)
+			MyModel.getExhibit(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)), d);
+			if (MyModel.canEnter(Position2i((int)(-temp[0]+0.5),(int)(-temp[2]+0.5)))||CurrentState==EDIT|| CurrentState == EXHIBIT|| d.getType() == EXHIBIT_DOOR_1 || d.getType() == EXHIBIT_DOOR_2 || d.getType() == EXHIBIT_DOOR_3 || d.getType() == EXHIBIT_DOOR_4)
 			{
 				EyeLocation += 0.01 * EyeDirection_t;
 			}
+			
 			break;
 		case 's':
 			temp_vec -= 0.05 * EyeDirection_t;
 			temp_vec.Get(temp[0], temp[1], temp[2]);
-
-			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT)
+			MyModel.getExhibit(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)), d);
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT || d.getType()==EXHIBIT_DOOR_1||d.getType()==EXHIBIT_DOOR_2||d.getType()==EXHIBIT_DOOR_3||d.getType()==EXHIBIT_DOOR_4)
 			EyeLocation -= 0.01 * EyeDirection_t;
 			break;
 		case 'a':
 			temp_vec += 0.05 * MoveIncrement;
 			temp_vec.Get(temp[0], temp[1], temp[2]);
-
-			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT)
+			MyModel.getExhibit(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)), d);
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT || d.getType()==EXHIBIT_DOOR_1||d.getType()==EXHIBIT_DOOR_2||d.getType()==EXHIBIT_DOOR_3||d.getType()==EXHIBIT_DOOR_4)
 			EyeLocation += 0.01 * MoveIncrement;
 			break;
 		case 'd':
 			temp_vec -= 0.05 * MoveIncrement;
 			temp_vec.Get(temp[0], temp[1], temp[2]);
-
-			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT)
+			MyModel.getExhibit(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)), d);
+			if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT || d.getType()==EXHIBIT_DOOR_1||d.getType()==EXHIBIT_DOOR_2||d.getType()==EXHIBIT_DOOR_3||d.getType()==EXHIBIT_DOOR_4)
 			EyeLocation -= 0.01 * MoveIncrement;
 			break;
 		case 'z':
@@ -561,12 +564,23 @@ void View::EyeMove()
 		case 'c':
 			EyeLocation += 0.01 * EyeUp;
 			break;
+		
+		case 'o':
+			temp_vec.Get(temp[0], temp[1], temp[2]);
+			MyModel.enterEdit();
+			MyModel.editExhibit();
+			MyModel.chooseBlock(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)));
+			MyModel.changeHasTable();
+			MyModel.saveExhibit();
+			MyModel.enterPlay();
+			break;
 		case 'q':
 			exit(0);
 			break;
 		default:
 			break;
 		}
+		
 	
 }
 
@@ -708,7 +722,7 @@ void View::Reshape(int w, int h)
 	glLoadIdentity();
 	if (CurrentState == SCENE)
 	{
-		EyeLocation = Vec3f(0, 0, -2);
+		EyeLocation = Vec3f(-1, 0.5, -7);
 		EyeDirection = Vec3f(-1.99999, 0.0069813, 0.0);
 		EyeUp = Vec3f(0, 1, 0);
 	}
@@ -865,8 +879,53 @@ void View::DrawScene()
 			case EXHIBIT_CUBE:
 				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()) , temp.getTextureNum());
 				break;
-			case EXHIBIT_DOOR:
+			case EXHIBIT_DOOR_1:
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 3, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY()*2, temp.getScale().getZ()), temp.getTextureNum());
+				if (!temp.getHasTable())
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
+				else
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(-0.5, 0, 0.5), temp.getRotate()+90.0f, Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
 
+				break;
+			case EXHIBIT_DOOR_2:
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 3, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 2, temp.getScale().getZ()), temp.getTextureNum());
+				if (!temp.getHasTable())
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
+				else
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(-0.5, 0, -0.5), temp.getRotate()+90.0f , Vec3f(0.5, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
+
+				break;
+			case EXHIBIT_DOOR_3:
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 3, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 2, temp.getScale().getZ()), temp.getTextureNum());
+				if (!temp.getHasTable())
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate() , Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
+				else
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0.5, 0, 0.5), temp.getRotate() + 90.0f, Vec3f(0.5, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+					
+				}
+
+				break;
+			case EXHIBIT_DOOR_4:
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 3, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 2, temp.getScale().getZ()), temp.getTextureNum());
+				if (!temp.getHasTable())
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, -0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
+				else
+				{
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0.5, 0, -0.5), temp.getRotate() + 90.0f, Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ()*0.3), temp.getTextureNum());
+				}
 
 				break;
 			case EXHIBIT_WINDOW:
@@ -874,32 +933,32 @@ void View::DrawScene()
 				break;
 
 			case EXHIBIT_PAWN:
-				DrawModel(PAWN, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(PAWN, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX()*0.5, temp.getScale().getY()*0.5, temp.getScale().getZ()*0.5), temp.getTextureNum());
 				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()),0);
 
 				break;
 			case EXHIBIT_ROOK:
-				DrawModel(ROOK, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(ROOK, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX()*0.5, temp.getScale().getY()*0.5 , temp.getScale().getZ()*0.5), temp.getTextureNum());
 				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
 				break;
 			case EXHIBIT_KNIGHT:
-				DrawModel(KNIGHT, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(KNIGHT, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX()*0.5, temp.getScale().getY()*0.5 , temp.getScale().getZ()*0.5), temp.getTextureNum());
 				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()),0);
 
 				break;
 			case EXHIBIT_BISHOP:
-				DrawModel(BISHOP, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(BISHOP, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX()*0.5, temp.getScale().getY()*0.5, temp.getScale().getZ()*0.5), temp.getTextureNum());
 
 				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
 				break;
 
 			case EXHIBIT_QUEEN:
-				DrawModel(QUEEN, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(QUEEN, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX()*0.5, temp.getScale().getY()*0.5 , temp.getScale().getZ()*0.5), temp.getTextureNum());
 				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()), 0);
 
 				break;
 			case EXHIBIT_KING:
-				DrawModel(KING, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() , temp.getScale().getZ()), temp.getTextureNum());
+				DrawModel(KING, Vec2f(-i, -j), Vec3f(0, HEIGHT, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX()*0.5, temp.getScale().getY()*0.5, temp.getScale().getZ()*0.5), temp.getTextureNum());
 				DrawModel(MARBLETABLE, Vec2f(-i, -j), Vec3f(0, 0, 0), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY(), temp.getScale().getZ()),0);
 				break;
 			}
