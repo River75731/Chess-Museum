@@ -17,6 +17,7 @@ Vec3f View::EyeDirection_t = Vec3f(-1.99999, 0.0069813, 0.0);
 float View::Pitch = 0, View::Yaw = 180;
 char View::Key = ' ';
 Position2i View::CurrentPosition = Position2i(1, 1);
+Position2i View::CurrentChessPosition = Position2i(1, 1);
 GLuint program;
 
 ViewSceneType View::CurrentState = SCENE;
@@ -463,6 +464,7 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	case 'm':
 	case 'M':
 		CurrentState = CHESS;
+		MyModel.enterChess(Position2i(6, 7));
 		Reshape(600, 600);
 		break;
 	case (char)(0xD):
@@ -516,6 +518,43 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	}
 	if (CurrentState == EDIT || CurrentState == EXHIBIT)
 		PoisitionChange();
+	else if (CurrentState == CHESS)
+		ChessPlay();
+}
+
+void View::ChessPlay()
+{
+	switch (Key)
+	{
+	case 'i':
+		if (CurrentChessPosition.getX() < 8)
+		{
+			CurrentChessPosition = CurrentChessPosition + Vector2i(1, 0);
+		}
+		break;
+	case 'j':
+		if (CurrentChessPosition.getY() > 1)
+		{
+			CurrentChessPosition = CurrentChessPosition - Vector2i(0, 1);
+		}
+		break;
+	case 'k':
+		if (CurrentChessPosition.getX() > 1)
+		{
+			CurrentChessPosition = CurrentChessPosition - Vector2i(1, 0);
+		}
+		break;
+	case 'l':
+		if (CurrentChessPosition.getY() < 8)
+		{
+			CurrentChessPosition = CurrentChessPosition + Vector2i(0, 1);
+		}
+		break;
+	case (char)0xD:
+
+		MyModel.chooseChessBlock(CurrentChessPosition);
+		MyModel.execChoose();
+	}
 }
 
 void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
@@ -539,14 +578,15 @@ void View::EyeMove()
 		{
 			EyeLocation += 0.01 * EyeDirection_t;
 		}
-
 		break;
 	case 's':
 		temp_vec -= 0.05 * EyeDirection_t;
 		temp_vec.Get(temp[0], temp[1], temp[2]);
 		MyModel.getExhibit(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)), d);
 		if (MyModel.canEnter(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5))) || CurrentState == EDIT || CurrentState == EXHIBIT || d.getType() == EXHIBIT_DOOR_1 || d.getType() == EXHIBIT_DOOR_2 || d.getType() == EXHIBIT_DOOR_3 || d.getType() == EXHIBIT_DOOR_4)
+		{
 			EyeLocation -= 0.01 * EyeDirection_t;
+		}
 		break;
 	case 'a':
 		temp_vec += 0.05 * MoveIncrement;
@@ -724,17 +764,17 @@ void View::Reshape(int w, int h)
 	glLoadIdentity();
 	if (CurrentState == SCENE)
 	{
-		EyeLocation = Vec3f(-1, 0.5, -7);
-		EyeDirection = Vec3f(-1.99999, 0.0069813, 0.0);
+		EyeLocation = Vec3f(-2, 1.5, -7);
+		EyeDirection = Vec3f(-1, 0, 0);
 		EyeUp = Vec3f(0, 1, 0);
 		Yaw = 180;
-		Pitch = -90;
+		Pitch = 0;
 	}
 	else if (CurrentState == EDIT)
 	{
 		EyeLocation = Vec3f(-6, 5, -6);
 		EyeDirection = Vec3f(0, -1, 0);
-		EyeUp = Vec3f(0, 0, 1);
+		EyeUp = Vec3f(-1, 0, 0);
 		Yaw = 180;
 		Pitch = -90;
 	}
@@ -901,7 +941,10 @@ void View::DrawScene()
 						else
 							tex_num = 1;
 						ClassicChessObjectType ctype;
-						switch (ctype = MyModel.getChessObjectType(Position2i(i, j), Position2i(a, b)))
+						ctype = MyModel.getChessObjectType(Position2i(i, j), Position2i(a, b));
+						if (CurrentState == CHESS && CurrentChessPosition == Position2i(a, b))
+							DrawModel(CUBE, Vec2f(-i, -j), Vec3f((a - 4.5) / 8.5, HEIGHT + 0.05, (b - 4.5) / 8.5), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.12 * temp.getScale().getX(), 0.1 * temp.getScale().getY(), 0.12 * temp.getScale().getZ()), 3);
+						switch (ctype)
 						{
 						case CLASSICCHESS_EMPTY:
 							break;

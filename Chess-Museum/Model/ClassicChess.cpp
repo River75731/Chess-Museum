@@ -303,7 +303,7 @@ bool ClassicChess::isChecked(const ClassicChessPlayerType player) const
 	return false;
 }
 
-void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove> &move)
+void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove>& move)
 {
 	ClassicChessPosition dest(move->getDest());
 	ClassicChessObject object(move->getObject());
@@ -311,9 +311,12 @@ void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove> &move)
 		objects.at(i) = -1;
 		break;
 	}
+	board.at(toIndex(object.getPosition())).reset(new ClassicChessObject());
 	objects.at(object.getIndex()) = toIndex(dest);
 	board.at(toIndex(dest)).reset(new ClassicChessObject(object));
 	history.push_back(std::unique_ptr<ClassicChessMove>(new ClassicChessMove(*move)));
+	if (status == CLASSICCHESS_WHITE_TURN) status = CLASSICCHESS_BLACK_TURN;
+	if (status == CLASSICCHESS_BLACK_TURN) status = CLASSICCHESS_WHITE_TURN;
 	// todo : castling & update
 }
 

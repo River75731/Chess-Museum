@@ -73,6 +73,7 @@ private:
 
 	static void loadShader();
 	static Position2i CurrentPosition;
+	static Position2i CurrentChessPosition;
 	static void PoisitionChange();
 	//==========================================================================================
 	//==========================================================================================
@@ -101,4 +102,5 @@ private:
 	static unsigned int texture[TEXTURE_NUM];
 	static std::string texturePath;
 	static void DrawEdit();
+	static void ChessPlay();
 };
