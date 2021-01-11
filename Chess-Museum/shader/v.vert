@@ -1,4 +1,4 @@
-# version 430 core
+# version 460
 
 layout(location = 0) in vec4 Position;
 layout(location = 1) in vec4 Normal;
@@ -12,7 +12,7 @@ uniform mat3 gl_NormalMatrix;
 out vec3 normal;
 out vec3 lightVec;
 out vec3 viewVec;
-out vec2 TexCoord0;
+out vec2 tex;
 
 void main(){ 
 	gl_Position = gl_ModelViewProjectionMatrix * Position;
@@ -21,5 +21,5 @@ void main(){
 	normal   = gl_NormalMatrix * vec3(Normal);
 	lightVec = vec3(lightPos - vert);
 	viewVec  = -vec3(vert);
-    TexCoord0 = TexCoord;
+	tex = TexCoord;
 }

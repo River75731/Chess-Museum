@@ -40,12 +40,6 @@
     <Filter Include="头文件\TEST">
       <UniqueIdentifier>{05c682e4-32ef-4f86-a8d6-c5ed30ac5232}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Light">
-      <UniqueIdentifier>{c7280c82-7f49-4892-a714-64240cbcf393}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\Light">
-      <UniqueIdentifier>{e20eb7ad-7e90-4fa5-ad08-92be8d79c42b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ViewModel\ViewObject.h">
@@ -111,6 +105,9 @@
     <ClInclude Include="Common\textfile.h">
       <Filter>头文件\Common</Filter>
     </ClInclude>
+    <ClInclude Include="Light\light.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewModel\ViewObject.cpp">
@@ -160,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="Model\Model.cpp">
       <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Light\light.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

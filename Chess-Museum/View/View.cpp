@@ -45,8 +45,9 @@ std::string View::texFileNames[TEXTURE_NUM] =
 		"king_black.bmp",
 		"chess_board.bmp",
 		"floor.bmp",
-		"wood_red.bmp",
-		"wood_brown.bmp"};
+		"wall.bmp",
+		"wood_brown.bmp",
+		"ceiling.bmp"};
 
 void View::initMapRelation()
 {
@@ -109,6 +110,7 @@ void View::initMapRelation()
 	tex.emplace_back(texture[14]);
 	tex.emplace_back(texture[15]);
 	tex.emplace_back(texture[16]);
+	tex.emplace_back(texture[17]);
 	texMap[CUBE] = tex;
 	tex.clear();
 }
@@ -173,6 +175,7 @@ void View::setList()
 	glNewList(CUBE, GL_COMPILE);
 	glBegin(GL_QUADS);
 
+	glNormal3fv(normals + 0 * 3);
 	glTexCoord2fv(texCoordes + 0 * 2);
 	glVertex4fv(vertexes + 0 * 4);
 	glTexCoord2fv(texCoordes + 1 * 2);
@@ -182,6 +185,7 @@ void View::setList()
 	glTexCoord2fv(texCoordes + 3 * 2);
 	glVertex4fv(vertexes + 1 * 4);
 
+	glNormal3fv(normals + 1 * 3);
 	glTexCoord2fv(texCoordes + 0 * 2);
 	glVertex4fv(vertexes + 0 * 4);
 	glTexCoord2fv(texCoordes + 1 * 2);
@@ -191,6 +195,7 @@ void View::setList()
 	glTexCoord2fv(texCoordes + 3 * 2);
 	glVertex4fv(vertexes + 4 * 4);
 
+	glNormal3fv(normals + 2 * 3);
 	glTexCoord2fv(texCoordes + 0 * 2);
 	glVertex4fv(vertexes + 2 * 4);
 	glTexCoord2fv(texCoordes + 1 * 2);
@@ -200,6 +205,7 @@ void View::setList()
 	glTexCoord2fv(texCoordes + 3 * 2);
 	glVertex4fv(vertexes + 6 * 4);
 
+	glNormal3fv(normals + 3 * 3);
 	glTexCoord2fv(texCoordes + 0 * 2);
 	glVertex4fv(vertexes + 0 * 4);
 	glTexCoord2fv(texCoordes + 1 * 2);
@@ -209,6 +215,7 @@ void View::setList()
 	glTexCoord2fv(texCoordes + 3 * 2);
 	glVertex4fv(vertexes + 3 * 4);
 
+	glNormal3fv(normals + 4 * 3);
 	glTexCoord2fv(texCoordes + 0 * 2);
 	glVertex4fv(vertexes + 1 * 4);
 	glTexCoord2fv(texCoordes + 1 * 2);
@@ -218,6 +225,7 @@ void View::setList()
 	glTexCoord2fv(texCoordes + 3 * 2);
 	glVertex4fv(vertexes + 5 * 4);
 
+	glNormal3fv(normals + 5 * 3);
 	glTexCoord2fv(texCoordes + 0 * 2);
 	glVertex4fv(vertexes + 4 * 4);
 	glTexCoord2fv(texCoordes + 1 * 2);
@@ -353,12 +361,14 @@ void View::Display()
 	if (Move)
 		EyeMove();
 	glEnable(GL_LIGHTING);
-	GLfloat gray[] = {0.4, 0.4, 0.4, 1.0};
-	GLfloat light_pos[] = {10, 10, 10, 0};
+	GLfloat gray[] = {0.8, 0.8, 0.8, 1.0};
+	GLfloat light_pos[] = {-6.5, 4,- 6.5, 1};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
 	glEnable(GL_LIGHT0);
+
+	DrawModel(CUBE, Vec2f(), Vec3f(-6.5, 4, -6.5), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), -1);
 
 	glColor3f(0, 0, 0);
 	glBegin(GL_LINES);
@@ -799,6 +809,7 @@ void View::DrawGround()
 		{
 			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0),0, Vec3f(0, 1, 0), Vec3f(1,0.01,1),0);
 
+			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 5, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 3);
 		}
 	}
 }

@@ -1,10 +1,9 @@
+uniform sampler2D gSampler;
+
 in vec3 normal;
 in vec3 lightVec;
 in vec3 viewVec;
-
-in vec2 TexCoord0;
-
-uniform sampler2D gSampler;
+in vec2 tex;
 
 void main(){
 	vec3 norm = normalize(normal);
@@ -15,12 +14,11 @@ void main(){
 	float NdotH = clamp(dot(halfAngle, norm), 0.0, 1.0);
 
     // "Half-Lambert" technique for more pleasing diffuse term
+	float diffuse  = 0.5 * NdotL + 0.5;
+	float specular = pow(NdotH, 64.0);
 
-	float diffuse  = NdotL >= 0.0 ? 1.0 * NdotL : 0.0;
-	float specular = pow(NdotH, 32.0);
-
-	gl_FragColor = vec4(0.1) + diffuse * texture2D(gSampler, TexCoord0.st)+vec4(specular);
-	// * texture2D(gSampler, TexCoord0.st)
+	float result = diffuse + specular;
+	gl_FragColor = vec4(result) * texture2D(gSampler, tex.st);
 }
 
 
