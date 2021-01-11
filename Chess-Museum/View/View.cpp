@@ -16,8 +16,9 @@ Vec3f View::MoveIncrement = Vec3f(0.00174537, 0, 0.999998);
 Vec3f View::EyeDirection_t = Vec3f(-1.99999, 0.0069813, 0.0);
 float View::Pitch = 0, View::Yaw = 180;
 char View::Key = ' ';
-Position2i View::CurrentPosition = Position2i(1, 1);
+Position2i View::CurrentPosition = Position2i(4, 4);
 Position2i View::CurrentChessPosition = Position2i(1, 1);
+Position2i View::LightPosition = Position2i(4, 4);
 GLuint program;
 
 ViewSceneType View::CurrentState = SCENE;
@@ -372,9 +373,13 @@ void View::Display()
 	SetEyeLocation();
 	if (Move)
 		EyeMove();
+	glUseProgram(program);
+	glUniform4f((GLuint)3, -LightPosition.getX(), 4, -LightPosition.getY(), 1.0);
+	glUseProgram(0);
+	
 	glEnable(GL_LIGHTING);
 	GLfloat gray[] = {0.8, 0.8, 0.8, 1.0};
-	GLfloat light_pos[] = {-6.5, 4, -6.5, 1};
+	GLfloat light_pos[] = {-LightPosition.getX(), 4, -LightPosition.getY(), 1};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, gray);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
@@ -387,7 +392,7 @@ void View::Display()
 	std::cout << b[0] << ' ' << b[1] << ' ' << b[2] << ' ' << std::endl;
 	std::cout << "Yaw: " << Yaw << "Pitch: " << Pitch << std::endl;
 
-	DrawModel(CUBE, Vec2f(), Vec3f(-6.5, 4, -6.5), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), -1);
+	DrawModel(CUBE, Vec2f(), Vec3f(-LightPosition.getX(), 4, -LightPosition.getY()), 0, Vec3f(0, 1, 0), Vec3f(0.1, 0.1, 0.1), 1);
 
 	glColor3f(0, 0, 0);
 	glBegin(GL_LINES);
@@ -453,11 +458,13 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	{
 	case 'e':
 	case 'E':
+		MyModel.quitChess();
 		CurrentState = EDIT;
 		Reshape(600, 600);
 		break;
 	case 'r':
 	case 'R':
+		MyModel.quitChess();
 		CurrentState = SCENE;
 		Reshape(600, 600);
 		break;
@@ -509,6 +516,12 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 		MyModel.saveExhibit();
 		MyModel.editExhibit();
 		break;
+	case 'y':
+		if (CurrentState == EDIT)
+		{
+			CurrentState = LIGHT;
+		}
+		break;
 	case (char)0x1B:
 		exit(0);
 		break;
@@ -520,6 +533,39 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 		PoisitionChange();
 	else if (CurrentState == CHESS)
 		ChessPlay();
+	else if (CurrentState == LIGHT)
+		LightChange();
+}
+
+void View::LightChange()
+{
+	switch (Key)
+	{
+	case 'i':
+		if (LightPosition.getX() < 11)
+		{
+			LightPosition = LightPosition + Vector2i(1, 0);
+		}
+		break;
+	case 'j':
+		if (LightPosition.getY() > 1)
+		{
+			LightPosition = LightPosition - Vector2i(0, 1);
+		}
+		break;
+	case 'k':
+		if (LightPosition.getX() > 1)
+		{
+			LightPosition = LightPosition - Vector2i(1, 0);
+		}
+		break;
+	case 'l':
+		if (LightPosition.getY() < 13)
+		{
+			LightPosition = LightPosition + Vector2i(0, 1);
+		}
+		break;
+	}
 }
 
 void View::ChessPlay()
@@ -554,11 +600,24 @@ void View::ChessPlay()
 
 		MyModel.chooseChessBlock(CurrentChessPosition);
 		MyModel.execChoose();
+	
 	}
 }
 
 void View::KeyBoardUpCallBackFunc(unsigned char k, int x, int y)
 {
+	float temp[3];	Vec3f temp_vec = EyeLocation;
+
+	if (k == 'o')
+	{
+		temp_vec.Get(temp[0], temp[1], temp[2]);
+		MyModel.enterEdit();
+		MyModel.chooseBlock(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)));
+		MyModel.editExhibit();
+		MyModel.changeHasTable();
+		MyModel.saveExhibit();
+		MyModel.enterPlay();
+	}
 	Move = false;
 }
 
@@ -608,16 +667,6 @@ void View::EyeMove()
 		break;
 	case 'c':
 		EyeLocation += 0.01 * EyeUp;
-		break;
-
-	case 'o':
-		temp_vec.Get(temp[0], temp[1], temp[2]);
-		MyModel.enterEdit();
-		MyModel.editExhibit();
-		MyModel.chooseBlock(Position2i((int)(-temp[0] + 0.5), (int)(-temp[2] + 0.5)));
-		MyModel.changeHasTable();
-		MyModel.saveExhibit();
-		MyModel.enterPlay();
 		break;
 	case 'q':
 		exit(0);
@@ -772,7 +821,7 @@ void View::Reshape(int w, int h)
 	}
 	else if (CurrentState == EDIT)
 	{
-		EyeLocation = Vec3f(-6, 5, -6);
+		EyeLocation = Vec3f(-6, 8, -6);
 		EyeDirection = Vec3f(0, -1, 0);
 		EyeUp = Vec3f(-1, 0, 0);
 		Yaw = 180;
@@ -994,7 +1043,7 @@ void View::DrawScene()
 				}
 				else
 				{
-					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(-0.5, 0, -0.5), temp.getRotate() + 90.0f, Vec3f(0.5, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ() * 0.3), temp.getTextureNum());
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(-0.5, 0, -0.5), temp.getRotate() + 90.0f, Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ() * 0.3), temp.getTextureNum());
 				}
 
 				break;
@@ -1006,7 +1055,7 @@ void View::DrawScene()
 				}
 				else
 				{
-					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0.5, 0, 0.5), temp.getRotate() + 90.0f, Vec3f(0.5, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ() * 0.3), temp.getTextureNum());
+					DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0.5, 0, 0.5), temp.getRotate() + 90.0f, Vec3f(0, 1, 0), Vec3f(temp.getScale().getX(), temp.getScale().getY() * 3, temp.getScale().getZ() * 0.3), temp.getTextureNum());
 				}
 
 				break;
@@ -1065,10 +1114,11 @@ void View::DrawGround()
 	{
 		for (int j = 1; j <= 13; j++)
 		{
-			if (Position2i(i, j) != CurrentPosition)
+			if (Position2i(i, j) != CurrentPosition||CurrentState==SCENE)
 				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 0);
 
-			DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 5, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 3);
+			if (CurrentState != EDIT && CurrentState != LIGHT)
+				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 5, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 3);
 		}
 	}
 }

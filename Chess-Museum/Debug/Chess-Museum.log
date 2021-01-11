@@ -1,2 +1,6 @@
-﻿  ClassicChess.cpp
+﻿  View.cpp
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(382,25): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(382,51): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(782,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(889,16): warning C4101: “temp”: 未引用的局部变量
   Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe

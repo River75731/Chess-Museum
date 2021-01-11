@@ -40,7 +40,8 @@ enum ViewSceneType
 	SCENE,
 	CHESS,
 	EXHIBIT,
-	EDIT
+	EDIT,
+	LIGHT
 };
 class View
 {
@@ -103,4 +104,6 @@ private:
 	static std::string texturePath;
 	static void DrawEdit();
 	static void ChessPlay();
+	static Position2i LightPosition;
+	static void LightChange();
 };

@@ -1,3 +1,4 @@
+# version 430
 uniform sampler2D gSampler;
 
 in vec3 normal;

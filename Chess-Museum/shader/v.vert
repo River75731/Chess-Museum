@@ -1,10 +1,10 @@
-# version 460
+# version 430
 
 layout(location = 0) in vec4 Position;
 layout(location = 1) in vec4 Normal;
 layout(location = 2) in vec2 TexCoord;
+layout(location = 3) in vec4 lightPos;
 
-uniform vec4 lightPos;
 uniform mat4 gl_ModelViewProjectionMatrix;
 uniform mat4 gl_ModelViewMatrix;
 uniform mat3 gl_NormalMatrix;
