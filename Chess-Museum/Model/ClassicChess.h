@@ -144,6 +144,7 @@ private:
 	void loadMsg(std::string address);
 	void saveMsg(std::string address);
 
+	bool isBlocked(const Position2i &src, const Position2i& dest) const;
 	bool isChecked(const ClassicChessPlayerType player) const;
 	void execMove(const std::unique_ptr<ClassicChessMove> &move);	// execute a move
 	bool isValidMove(const std::unique_ptr<ClassicChessMove>& move) const; // whether a move is valid (consider all objects)

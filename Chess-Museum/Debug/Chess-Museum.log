@@ -1,12 +1,2 @@
-﻿  TriangleMesh.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\viewmodel\trianglemesh.cpp(56): warning C4018: “<”: 有符号/无符号不匹配
-  ViewGroup.cpp
-  ViewObject.cpp
-  ViewScene.cpp
-  View.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(390): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(793): warning C4018: “<”: 有符号/无符号不匹配
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(900): warning C4101: “temp”: 未引用的局部变量
-  main.cpp
-  正在生成代码...
+﻿  ClassicChess.cpp
   Chess-Museum.vcxproj -> D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\Debug\Chess-Museum.exe
