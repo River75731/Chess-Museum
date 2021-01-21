@@ -319,6 +319,7 @@ void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove>& move)
 	ClassicChessPosition dest(move->getDest());
 	ClassicChessObject object(move->getObject());
 	for (int i = 0; i <= 31; i++) if (objects.at(i) == toIndex(dest)) {
+		if (board.at(objects.at(i))->getType() == CLASSICCHESS_KING) status = board.at(objects.at(i))->getPlayer() == CLASSICCHESS_WHITE ? CLASSICCHESS_BLACK_WIN : CLASSICCHESS_WHITE_WIN;
 		objects.at(i) = -1;
 		break;
 	}
@@ -327,7 +328,7 @@ void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove>& move)
 	board.at(toIndex(dest)).reset(new ClassicChessObject(object.getIndex(), object.getPlayer(), dest, object.getType(), object.getStatus()));
 	history.push_back(std::unique_ptr<ClassicChessMove>(new ClassicChessMove(*move)));
 	if (status == CLASSICCHESS_WHITE_TURN) status = CLASSICCHESS_BLACK_TURN;
-	else status = CLASSICCHESS_WHITE_TURN;
+	else if(status == CLASSICCHESS_BLACK_TURN) status = CLASSICCHESS_WHITE_TURN;
 	// todo : castling & update
 }
 

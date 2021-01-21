@@ -221,6 +221,14 @@ bool Model::moveExhibit(const Position2i& src, const Position2i& dest)
 	else return false;
 }
 
+void Model::resetMap()
+{
+	loadMap();
+	chosenBlock = Position2i(1, 1);
+	chosenChess = -1;
+	chosenExhibit = Exhibit();
+}
+
 void Model::execTranslate(const float & time, const int & directX, const int & directY, const int & directZ)
 {
 	if (state == MODEL_EDIT_EXHIBIT)
