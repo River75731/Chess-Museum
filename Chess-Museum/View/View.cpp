@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 #define HEIGHT 0.8
+int winwidth = 600, winheight = 600;
+
 bool View::ButtonDown = false;
 bool View::Move = false;
 int View::du = 90, View::OriX = -1, View::OriY = -1;
@@ -471,19 +473,19 @@ void View::KeyBoardCallBackFunc(unsigned char k, int x, int y)
 	case 'E':
 		MyModel.quitChess();
 		CurrentState = EDIT;
-		Reshape(600, 600);
+		Reshape(winwidth, winheight);
 		break;
 	case 'r':
 	case 'R':
 		MyModel.quitChess();
 		CurrentState = SCENE;
-		Reshape(600, 600);
+		Reshape(winwidth, winheight);
 		break;
 	case 'm':
 	case 'M':
 		CurrentState = CHESS;
 		MyModel.enterChess(Position2i(6, 7));
-		Reshape(600, 600);
+		Reshape(winwidth, winheight);
 		break;
 	case (char)(0xD):
 		if (CurrentState == EDIT)
@@ -819,6 +821,7 @@ void View::PickMode(int x, int y)
 
 void View::Reshape(int w, int h)
 {
+	winwidth = w, winheight = h;
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -934,7 +937,7 @@ void View::texload(int i, std::string filename)
 	BITMAPINFOHEADER bitmapInfoHeader;
 	unsigned char *bitmapData;
 	char c_filename[BUFSIZE];
-	strcpy(c_filename, (texturePath + filename).c_str());
+	strcpy_s(c_filename, (texturePath + filename).c_str());
 	bitmapData = LoadBitmapFile(c_filename, &bitmapInfoHeader);
 	glBindTexture(GL_TEXTURE_2D, texture[i]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -1003,7 +1006,7 @@ void View::DrawScene()
 						ClassicChessObjectType ctype;
 						ctype = MyModel.getChessObjectType(Position2i(i, j), Position2i(a, b));
 						if (CurrentState == CHESS && CurrentChessPosition == Position2i(a, b))
-							DrawModel(CUBE, Vec2f(-i, -j), Vec3f((a - 4.5) / 8.5, HEIGHT + 0.05, (b - 4.5) / 8.5), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.12 * temp.getScale().getX(), 0.1 * temp.getScale().getY(), 0.12 * temp.getScale().getZ()), 3);
+							DrawModel(CUBE, Vec2f(-i, -j), Vec3f((a - 4.5) / 8.5, HEIGHT + 0.05, (b - 4.5) / 8.5), temp.getRotate(), Vec3f(0, 1, 0), Vec3f(0.12 * temp.getScale().getX(), 0.02 * temp.getScale().getY(), 0.12 * temp.getScale().getZ()), 3);
 						switch (ctype)
 						{
 						case CLASSICCHESS_EMPTY:

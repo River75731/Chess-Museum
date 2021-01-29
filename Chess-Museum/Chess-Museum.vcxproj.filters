@@ -1,51 +1,150 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Common\Matrix.cpp" />
-    <ClCompile Include="Common\ObjParser.cpp" />
-    <ClCompile Include="Common\Position.cpp" />
-    <ClCompile Include="Common\textfile.cpp" />
-    <ClCompile Include="Common\Vector.cpp" />
-    <ClCompile Include="Light\light.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model\Chess.cpp" />
-    <ClCompile Include="Model\ClassicChess.cpp" />
-    <ClCompile Include="Model\Exhibit.cpp" />
-    <ClCompile Include="Model\Map.cpp" />
-    <ClCompile Include="Model\Model.cpp" />
-    <ClCompile Include="ViewModel\TriangleMesh.cpp" />
-    <ClCompile Include="ViewModel\ViewGroup.cpp" />
-    <ClCompile Include="ViewModel\ViewObject.cpp" />
-    <ClCompile Include="ViewModel\ViewScene.cpp" />
-    <ClCompile Include="View\View.cpp" />
+    <ClCompile Include="Model\Chess.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ClassicChess.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Exhibit.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Map.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Matrix.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Light\light.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ObjParser.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Position.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\textfile.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\TriangleMesh.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Vector.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="View\View.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\ViewGroup.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\ViewObject.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewModel\ViewScene.cpp">
+      <Filter>View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Common\MathBase.h" />
-    <ClInclude Include="Common\Common.h" />
-    <ClInclude Include="Common\Matrix.h" />
-    <ClInclude Include="Common\ObjParser.h" />
-    <ClInclude Include="Common\Position.h" />
-    <ClInclude Include="Common\textfile.h" />
-    <ClInclude Include="Common\Vector.h" />
-    <ClInclude Include="Common\vectors.h" />
-    <ClInclude Include="Light\light.h" />
-    <ClInclude Include="Model\Chess.h" />
-    <ClInclude Include="Model\ClassicChess.h" />
-    <ClInclude Include="Model\Exhibit.h" />
-    <ClInclude Include="Model\Map.h" />
-    <ClInclude Include="Model\Model.h" />
-    <ClInclude Include="TEST\TEST.h" />
-    <ClInclude Include="TEST\TEST_ObjImport.h" />
-    <ClInclude Include="TEST\TEST_VectorPosition.h" />
-    <ClInclude Include="ViewModel\TriangleMesh.h" />
-    <ClInclude Include="ViewModel\ViewGroup.h" />
-    <ClInclude Include="ViewModel\ViewModel.h" />
-    <ClInclude Include="ViewModel\ViewObject.h" />
-    <ClInclude Include="ViewModel\ViewScene.h" />
-    <ClInclude Include="View\View.h" />
+    <ClInclude Include="Model\Chess.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ClassicChess.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Exhibit.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Map.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\MathBase.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Matrix.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Light\light.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ObjParser.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Position.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TEST\TEST.h">
+      <Filter>TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="TEST\TEST_ObjImport.h">
+      <Filter>TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="TEST\TEST_VectorPosition.h">
+      <Filter>TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\textfile.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\TriangleMesh.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\vectors.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Vector.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="View\View.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\ViewGroup.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\ViewModel.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\ViewObject.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewModel\ViewScene.h">
+      <Filter>View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Data\DefaultChess.txt" />
-    <Text Include="Data\DefaultMap.txt" />
+    <Text Include="Data\DefaultChess.txt">
+      <Filter>Data</Filter>
+    </Text>
+    <Text Include="Data\DefaultMap.txt">
+      <Filter>Data</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Model">
+      <UniqueIdentifier>{ebf3b1bf-7fcf-4ee7-8620-3bd341c3836a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{423a4c26-1dc1-47ae-a43f-1d4099e2e272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{9abb443e-49ca-47ad-b6dc-b1897860a07f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{bdda45d0-d4a0-4be0-8acb-f5e829ebfae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TEST">
+      <UniqueIdentifier>{32c9b2f6-5df7-497f-8672-e41186f632ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

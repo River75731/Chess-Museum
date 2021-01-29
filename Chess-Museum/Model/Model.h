@@ -88,8 +88,6 @@ public:
 	void execTranslate(const float& time = 1, const int& directX = true, const int& directY = true, const int& directZ = true); // translate the model by time and direction(1 for positive, -1 for negative, 0 for keep current state)	
 	void execRotate(const float& time = 1, const int& direction = true);// rotate the model by time and direction (1 for counterclockwise and -1 for clockwise)
 	void execScale(const int& directX = true, const int& directY = true, const int& directZ = true);// scale the model by direction(1 for enlarge, -1 for shrink, 0 for keep current state)
-
-	// todo : add exhibit change
 	
 	bool moveExhibit(const Position2i& src, const Position2i& dest);	// move the Exhibit from src to dest, true if success 
 	void resetMap();

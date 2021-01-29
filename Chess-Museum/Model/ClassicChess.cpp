@@ -238,6 +238,17 @@ void ClassicChess::loadMsg(std::string address)
 	fin.close();
 }
 
+bool ClassicChess::isBlocked(const Position2i & src, const Position2i & dest) const
+{
+	Vector2i delta = dest - src;
+	if (delta.getX() != 0) delta.setX(delta.getX() / abs(delta.getX()));
+	if (delta.getY() != 0) delta.setY(delta.getY() / abs(delta.getY()));
+	for (Position2i temp = src + delta; temp != dest; temp += delta) {
+		if (board.at(toIndex(temp))->getType() != CLASSICCHESS_EMPTY) return true;
+	}
+	return false;
+}
+
 bool ClassicChess::isChecked(const ClassicChessPlayerType player) const
 {
 	// Find king
@@ -305,47 +316,47 @@ bool ClassicChess::isChecked(const ClassicChessPlayerType player) const
 
 void ClassicChess::execMove(const std::unique_ptr<ClassicChessMove>& move)
 {
-	std::cout << "Valid!" << std::endl;
 	ClassicChessPosition dest(move->getDest());
 	ClassicChessObject object(move->getObject());
 	for (int i = 0; i <= 31; i++) if (objects.at(i) == toIndex(dest)) {
+		if (board.at(objects.at(i))->getType() == CLASSICCHESS_KING) status = board.at(objects.at(i))->getPlayer() == CLASSICCHESS_WHITE ? CLASSICCHESS_BLACK_WIN : CLASSICCHESS_WHITE_WIN;
 		objects.at(i) = -1;
 		break;
 	}
-	std::cout << object.getPosition().getX()<<" " << object.getPosition().getY() << std::endl;
 	board.at(toIndex(object.getPosition())).reset(new ClassicChessObject());
 	objects.at(object.getIndex()) = toIndex(dest);
 	board.at(toIndex(dest)).reset(new ClassicChessObject(object.getIndex(), object.getPlayer(), dest, object.getType(), object.getStatus()));
 	history.push_back(std::unique_ptr<ClassicChessMove>(new ClassicChessMove(*move)));
 	if (status == CLASSICCHESS_WHITE_TURN) status = CLASSICCHESS_BLACK_TURN;
-	else status = CLASSICCHESS_WHITE_TURN;
+	else if(status == CLASSICCHESS_BLACK_TURN) status = CLASSICCHESS_WHITE_TURN;
 	// todo : castling & update
 }
 
 bool ClassicChess::isValidMove(const std::unique_ptr<ClassicChessMove>& move) const
 {
-	std::cout << "status:" <<status<< std::endl;
 	switch (status)
 	{
-	
 	//	In UPGRADEPAWN mode, only allow a passive move which move a queen/rook/knight/bishop to the current position
-	
-	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE:
 	case CLASSICCHESS_WHITE_CHECK:	// white being checked
 	case CLASSICCHESS_WHITE_TURN:
 		if (!move->isValid()) return false;
 		if (move->getObject().getPlayer() == CLASSICCHESS_BLACK) return false;
-		//if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_WHITE) return false;
-		// todo : block judge
+		if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_WHITE) return false;
+		if (move->getObject().getType() == CLASSICCHESS_ROOK || move->getObject().getType() == CLASSICCHESS_BISHOP || move->getObject().getType() == CLASSICCHESS_QUEEN || move->getObject().getType() == CLASSICCHESS_PAWN)
+			if (isBlocked(move->getObject().getPosition(), move->getDest())) return false;
+		if (!isEmpty(move->getDest()) && move->getObject().getType() == CLASSICCHESS_PAWN && (move->getDest() - move->getObject().getPosition()).getX() == 0) return false;
 		return true;
-	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK:
 	case CLASSICCHESS_BLACK_CHECK:	// black being checked
 	case CLASSICCHESS_BLACK_TURN:
 		if (!move->isValid()) return false;
 		if (move->getObject().getPlayer() == CLASSICCHESS_WHITE) return false;
-		//if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_BLACK) return false;
-		// todo : block judge
+		if (!isEmpty(move->getDest()) && getObject(move->getDest()).getPlayer() == CLASSICCHESS_BLACK) return false;
+		if (move->getObject().getType() == CLASSICCHESS_ROOK || move->getObject().getType() == CLASSICCHESS_BISHOP || move->getObject().getType() == CLASSICCHESS_QUEEN || move->getObject().getType() == CLASSICCHESS_PAWN)
+			if (isBlocked(move->getObject().getPosition(), move->getDest())) return false;
+		if (!isEmpty(move->getDest()) && move->getObject().getType() == CLASSICCHESS_PAWN && (move->getDest() - move->getObject().getPosition()).getX() == 0) return false;
 		return true;
+	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_WHITE:
+	case CLASSICCHESS_INTERRUPT_UPGRADEPAWN_BLACK:
 	case CLASSICCHESS_WHITE_WIN:
 	case CLASSICCHESS_BLACK_WIN: return false;
 	}
@@ -385,10 +396,8 @@ void ClassicChess::tryMove(const std::unique_ptr<ClassicChessMove>& move)
 
 void ClassicChess::tryMove(const Position2i & src, const Position2i & dest)
 {
-	std::cout << status << " " << src.getX() << " " << src.getY() << " " << dest.getX() << " " << dest.getY() << std::endl;
 	for (int i = 0; i <= 31; i++) if (objects.at(i) == toIndex(src))
 	{
-		std::cout << src.getX() << " " << src.getY() << std::endl;
 		tryMove(std::unique_ptr<ClassicChessMove>(new ClassicChessMove(ClassicChessObject(*(board[toIndex(src)])), ClassicChessPosition(dest))));
 	}
 }
