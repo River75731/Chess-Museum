@@ -1,4 +1,4 @@
-# version 430
+# version 460 core
 uniform sampler2D gSampler;
 
 in vec3 normal;

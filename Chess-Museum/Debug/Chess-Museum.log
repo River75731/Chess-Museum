@@ -1,17 +1,6 @@
-<<<<<<< HEAD
-﻿  ClassicChess.cpp
-  Model.cpp
-  View.cpp
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(382,25): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(382,51): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(782,17): warning C4018: “<”: 有符号/无符号不匹配
-D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(889,16): warning C4101: “temp”: 未引用的局部变量
-  正在生成代码...
-  LINK : 没有找到 D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe 或上一个增量链接没有生成它；正在执行完全链接
-  Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe
-=======
 ﻿  View.cpp
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(734): warning C4018: “<”: 有符号/无符号不匹配
-d:\zju\课件\计算机图形学\lab\chess-museum\chess-museum\view\view.cpp(841): warning C4101: “temp”: 未引用的局部变量
-  Chess-Museum.vcxproj -> D:\ZJU\课件\计算机图形学\LAB\Chess-Museum\Debug\Chess-Museum.exe
->>>>>>> f10cd48134aa00de8d695b39dbd73b7182e59e7a
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(390,25): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(390,51): warning C4838: 从“int”转换到“GLfloat”需要收缩转换
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(793,17): warning C4018: “<”: 有符号/无符号不匹配
+D:\Files\Courses\Computer_Graphics\Chess-Museum\Chess-Museum\View\View.cpp(900,16): warning C4101: “temp”: 未引用的局部变量
+  Chess-Museum.vcxproj -> D:\Files\Courses\Computer_Graphics\Chess-Museum\Debug\Chess-Museum.exe

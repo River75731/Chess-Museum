@@ -373,9 +373,17 @@ void View::Display()
 	SetEyeLocation();
 	if (Move)
 		EyeMove();
-	glUseProgram(program);
-	glUniform4f((GLuint)3, -LightPosition.getX(), 4, -LightPosition.getY(), 1.0);
-	glUseProgram(0);
+
+	// glUseProgram(program);
+	// GLuint loc;
+	// float mat[16];
+	// glGetFloatv(GL_PROJECTION_MATRIX, mat);
+	// loc = glGetUniformLocation(program, "ProjectionMatrix");
+	// glUniformMatrix4fv(loc, 1, GL_FALSE, mat);
+	// glGetFloatv(GL_MODELVIEW_MATRIX, mat);
+	// loc = glGetUniformLocation(program, "ModelViewMatrix");
+	// glUniformMatrix4fv(loc, 1, GL_FALSE, mat);
+	// glUseProgram(0);
 	
 	glEnable(GL_LIGHTING);
 	GLfloat gray[] = {0.8, 0.8, 0.8, 1.0};
@@ -1120,7 +1128,7 @@ void View::DrawGround()
 			if (Position2i(i, j) != CurrentPosition||CurrentState==SCENE)
 				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 0, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 0);
 
-			if (CurrentState != EDIT && CurrentState != LIGHT)
+			if (CurrentState != EDIT && CurrentState != LIGHT && CurrentState != EXHIBIT)
 				DrawModel(CUBE, Vec2f(-i, -j), Vec3f(0, 5, 0), 0, Vec3f(0, 1, 0), Vec3f(1, 0.01, 1), 3);
 		}
 	}

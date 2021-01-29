@@ -3,12 +3,12 @@
 layout(location = 0) in vec4 Position;
 layout(location = 1) in vec4 Normal;
 layout(location = 2) in vec2 TexCoord;
-layout(location = 3) in vec4 lightPos;
 
 uniform mat4 gl_ModelViewProjectionMatrix;
 uniform mat4 gl_ModelViewMatrix;
 uniform mat3 gl_NormalMatrix;
 
+uniform vec4 lightPos;
 out vec3 normal;
 out vec3 lightVec;
 out vec3 viewVec;
